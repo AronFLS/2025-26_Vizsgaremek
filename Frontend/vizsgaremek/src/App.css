@@ -1,4 +1,5 @@
 body{
-    background-color: rgb(27, 27, 27);
-    color: white;
+    background-color: rgb(5, 5, 5);
+    color: rgb(0, 0, 0);
+    font-family: 'SanFrancisco', -apple-system, BlinkMacSystemFont, sans-serif;
 }
