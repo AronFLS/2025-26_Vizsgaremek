@@ -16,8 +16,13 @@ function Navbar() {
   const location = useLocation();
   const navRef = useRef<HTMLElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  // Add refs for the account menu and toggle button
+  const accountMenuRef = useRef<HTMLDivElement>(null);
+  const accountToggleRef = useRef<HTMLDivElement>(null);
+
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAccountOpen, setIsAccountOpen] = useState(false);
 
   const snapToActive = () => {
     if (!navRef.current) return;
@@ -46,17 +51,42 @@ function Navbar() {
     }
   }, [isSearchOpen]);
 
-  // Close search on Escape key
+  // Close account menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isAccountOpen &&
+        accountMenuRef.current &&
+        !accountMenuRef.current.contains(event.target as Node) &&
+        accountToggleRef.current &&
+        !accountToggleRef.current.contains(event.target as Node)
+      ) {
+        setIsAccountOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isAccountOpen]);
+
+  // Close search or account menu on Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isSearchOpen) {
-        setIsSearchOpen(false);
-        setSearchQuery("");
+      if (e.key === "Escape") {
+        if (isSearchOpen) {
+          setIsSearchOpen(false);
+          setSearchQuery("");
+        }
+        if (isAccountOpen) {
+          setIsAccountOpen(false);
+        }
       }
     };
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [isSearchOpen]);
+  }, [isSearchOpen, isAccountOpen]);
 
   const handleSearchToggle = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -120,9 +150,13 @@ function Navbar() {
             <NavLink to="/cart" className="nav-cart">
               <CiShoppingCart />
             </NavLink>
-            <NavLink to="/account" className="nav-account">
-              <CiUser />
-            </NavLink>
+            <div 
+              className="nav-account" 
+              onClick={() => setIsAccountOpen(!isAccountOpen)}
+              ref={accountToggleRef}
+            >
+              <CiUser id="account-icon" style={{ cursor: 'pointer' }} />
+            </div>
           </div>
         </div>
 
@@ -141,6 +175,28 @@ function Navbar() {
           </div>
         </div>
       </header>
+
+      <AnimatePresence>
+        {isAccountOpen && (
+          <motion.div 
+            className="sign-in" 
+            id="toggle-div"
+            ref={accountMenuRef}
+            
+            initial={{ opacity: 0, y: -10, x: 200 }}
+            animate={{ opacity: 1, y: 0, x: 200 }}
+            exit={{ opacity: 0, y: -10, x: 200 }}
+            transition={{ duration: 0.2 }}
+          >
+            <p className="label">Email address:</p>
+            <input type="text" />
+            <p className="label" style={{ marginTop: "10px" }}>Password:</p>
+            <input type="password" />
+            <button id="signin-button">Sign in</button>
+            <p className="p-noaccount"> Don't have an account? <a href="/account">Sign up</a></p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

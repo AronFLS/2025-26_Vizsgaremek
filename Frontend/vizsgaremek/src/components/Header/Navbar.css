@@ -31,7 +31,6 @@
     overflow: hidden;
     height: 50px;
     transition: height 0.3s ease, background 0.3s ease;
-    
 }
 
 .navbar-expanded {
@@ -165,4 +164,54 @@
 .search-input:focus {
     background: none;
     border-color: none;
+}
+
+.sign-in{
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    width: 250px;
+    height: auto;
+    left: 50%;
+    top: 75px;
+    color: rgb(255, 255, 255);
+    position: fixed;
+    z-index: 500;
+    background: rgba(125, 125, 125, 0.25);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px); 
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    overflow: hidden;
+    transition: height 0.3s ease, background 0.3s ease;
+    margin: 0px;
+}
+.sign-in{
+    padding: 10px;
+}
+.sign-in .label {
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+#signin-button {
+    margin-top: 10px;
+    width: 100%;
+    height: 30px;
+    background-color: #0071e3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.p-noaccount {
+    font-size: 12px;
+    margin-top: 5px;
+    text-align: center;
+    margin-bottom: 0px;
 }
