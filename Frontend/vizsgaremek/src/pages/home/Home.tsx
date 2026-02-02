@@ -1,9 +1,8 @@
-import homepageImg from '../../assets/homepage.jpg'; 
+import Slide from "../../components/Home/Slide/Slide";
+import "./Home.css";
 
 function Home() {
-  return (
-    <div>Home page <img src={homepageImg} alt="Homepage" /><img src={homepageImg} alt="Homepage" /></div>
-  );
+  return <Slide />;
 }
 
 export default Home;

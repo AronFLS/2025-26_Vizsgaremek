@@ -1,5 +1,20 @@
-body{
-    background-color: rgb(5, 5, 5);
-    color: rgb(0, 0, 0);
-    font-family: 'SanFrancisco', -apple-system, BlinkMacSystemFont, sans-serif;
+body {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  font-family:
+    "SanFrancisco",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
