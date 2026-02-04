@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  top: 80px;
+  top: 60px;
   width: 100%;
   padding: 0px;
   border: 1.5px solid rgb(200, 200, 200);
@@ -42,7 +42,7 @@
   display: block;
   height: 100%;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 /* Dots Navigation */

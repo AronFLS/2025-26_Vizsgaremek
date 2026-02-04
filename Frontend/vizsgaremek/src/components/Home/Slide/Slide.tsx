@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import type { EmblaCarouselType } from "embla-carousel";
 import SlideTest1 from "../../../assets/SlideTest1.jpg";
 import SlideTest2 from "../../../assets/SlideTest2.jpg";
-import SlideTest3 from "../../../assets/SlideTest3.jpg";
+// import SlideTest3 from "../../../assets/SlideTest3.jpg";
 import SlideTest4 from "../../../assets/SlideTest4.jpg";
+import SlideTest5 from "../../../assets/SlideTest5.jpg";
 
 export function EmblaCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
@@ -40,7 +41,7 @@ export function EmblaCarousel() {
               <img src={SlideTest2} alt="" />
             </div>
             <div className="embla__slide">
-              <img src={SlideTest3} alt="" />
+              <img src={SlideTest5} alt="" />
             </div>
             <div className="embla__slide">
               <img src={SlideTest4} alt="" />
