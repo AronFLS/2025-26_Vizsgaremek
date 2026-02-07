@@ -1,3 +1,4 @@
+/* NAVBAR */
 .navbar-container {
   width: 100%;
   height: auto;
@@ -40,6 +41,7 @@
   flex-shrink: 0;
 }
 
+/* LOGO */
 .nav-logo {
   justify-self: center;
   color: rgb(0, 0, 0);
@@ -49,6 +51,7 @@
   font-weight: bold;
 }
 
+/* ICONS */
 .nav-icons {
   justify-self: end;
   display: flex;
@@ -59,18 +62,6 @@
   font-size: 24px;
   transform: translateY(-3px);
 }
-
-#menuburger-icon {
-  justify-self: start;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 8px;
-  font-size: 18px;
-  transform: translateY(-3px);
-  cursor: pointer;
-}
-
 .nav-cart,
 .nav-account {
   color: #000000;
@@ -81,6 +72,29 @@
   transform: scale(1.1);
 }
 
+/* MENU BURGER ICON */
+.menuburger-icon {
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  font-size: 18px;
+  transform: translateY(-3px);
+  cursor: pointer;
+  animation: keyframes-fill 0.2s;
+}
+@keyframes keyframes-fill {
+  0% {
+    transform: scale(0) translateY(-3px);
+  }
+
+  50% {
+    transform: scale(0.9) translateY(-3px);
+  }
+}
+
+/* DESKTOP MENU TABS */
 .navbar nav {
   justify-self: start;
   display: inline-flex;
@@ -107,9 +121,7 @@
     sans-serif;
 }
 
-/* Mobile menu styles */
-
-/* Account menu styles */
+/* Account menu  */
 .sign-in {
   border-radius: 10px;
   width: 250px;
@@ -159,7 +171,7 @@
   margin-bottom: 0px;
 }
 
-/* Mobile menu styles */
+/* Mobile menu  */
 .nav-tabs-mobile {
   border-radius: 10px;
   width: 200px;

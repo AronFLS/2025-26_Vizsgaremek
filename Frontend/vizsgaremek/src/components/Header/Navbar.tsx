@@ -14,6 +14,7 @@ import { NavIcons } from "./nav-components/NavIcons";
 import { AccountMenu } from "./nav-components/AccountMenu";
 import { CiMenuBurger } from "react-icons/ci";
 import { MobileMenu } from "./nav-components/MobileMenu";
+import { IoClose } from "react-icons/io5";
 
 function Navbar() {
   // Media query and refs
@@ -56,10 +57,17 @@ function Navbar() {
         <div className="navbar-main">
           {isMobile ? (
             <div ref={mobileToggleRef}>
-              <CiMenuBurger
-                id="menuburger-icon"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              />
+              {isMobileMenuOpen ? (
+                <IoClose
+                  className="menuburger-icon"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                />
+              ) : (
+                <CiMenuBurger
+                  className="menuburger-icon"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                />
+              )}
             </div>
           ) : (
             <DesktopNav
