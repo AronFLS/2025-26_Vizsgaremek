@@ -1,4 +1,4 @@
-import './account.css';
+import "./account.css";
 
 function Account() {
   return (
@@ -6,11 +6,11 @@ function Account() {
       <p id="title">Create Account</p>
       <p id="alt-title">Fill in your information to register</p>
       <div id="name">
-        <div id='firstname'>
+        <div id="firstname">
           <p className="label">First name:</p>
           <input type="text" />
         </div>
-        <div id='lastname'>
+        <div id="lastname">
           <p className="label">Last name:</p>
           <input type="text" />
         </div>
@@ -21,23 +21,11 @@ function Account() {
       <input type="password" />
       <p className="label">Confirm password:</p>
       <input type="password" />
-      <p className="label">Address:</p>
-      <input type="text" />
-      <div id="address">
-        <div id='city'>
-          <p className="label">City:</p>
-          <input type="text" />
-        </div>
-        <div id='postalcode'>
-          <p className="label">Postal code:</p>
-          <input type="text" />
-        </div>
-      </div>
       <p className="label">Phone number:</p>
       <input type="text" />
       <button id="signup-button">Sign up</button>
     </div>
-);
+  );
 }
 
 export default Account;
