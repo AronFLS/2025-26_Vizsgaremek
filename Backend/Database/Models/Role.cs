@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Backend.Models
+namespace Database.Models
 {
-    internal class Product_Spec
+    public class Role
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
