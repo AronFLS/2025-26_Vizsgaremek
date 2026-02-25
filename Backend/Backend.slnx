@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="Backend/Backend.csproj" />
+  <Project Path="Database/Database.csproj" />
 </Solution>

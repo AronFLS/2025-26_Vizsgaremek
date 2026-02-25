@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Database.Models
 {
-    public class Product_Spec
+    public class ProductSpec
     {
-        public int Id { get; set; }
         public int ProductId { get; set; }
+        public Product Product { get; set; } = null!;
         public int SpecId { get; set; }
+        public Spec Spec { get; set; } = null!;
     }
 }

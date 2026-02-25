@@ -9,12 +9,16 @@ namespace Database.Models
     public class Order : BaseClass
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public string PaymentMethod { get; set; }
-        public string Status { get; set; }
-        public string AddressLine { get; set; }
-        public string City { get; set; }
-        public string ZipCode { get; set; }
+        public required string PaymentMethod { get; set; }
+        public required string Status { get; set; }
+        public required string AddressLine { get; set; }
+        public required string City { get; set; }
+        public required string ZipCode { get; set; }
         public bool Active { get; set; }
+
+        public int UserId { get; set; }
+        public required User User { get; set; }
+
+        public ICollection<OrderProduct> OrderProducts { get; set; } = [];
     }
 }

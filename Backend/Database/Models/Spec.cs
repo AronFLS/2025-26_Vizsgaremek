@@ -9,6 +9,8 @@ namespace Database.Models
     public class Spec
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public required string Name { get; set; }
+
+        public ICollection<ProductSpec> ProductSpecs { get; set; } = [];
     }
 }
