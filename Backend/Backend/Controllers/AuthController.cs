@@ -49,69 +49,69 @@ namespace Backend.Controllers
       return NoContent();
     }
 
-        [HttpPost("login")]
-        [AllowAnonymous]
-        public ActionResult Login(LoginRequest request)
-        {
-            var user = coreDbContext.Users
-                .Include(u => u.Role)
-                .SingleOrDefault(u => u.Email == request.Email);
+    [HttpPost("login")]
+    [AllowAnonymous]
+    public ActionResult Login(LoginRequest request)
+    {
+      var user = coreDbContext.Users
+          .Include(u => u.Role)
+          .SingleOrDefault(u => u.Email == request.Email);
 
-            if (user == null)
-            {
-                return Unauthorized("Invalid email or password.");
-            }
-            var hasher = new PasswordHasher<object>();
-            var result = hasher.VerifyHashedPassword(null!, user.PasswordHash, request.Password);
+      if (user == null)
+      {
+        return Unauthorized("Invalid email or password.");
+      }
+      var hasher = new PasswordHasher<object>();
+      var result = hasher.VerifyHashedPassword(null!, user.PasswordHash, request.Password);
 
-            if (result == PasswordVerificationResult.Failed)
-            {
-                return Unauthorized("Invalid email or password.");
-            }
+      if (result == PasswordVerificationResult.Failed)
+      {
+        return Unauthorized("Invalid email or password.");
+      }
 
-            var accessToken = GenerateJwtToken(user); 
+      var accessToken = GenerateJwtToken(user);
 
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Lax,
-                Expires = DateTime.UtcNow.AddMinutes(options.Value.ExpiryMinutes)
-            };
+      var cookieOptions = new CookieOptions
+      {
+        HttpOnly = true,
+        Secure = true,
+        SameSite = SameSiteMode.Lax,
+        Expires = DateTime.UtcNow.AddMinutes(options.Value.ExpiryMinutes)
+      };
 
-            HttpContext.Response.Cookies.Append(Constants.AccessTokenCookieKey, accessToken, cookieOptions);
+      HttpContext.Response.Cookies.Append(Constants.AccessTokenCookieKey, accessToken, cookieOptions);
 
-            return Ok(accessToken);
-        }
+      return Ok(accessToken);
+    }
 
-        [Authorize]
-        [HttpGet("cookietoken")]
-        public async Task<ActionResult<string>> GetTokenFromCookie()
-        {
-            Request.Cookies.TryGetValue(Constants.AccessTokenCookieKey, out string? token);
+    [Authorize]
+    [HttpGet("cookietoken")]
+    public async Task<ActionResult<string>> GetTokenFromCookie()
+    {
+      Request.Cookies.TryGetValue(Constants.AccessTokenCookieKey, out string? token);
 
-            if (string.IsNullOrEmpty(token))
-            {
-                return Unauthorized();
-            }
-            return Ok(token);
-        }
+      if (string.IsNullOrEmpty(token))
+      {
+        return Unauthorized();
+      }
+      return Ok(token);
+    }
 
 
-        [Authorize]
-        [HttpPost("logout")]
-        public ActionResult Logout()
-        {
-            HttpContext.Response.Cookies.Delete(Constants.AccessTokenCookieKey);
+    [Authorize]
+    [HttpPost("logout")]
+    public ActionResult Logout()
+    {
+      HttpContext.Response.Cookies.Delete(Constants.AccessTokenCookieKey);
 
-            return Ok();
-        }
+      return Ok();
+    }
 
-        private string GenerateJwtToken(User user)
-        {
-            var jwt = options.Value;
-            
-            var claims = new List<Claim>
+    private string GenerateJwtToken(User user)
+    {
+      var jwt = options.Value;
+
+      var claims = new List<Claim>
             {
                 new (ClaimTypes.Name, user.Email),
                 new (ClaimTypes.Email, user.Email),
@@ -120,19 +120,19 @@ namespace Backend.Controllers
                 new (ClaimTypes.Role, user.Role.Name)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256); 
+      var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
+      var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(
-                issuer: jwt.Issuer,
-                audience: jwt.Audience,
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(jwt.ExpiryMinutes),
-                signingCredentials: creds
-            );
+      var token = new JwtSecurityToken(
+          issuer: jwt.Issuer,
+          audience: jwt.Audience,
+          claims: claims,
+          expires: DateTime.Now.AddMinutes(jwt.ExpiryMinutes),
+          signingCredentials: creds
+      );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
+      return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
+  }
 }
