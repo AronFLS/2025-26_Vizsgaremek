@@ -19,6 +19,7 @@ export function Login() {
     <>
       <p className="label">Email address:</p>
       <input
+        className="login-input"
         type="text"
         name="email"
         placeholder="Email"
@@ -29,6 +30,7 @@ export function Login() {
         Password:
       </p>
       <input
+        className="login-input"
         type="password"
         name="password"
         placeholder="Password"

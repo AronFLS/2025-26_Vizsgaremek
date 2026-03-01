@@ -12,6 +12,7 @@ export function Logout() {
 
   return (
     <input
+      id="signout-button"
       type="button"
       value="Logout"
       onClick={async () => {

@@ -15,6 +15,7 @@ import { AccountMenu } from "./nav-components/AccountMenu";
 import { CiMenuBurger } from "react-icons/ci";
 import { MobileMenu } from "./nav-components/MobileMenu";
 import { IoClose } from "react-icons/io5";
+import { useAccount } from "../../hooks/useAccount";
 
 function Navbar() {
   // Media query and refs
@@ -33,6 +34,7 @@ function Navbar() {
   });
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAdmin } = useAccount();
 
   // Custom hooks
   useActiveNavPosition(navRef, setPosition);
@@ -80,6 +82,12 @@ function Navbar() {
           <NavLink to="/" className="nav-logo">
             <span>Logo</span>
           </NavLink>
+
+          {isAdmin && (
+            <NavLink to="/admin" className="nav-admin">
+              Admin
+            </NavLink>
+          )}
 
           <NavIcons
             onAccountToggle={() => setIsAccountOpen(!isAccountOpen)}
