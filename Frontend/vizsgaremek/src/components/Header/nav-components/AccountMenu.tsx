@@ -1,5 +1,8 @@
 import type { RefObject } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Login } from "./AccountComponents/Login";
+import { Logout } from "./AccountComponents/Logout";
+import { useAccount } from "../../../hooks/useAccount";
 
 type AccountMenuProps = {
   isOpen: boolean;
@@ -7,6 +10,9 @@ type AccountMenuProps = {
 };
 
 export const AccountMenu = ({ isOpen, menuRef }: AccountMenuProps) => {
+  const { data } = useAccount();
+  const isLoggedIn = data !== null;
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -19,16 +25,7 @@ export const AccountMenu = ({ isOpen, menuRef }: AccountMenuProps) => {
           exit={{ opacity: 0, y: -10, x: 0 }}
           transition={{ duration: 0.2 }}
         >
-          <p className="label">Email address:</p>
-          <input type="text" />
-          <p className="label" style={{ marginTop: "10px" }}>
-            Password:
-          </p>
-          <input type="password" />
-          <button id="signin-button">Sign in</button>
-          <p className="p-noaccount">
-            Don't have an account? <a href="/account">Sign up</a>
-          </p>
+          {isLoggedIn ? <Logout /> : <Login />}
         </motion.div>
       )}
     </AnimatePresence>
