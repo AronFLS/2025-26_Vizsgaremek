@@ -1,3 +1,4 @@
+using Backend.Middlewares;
 using Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ namespace Backend
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddAuthenticationService(builder.Configuration);
 
             builder.Services.AddDbContext<CoreDbContext>(options =>
                 options.UseSqlite(builder.Configuration.GetConnectionString(nameof(CoreDbContext)))
@@ -31,6 +33,9 @@ namespace Backend
 
             app.UseHttpsRedirection();
 
+
+            app.UseMiddleware<AuthorizationHeaderSetterMiddleware>();
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
