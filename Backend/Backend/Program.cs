@@ -33,6 +33,13 @@ namespace Backend
 
             app.UseHttpsRedirection();
 
+            app.UseCors(builder =>
+            {
+                builder.AllowCredentials()
+                       .WithOrigins("http://localhost:5173")
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
 
             app.UseMiddleware<AuthorizationHeaderSetterMiddleware>();
             app.UseAuthentication();
