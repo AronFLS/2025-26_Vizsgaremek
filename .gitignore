@@ -368,3 +368,5 @@ FodyWeavers.xsd
 obj/
 bin/
 *.db
+*.db-shm
+*.db-wal
