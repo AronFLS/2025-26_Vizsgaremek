@@ -97,7 +97,6 @@ namespace Backend.Controllers
       return Ok(token);
     }
 
-
     [Authorize]
     [HttpPost("logout")]
     public ActionResult Logout()
@@ -105,6 +104,46 @@ namespace Backend.Controllers
       HttpContext.Response.Cookies.Delete(Constants.AccessTokenCookieKey);
 
       return Ok();
+    }
+
+    [HttpPut("changeRole")]
+    public async Task<ActionResult> ChangeRole(RoleChangeDto roleChangeDto)
+    {
+
+      var now = DateTime.Now;
+
+      var user = coreDbContext.Users
+      .Include(u => u.Role)
+      .SingleOrDefault(u => u.Email == roleChangeDto.Email);
+
+      var roles = await coreDbContext.Roles
+      .Select(r => r.Id).ToListAsync();
+
+      if (user == null)
+      {
+        return NotFound("User not found.");
+      }
+
+
+      if (!roles.Contains(roleChangeDto.RoleId))
+      {
+        return NotFound("Nincs ilyen role cigany");
+      }
+
+      user.RoleId = roleChangeDto.RoleId;
+      user.ModifiedAt = now;
+      coreDbContext.SaveChanges();
+
+      return NoContent();
+    }
+
+    [HttpGet("users")]
+    public async Task<ActionResult<User>> GetUsers()
+    {
+      var users = await coreDbContext.Users
+      .ToListAsync();
+
+      return Ok(users);
     }
 
     private string GenerateJwtToken(User user)
@@ -133,6 +172,7 @@ namespace Backend.Controllers
 
       return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
 
   }
 }
