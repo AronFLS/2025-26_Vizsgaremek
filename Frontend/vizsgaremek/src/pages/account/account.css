@@ -1,5 +1,6 @@
-body {
+body.account-page {
   padding-bottom: 80px;
+  background-color: rgb(220, 220, 220);
 }
 .main-content {
   display: flex;
@@ -10,10 +11,10 @@ body {
   max-width: 500px;
   left: 50%;
   transform: translateX(-50%);
-  top: 80px;
+  top: 60px;
   color: rgb(0, 0, 0);
-  background: rgb(181, 181, 181);
-  border: 1px solid rgba(0, 0, 0, 0.28);
+  background: rgb(255, 255, 255);
+
   height: auto;
   position: relative;
   transition:
@@ -34,7 +35,7 @@ body {
 }
 
 input {
-  color: white;
+  color: black;
   background-color: transparent;
   height: 30px;
   border: 1px solid rgba(14, 14, 14, 0.28);
@@ -90,4 +91,27 @@ input {
 
 #signup-button:hover {
   background-color: #0080ff;
+}
+
+.error-message {
+  align-self: center;
+  margin-bottom: -10px;
+  margin-top: 5px;
+  font-family:
+    "SanFrancisco",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-weight: bold;
+  color: red;
+}
+.success-message {
+  align-self: center;
+  margin-top: 5px;
+  font-family:
+    "SanFrancisco",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  color: green;
 }
