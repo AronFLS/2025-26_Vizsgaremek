@@ -2,6 +2,14 @@ body.account-page {
   padding-bottom: 80px;
   background-color: rgb(220, 220, 220);
 }
+
+.p-loggedin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
 .main-content {
   display: flex;
   flex-direction: column;
@@ -41,6 +49,12 @@ input {
   border: 1px solid rgba(14, 14, 14, 0.28);
   border-radius: 5px;
   padding: 5px;
+}
+.input-error {
+  border: 1.5px solid red !important;
+  outline: none;
+  background-color: #fff5f5;
+  margin-bottom: -7px;
 }
 
 .label {
@@ -114,4 +128,17 @@ input {
     BlinkMacSystemFont,
     sans-serif;
   color: green;
+}
+
+.input-error {
+  border: 1.5px solid red !important;
+  outline: none;
+  background-color: #fff5f5;
+}
+.password-error,
+.email-error {
+  color: red;
+  font-size: 0.75rem;
+  margin-top: 5px;
+  margin-bottom: -10px;
 }
