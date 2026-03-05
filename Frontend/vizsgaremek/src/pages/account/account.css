@@ -11,15 +11,17 @@ body.account-page {
 }
 
 .main-content {
+  margin-left: 5px;
+  margin-right: 5px;
+  width: calc(100% - 10px);
+
   display: flex;
   flex-direction: column;
   padding: 15px;
   border-radius: 10px;
-  width: 100%;
   max-width: 500px;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 60px;
+  margin-inline: auto;
+  top: 40px;
   color: rgb(0, 0, 0);
   background: rgb(255, 255, 255);
 
