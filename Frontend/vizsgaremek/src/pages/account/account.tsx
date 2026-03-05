@@ -176,6 +176,8 @@ function Account() {
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
+                setPasswordMatchError("");
+                setConfirmPasswordInvalid(false);
               }}
               className={passwordInvalid ? "input-error" : ""}
             />
@@ -185,7 +187,11 @@ function Account() {
             <input
               type="password"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                setPasswordMatchError("");
+                setConfirmPasswordInvalid(false);
+              }}
               className={confirmPasswordInvalid ? "input-error" : ""}
             />
             {passwordMatchError && (
