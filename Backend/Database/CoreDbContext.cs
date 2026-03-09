@@ -10,7 +10,7 @@ namespace Database
     public DbSet<Role> Roles { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Spec> Specs { get; set; }
-    public DbSet<ProductSpec> ProductSpecs { get; set; }
+    public DbSet<SpecProduct> ProductSpecs { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderProduct> OrderProducts { get; set; }
     public DbSet<Coupon> Coupons { get; set; }

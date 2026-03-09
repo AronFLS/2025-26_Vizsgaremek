@@ -33,8 +33,7 @@ namespace Backend.Controllers
 
       coreDbContext.Specs.Add(spec);
       await coreDbContext.SaveChangesAsync();
-      var specMapped = MaptoDto(spec);
-      return NoContent();
+      return CreatedAtAction(nameof(GetSpecs), new {id = spec.Id}, specCreateDto);
     }
 
     private SpecReadDto MaptoDto (Spec spec)

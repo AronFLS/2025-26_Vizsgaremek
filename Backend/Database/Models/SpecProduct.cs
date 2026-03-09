@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Database.Models
 {
-    public class ProductSpec
+    public class SpecProduct
     {
         public int ProductId { get; set; }
         public Product Product { get; set; } = null!;

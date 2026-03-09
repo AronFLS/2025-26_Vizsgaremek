@@ -11,6 +11,6 @@ namespace Database.Models
         public int Id { get; set; }
         public required string Name { get; set; }
 
-        public ICollection<ProductSpec> ProductSpecs { get; set; } = [];
+        public ICollection<SpecProduct> ProductSpecs { get; set; } = [];
     }
 }

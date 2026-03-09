@@ -21,11 +21,11 @@ namespace Database.Models
         public Category Category { get; set; } = null!;
 
         public int CouponId { get; set; }
-        public Coupon Coupon { get; set; } = null!;
+        public Coupon? Coupon { get; set; }
 
         public ICollection<OrderProduct> OrderProducts { get; set; } = [];
 
-        public ICollection<ProductSpec> ProductSpecs { get; set; } = [];
+        public ICollection<SpecProduct> ProductSpecs { get; set; } = [];
 
         public ICollection<CartProduct> CartProducts { get; set; } = [];
     }

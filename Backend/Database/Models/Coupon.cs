@@ -15,6 +15,6 @@ namespace Database.Models
         public int Uses { get; set; }
         public bool Active { get; set; }
 
-        public Product Product { get; set; } = null!;
+        public Product? Product { get; set; }
     }
 }

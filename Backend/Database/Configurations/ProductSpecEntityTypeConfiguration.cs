@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Database.Configurations
 {
-  internal class ProductSpecEntityTypeConfigurations : IEntityTypeConfiguration<ProductSpec>
+  internal class ProductSpecEntityTypeConfigurations : IEntityTypeConfiguration<SpecProduct>
   {
-    public void Configure(EntityTypeBuilder<ProductSpec> builder)
+    public void Configure(EntityTypeBuilder<SpecProduct> builder)
     {
       builder.HasKey(ps => new { ps.ProductId, ps.SpecId });
 
