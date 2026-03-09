@@ -5,7 +5,8 @@
   left: 50%;
   transform: translateX(-50%);
   max-width: 900px;
-  position: relative;
+  position: fixed;
+  top: 0;
   z-index: 1000;
 }
 .navbar {
