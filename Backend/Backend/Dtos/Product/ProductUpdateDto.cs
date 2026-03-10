@@ -12,7 +12,7 @@
     public bool Active { get; set; }
 
     public required int CategoryId { get; set; }
-    public int? CouponId { get; set; }
+    //public int? CouponId { get; set; }
     public required List<ProductSpecsDto> Specs { get; set; } = [];
 
   }

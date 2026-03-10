@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Database.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,23 +24,6 @@ namespace Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Coupons",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Code = table.Column<string>(type: "TEXT", nullable: false),
-                    Discount = table.Column<int>(type: "INTEGER", nullable: false),
-                    MaxUsage = table.Column<int>(type: "INTEGER", nullable: false),
-                    Uses = table.Column<int>(type: "INTEGER", nullable: false),
-                    Active = table.Column<bool>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Coupons", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,7 +66,6 @@ namespace Database.Migrations
                     StorageQuantity = table.Column<int>(type: "INTEGER", nullable: false),
                     Active = table.Column<bool>(type: "INTEGER", nullable: false),
                     CategoryId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CouponId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -92,12 +76,6 @@ namespace Database.Migrations
                         name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Products_Coupons_CouponId",
-                        column: x => x.CouponId,
-                        principalTable: "Coupons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -258,6 +236,15 @@ namespace Database.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "User" },
+                    { 2, "Admin" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_CartProducts_ProductId",
                 table: "CartProducts",
@@ -275,11 +262,6 @@ namespace Database.Migrations
                 column: "Name");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Coupons_Code",
-                table: "Coupons",
-                column: "Code");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OrderProducts_ProductId",
                 table: "OrderProducts",
                 column: "ProductId");
@@ -293,12 +275,6 @@ namespace Database.Migrations
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_CouponId",
-                table: "Products",
-                column: "CouponId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_Name",
@@ -361,9 +337,6 @@ namespace Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Coupons");
 
             migrationBuilder.DropTable(
                 name: "Roles");

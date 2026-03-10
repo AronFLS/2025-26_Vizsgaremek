@@ -12,7 +12,7 @@ namespace Database.Configurations
       builder.HasIndex(p => p.Name);
 
       builder.HasOne(p => p.Category).WithMany(c => c.Products).HasForeignKey(p => p.CategoryId);
-      builder.HasOne(p => p.Coupon).WithOne(c => c.Product).HasForeignKey<Product>(p => p.CouponId);
+      //builder.HasOne(p => p.Coupon).WithOne(c => c.Product).HasForeignKey<Product>(p => p.CouponId);
     }
   }
 }

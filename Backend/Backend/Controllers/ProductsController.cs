@@ -28,7 +28,7 @@ namespace Backend.Controllers
     {
       var products = await _context.Products
         .Include(p => p.Category)
-        .Include(p => p.Coupon)
+        //.Include(p => p.Coupon)
         .Include(p => p.ProductSpecs)
           .ThenInclude(ps => ps.Spec)
         .ToListAsync();
@@ -43,7 +43,7 @@ namespace Backend.Controllers
     {
       var product = await _context.Products
         .Include(p => p.Category)
-        .Include(p => p.Coupon)
+        //.Include(p => p.Coupon)
         .Include(p => p.ProductSpecs)
           .ThenInclude(ps => ps.Spec)
         .FirstOrDefaultAsync(p => p.Id == id);
@@ -103,7 +103,7 @@ namespace Backend.Controllers
         Discount = productDto.Discount ?? 0,
         StorageQuantity = productDto.StorageQuantity,
         CategoryId = productDto.CategoryId,
-        CouponId = productDto.CouponId ?? 1,
+        //CouponId = productDto.CouponId ?? 1,
         Active = true,
         CreatedAt = now,
         ModifiedAt = now
@@ -171,7 +171,7 @@ namespace Backend.Controllers
         Discount = product.Discount,
         StorageQuantity = product.StorageQuantity,
         CategoryId = product.CategoryId,
-        CouponId = product.CouponId,
+        //CouponId = product.CouponId,
         Specs = product.ProductSpecs.Select(ps => new ProductSpecsDto
         {
           Id = ps.Spec.Id,

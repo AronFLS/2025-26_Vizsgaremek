@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Migrations
 {
     [DbContext(typeof(CoreDbContext))]
-    [Migration("20260225165601_Initial")]
-    partial class Initial
+    [Migration("20260310121258_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,35 +87,6 @@ namespace Database.Migrations
                     b.HasIndex("Name");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("Database.Models.Coupon", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Discount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("MaxUsage")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Uses")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code");
-
-                    b.ToTable("Coupons");
                 });
 
             modelBuilder.Entity("Database.Models.Order", b =>
@@ -202,9 +173,6 @@ namespace Database.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CouponId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
@@ -236,27 +204,9 @@ namespace Database.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("CouponId")
-                        .IsUnique();
-
                     b.HasIndex("Name");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Database.Models.ProductSpec", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("SpecId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ProductId", "SpecId");
-
-                    b.HasIndex("SpecId");
-
-                    b.ToTable("ProductSpecs");
                 });
 
             modelBuilder.Entity("Database.Models.Role", b =>
@@ -274,6 +224,18 @@ namespace Database.Migrations
                     b.HasIndex("Name");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "User"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Database.Models.Spec", b =>
@@ -291,6 +253,21 @@ namespace Database.Migrations
                     b.HasIndex("Name");
 
                     b.ToTable("Specs");
+                });
+
+            modelBuilder.Entity("Database.Models.SpecProduct", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SpecId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ProductId", "SpecId");
+
+                    b.HasIndex("SpecId");
+
+                    b.ToTable("ProductSpecs");
                 });
 
             modelBuilder.Entity("Database.Models.User", b =>
@@ -409,18 +386,10 @@ namespace Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Database.Models.Coupon", "Coupon")
-                        .WithOne("Product")
-                        .HasForeignKey("Database.Models.Product", "CouponId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Category");
-
-                    b.Navigation("Coupon");
                 });
 
-            modelBuilder.Entity("Database.Models.ProductSpec", b =>
+            modelBuilder.Entity("Database.Models.SpecProduct", b =>
                 {
                     b.HasOne("Database.Models.Product", "Product")
                         .WithMany("ProductSpecs")
@@ -458,12 +427,6 @@ namespace Database.Migrations
             modelBuilder.Entity("Database.Models.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Database.Models.Coupon", b =>
-                {
-                    b.Navigation("Product")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Database.Models.Order", b =>

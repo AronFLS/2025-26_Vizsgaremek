@@ -14,7 +14,7 @@
     public DateTime ModifiedAt { get; set; }  
 
     public int CategoryId { get; set; }
-    public int CouponId { get; set; }
+    //public int CouponId { get; set; }
     public List<ProductSpecsDto> Specs { get; set; } = [];
   }
 }
