@@ -8,6 +8,7 @@ import Phones from "./pages/phones/phones";
 import Notebooks from "./pages/notebooks/Notebooks";
 import Account from "./pages/account/account";
 import Admin from "./pages/admin/admin";
+import ProductDetail from "./pages/productdetail/ProductDetail";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/phones" element={<Phones />} />
         <Route path="/notebooks" element={<Notebooks />} />
         <Route path="/accessories" element={<Accessories />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/account" element={<Account />} />
         <Route path="/admin" element={<Admin />} />
