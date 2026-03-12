@@ -1,10 +1,57 @@
 import { Link } from "react-router-dom";
-import { getProductsByCategory } from "../../mocks/products";
+import { useQuery } from "@tanstack/react-query";
+import { axiosInstance } from "../../axios";
 import "./phones.css";
 
-const phones = getProductsByCategory("phones");
+interface Product {
+  id: number;
+  name: string;
+  imageUrl: string;
+  price: number;
+  description: string;
+  storageQuantity: number;
+  categoryId: number;
+}
+
+interface Category {
+  id: number;
+  name: string;
+}
 
 function Phones() {
+  const { data: products = [], isLoading: productsLoading } = useQuery<
+    Product[]
+  >({
+    queryKey: ["products"],
+    queryFn: () => axiosInstance.get("/api/products").then((r) => r.data),
+  });
+
+  const { data: categories = [], isLoading: categoriesLoading } = useQuery<
+    Category[]
+  >({
+    queryKey: ["categories"],
+    queryFn: () => axiosInstance.get("/api/categories").then((r) => r.data),
+  });
+
+  const phoneCategoryId = categories.find(
+    (c) =>
+      c.name.toLowerCase().includes("phone") ||
+      c.name.toLowerCase().includes("iphone"),
+  )?.id;
+
+  const phones =
+    phoneCategoryId != null
+      ? products.filter((p) => p.categoryId === phoneCategoryId)
+      : [];
+
+  if (productsLoading || categoriesLoading) {
+    return (
+      <div className="products-page">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="products-page">
       <h1>iPhones</h1>
@@ -13,7 +60,7 @@ function Phones() {
           <div
             key={product.id}
             className={`product-card${
-              product.stock === 0 ? " product-card--out-of-stock" : ""
+              product.storageQuantity === 0 ? " product-card--out-of-stock" : ""
             }`}
           >
             <Link
@@ -38,9 +85,9 @@ function Phones() {
 
               <button
                 className="product-card__btn"
-                disabled={product.stock === 0}
+                disabled={product.storageQuantity === 0}
               >
-                {product.stock === 0 ? "Out of stock" : "Add to cart"}
+                {product.storageQuantity === 0 ? "Out of stock" : "Add to cart"}
               </button>
             </div>
           </div>
