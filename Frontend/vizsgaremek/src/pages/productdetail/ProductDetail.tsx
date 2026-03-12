@@ -12,11 +12,31 @@ interface Product {
   price: number;
   description: string;
   storageQuantity: number;
+  categoryId: number;
+}
+
+interface Category {
+  id: number;
+  name: string;
+}
+
+const categoryRouteMap: Record<string, string> = {
+  iphone: "/phones",
+  macbook: "/notebooks",
+  accessories: "/accessories",
+};
+
+function getCategoryRoute(categoryName: string): string {
+  const key = categoryName.toLowerCase();
+  for (const [keyword, route] of Object.entries(categoryRouteMap)) {
+    if (key.includes(keyword)) return route;
+  }
+  return "/";
 }
 
 function ProductDetail() {
   const { id } = useParams<{ id: string }>();
-  const isMobile = useMediaQuery("(max-width: 700px)");
+  const isMobile = useMediaQuery("(max-width: 770px)");
 
   const {
     data: product,
@@ -28,13 +48,24 @@ function ProductDetail() {
     enabled: !!id,
   });
 
+  const { data: categories = [] } = useQuery<Category[]>({
+    queryKey: ["categories"],
+    queryFn: () => axiosInstance.get("/api/categories").then((r) => r.data),
+  });
+
+  const backRoute = product
+    ? getCategoryRoute(
+        categories.find((c) => c.id === product.categoryId)?.name ?? "",
+      )
+    : "/";
+
   if (isLoading) return <p>Loading...</p>;
   if (isError || !product) return <p>Product not found</p>;
 
   return (
     <div className="product-detail">
       {!isMobile && (
-        <Link to="/phones">
+        <Link to={backRoute}>
           <IoArrowBackOutline className="return-icon" />
         </Link>
       )}

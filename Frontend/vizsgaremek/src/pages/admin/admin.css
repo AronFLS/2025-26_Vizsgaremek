@@ -1,7 +1,7 @@
 .admin-container {
   max-width: 720px;
-  margin: 60px auto;
-  padding: 0 16px 60px;
+  margin: 20px auto;
+  padding: 0 20px 0;
 }
 
 .admin-title {
@@ -88,7 +88,7 @@
 .admin-submit {
   align-self: flex-start;
   padding: 12px 32px;
-  background: #0071e3;
+  background: #f63049;
   color: #fff;
   border: none;
   border-radius: 980px;
@@ -98,15 +98,6 @@
   transition:
     background 0.2s,
     opacity 0.2s;
-}
-
-.admin-submit:hover:not(:disabled) {
-  background: #0077ed;
-}
-
-.admin-submit:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
 }
 
 @media (max-width: 600px) {

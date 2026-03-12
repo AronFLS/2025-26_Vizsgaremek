@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../../axios";
-import "./phones.css";
+import "./product.css";
 
 interface Product {
   id: number;

@@ -7,10 +7,7 @@ interface Category {
   id: number;
   name: string;
 }
-interface Coupon {
-  id: number;
-  code: string;
-}
+
 interface Spec {
   id: number;
   name: string;
@@ -24,17 +21,11 @@ function Admin() {
   const [discount, setDiscount] = useState<string>("");
   const [storageQuantity, setStorageQuantity] = useState<string>("");
   const [categoryId, setCategoryId] = useState<string>("");
-  const [couponId, setCouponId] = useState<string>("");
   const [selectedSpecIds, setSelectedSpecIds] = useState<number[]>([]);
 
   const { data: categories } = useQuery<Category[]>({
     queryKey: ["categories"],
     queryFn: () => axiosInstance.get("/api/categories").then((r) => r.data),
-  });
-
-  const { data: coupons } = useQuery<Coupon[]>({
-    queryKey: ["coupons"],
-    queryFn: () => axiosInstance.get("/api/coupons").then((r) => r.data),
   });
 
   const { data: specs } = useQuery<Spec[]>({
@@ -46,7 +37,6 @@ function Admin() {
 
   const { mutateAsync: registerAsync, isPending } = useMutation({
     mutationFn: () => {
-      const parsedCouponId = parseInt(couponId, 10);
       const parsedDiscount = parseFloat(discount);
       return axiosInstance
         .post("/api/products", {
@@ -57,7 +47,6 @@ function Admin() {
           discount: isNaN(parsedDiscount) ? 0 : parsedDiscount,
           storageQuantity: parseInt(storageQuantity, 10),
           categoryId: parseInt(categoryId, 10),
-          couponId: isNaN(parsedCouponId) ? null : parsedCouponId,
           specIds: selectedSpecIds,
         })
         .then((resp) => resp.data);
@@ -92,7 +81,6 @@ function Admin() {
       setDiscount("");
       setStorageQuantity("");
       setCategoryId("");
-      setCouponId("");
       setSelectedSpecIds([]);
     } catch (err: unknown) {
       const axiosErr = err as {
@@ -215,22 +203,6 @@ function Admin() {
               {categories?.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="admin-field">
-            <label htmlFor="couponId">Coupon</label>
-            <select
-              id="couponId"
-              value={couponId}
-              onChange={(e) => setCouponId(e.target.value)}
-            >
-              <option value="">No coupon</option>
-              {coupons?.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.code}
                 </option>
               ))}
             </select>
