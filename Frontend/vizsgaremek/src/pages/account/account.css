@@ -106,7 +106,7 @@ input {
 }
 
 #signup-button:hover {
-  background-color: #f63049;
+  scale: 1;
 }
 
 .error-message {
