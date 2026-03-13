@@ -52,7 +52,7 @@ function MacBooks() {
 
   return (
     <div className="products-page">
-      <h1>iPhones</h1>
+      <h1>MacBooks</h1>
       <div className="products-grid">
         {phones.map((product) => (
           <div
