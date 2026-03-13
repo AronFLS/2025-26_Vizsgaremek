@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using Backend.Dtos.UserDtos;
 
 namespace Backend.Controllers
 {
@@ -24,7 +25,7 @@ namespace Backend.Controllers
 
     [HttpPost("register")]
     [AllowAnonymous]
-    public ActionResult Register(UserDto userDto)
+    public async Task<ActionResult> Register(UserRegister userDto)
     {
       var hasher = new PasswordHasher<object>();
       var passwordHash = hasher.HashPassword(null!, userDto.Password);
@@ -44,6 +45,18 @@ namespace Backend.Controllers
       };
 
       coreDbContext.Add(user);
+      coreDbContext.SaveChanges();
+
+      var createdUser = coreDbContext.Users.SingleOrDefault(u => u.Email == user.Email);
+      var cart = new Cart
+      {
+        Active = true,
+        UserId = createdUser.Id,
+        CreatedAt = now,
+        ModifiedAt = now
+      };
+
+      coreDbContext.Add(cart);
       coreDbContext.SaveChanges();
 
       return NoContent();
@@ -86,7 +99,7 @@ namespace Backend.Controllers
 
     [Authorize]
     [HttpGet("cookietoken")]
-    public async Task<ActionResult<string>> GetTokenFromCookie()
+    public ActionResult<string> GetTokenFromCookie()
     {
       Request.Cookies.TryGetValue(Constants.AccessTokenCookieKey, out string? token);
 
@@ -152,6 +165,7 @@ namespace Backend.Controllers
 
       var claims = new List<Claim>
             {
+                new ("userId", user.Id.ToString()),
                 new (ClaimTypes.Name, user.Email),
                 new (ClaimTypes.Email, user.Email),
                 new ("firstName", user.FirstName),
