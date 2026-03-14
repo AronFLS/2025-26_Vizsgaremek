@@ -154,6 +154,16 @@
 .login-input {
   color: #000000;
 }
+.input_error {
+  border: 1.5px solid red !important;
+  outline: none;
+}
+.login-error {
+  color: red;
+  font-size: 0.65rem;
+  margin-top: 5px;
+  margin-bottom: -10px;
+}
 
 #signin-button {
   margin-top: 10px;
