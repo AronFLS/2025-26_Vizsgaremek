@@ -8,6 +8,7 @@ interface Product {
   name: string;
   imageUrl: string;
   price: number;
+  discount?: number;
   description: string;
   storageQuantity: number;
   categoryId: number;
@@ -77,9 +78,24 @@ function Accessories() {
               </div>
             </Link>
             <div className="product-card__footer">
-              <span className="product-card__price">
-                {product.price.toLocaleString("hu-HU")} Ft
-              </span>
+              {product.discount && product.discount > 0 ? (
+                <div className="product-card__price-block">
+                  <span className="product-card__original-price">
+                    {product.price.toLocaleString("hu-HU")} Ft
+                  </span>
+                  <span className="product-card__price discounted">
+                    {(
+                      product.price *
+                      (1 - product.discount / 100)
+                    ).toLocaleString("hu-HU")}{" "}
+                    Ft
+                  </span>
+                </div>
+              ) : (
+                <span className="product-card__price">
+                  {product.price.toLocaleString("hu-HU")} Ft
+                </span>
+              )}
 
               <button
                 className="product-card__btn"

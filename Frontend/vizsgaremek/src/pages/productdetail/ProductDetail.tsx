@@ -10,6 +10,7 @@ interface Product {
   name: string;
   imageUrl: string;
   price: number;
+  discount?: number;
   description: string;
   storageQuantity: number;
   categoryId: number;
@@ -62,6 +63,10 @@ function ProductDetail() {
   if (isLoading) return <p>Loading...</p>;
   if (isError || !product) return <p>Product not found</p>;
 
+  const discount = product.discount ?? 0;
+  const hasDiscount = discount > 0;
+  const discountedPrice = product.price * (1 - discount / 100);
+
   return (
     <div className="product-detail">
       {!isMobile && (
@@ -78,7 +83,18 @@ function ProductDetail() {
           <p className="description">{product.description}</p>
         </div>
         <div className="price-cart-row">
-          <p className="price">{product.price.toLocaleString("hu-HU")} Ft</p>
+          {hasDiscount ? (
+            <div className="price-block">
+              <p className="original-price">
+                {product.price.toLocaleString("hu-HU")} Ft
+              </p>
+              <p className="price discounted">
+                {discountedPrice.toLocaleString("hu-HU")} Ft
+              </p>
+            </div>
+          ) : (
+            <p className="price">{product.price.toLocaleString("hu-HU")} Ft</p>
+          )}
           <button className={isMobile ? "cartbtnmobile" : "cartbtn"}>
             Add to Cart
           </button>
