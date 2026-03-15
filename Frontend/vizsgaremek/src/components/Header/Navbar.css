@@ -154,6 +154,16 @@
 .login-input {
   color: #000000;
 }
+.input_error {
+  border: 1.5px solid red !important;
+  outline: none;
+}
+.login-error {
+  color: red;
+  font-size: 0.65rem;
+  margin-top: 5px;
+  margin-bottom: -10px;
+}
 
 #signin-button {
   margin-top: 10px;
@@ -180,6 +190,27 @@
 }
 #signin-button:hover {
   scale: 1;
+}
+
+.account-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 8px;
+}
+.HiName {
+  margin: 0;
+  margin-left: 2px;
+  margin-bottom: -1px;
+  font-size: 16px;
+  color: #1e1e1e;
+}
+.AccountDetailsLink {
+  margin-left: auto;
+  margin-right: 2px;
+  margin-bottom: -3px;
+  font-size: 14px;
 }
 
 .p-noaccount {

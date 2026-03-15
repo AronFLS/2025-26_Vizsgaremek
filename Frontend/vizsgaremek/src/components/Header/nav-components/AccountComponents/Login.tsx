@@ -1,10 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { axiosInstance } from "../../../../axios";
 
 export function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const { mutateAsync: loginAsync } = useMutation({
     mutationFn: () => {
@@ -14,22 +15,37 @@ export function Login() {
     },
   });
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setErrorMessage("");
+  }, [email, password]);
+
+  const handleLogin = async () => {
+    setErrorMessage("");
+
+    try {
+      await loginAsync();
+    } catch {
+      setErrorMessage("Invalid email or password. Please try again.");
+    }
+  };
   return (
     <>
       <p className="label">Email address:</p>
       <input
-        className="login-input"
+        className={errorMessage ? "input_error" : "login-input"}
         type="text"
         name="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
+      {errorMessage && <p className="login-error">{errorMessage}</p>}
       <p className="label" style={{ marginTop: "10px" }}>
         Password:
       </p>
       <input
-        className="login-input"
+        className={errorMessage ? "input_error" : "login-input"}
         type="password"
         name="password"
         placeholder="Password"
@@ -40,8 +56,8 @@ export function Login() {
         id="signin-button"
         type="button"
         onClick={async () => {
-          await loginAsync();
-          queryClient.invalidateQueries();
+          await handleLogin();
+          await queryClient.invalidateQueries();
         }}
         value="Login"
       >
