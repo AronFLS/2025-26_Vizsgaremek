@@ -10,6 +10,10 @@ import type { EmblaCarouselType } from "embla-carousel";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { axiosInstance } from "../../../axios";
+import {
+  formatProductSpecs,
+  type ProductSpecs,
+} from "../../../utils/productSpecs";
 
 type UsePrevNextButtonsType = {
   prevBtnDisabled: boolean;
@@ -116,7 +120,7 @@ interface Product {
   imageUrl: string;
   price: number;
   discount?: number;
-  description: string;
+  specs: ProductSpecs;
   storageQuantity: number;
 }
 
@@ -167,7 +171,7 @@ export function DiscountSlide() {
                     <div className="discount-card__body">
                       <h3 className="discount-card__name">{product.name}</h3>
                       <p className="discount-card__description">
-                        {product.description}
+                        {formatProductSpecs(product.specs)}
                       </p>
                     </div>
 
