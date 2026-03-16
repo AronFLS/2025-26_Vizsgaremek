@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./admin.css";
 import { axiosInstance } from "../../axios";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface Category {
   id: number;
@@ -22,6 +22,8 @@ function Admin() {
   const [storageQuantity, setStorageQuantity] = useState<string>("");
   const [categoryId, setCategoryId] = useState<string>("");
   const [selectedSpecIds, setSelectedSpecIds] = useState<number[]>([]);
+  const [specName, setSpecName] = useState<string>("");
+  const queryClient = useQueryClient();
 
   const { data: categories } = useQuery<Category[]>({
     queryKey: ["categories"],
@@ -34,6 +36,8 @@ function Admin() {
   });
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [specSuccessMessage, setSpecSuccessMessage] = useState<string>("");
+  const [specErrorMessage, setSpecErrorMessage] = useState<string>("");
 
   const { mutateAsync: registerAsync, isPending } = useMutation({
     mutationFn: () => {
@@ -53,6 +57,18 @@ function Admin() {
     },
   });
 
+  const { mutateAsync: createSpecAsync, isPending: isCreatingSpec } =
+    useMutation({
+      mutationFn: () => {
+        return axiosInstance
+          .post("/Spec", { name: specName })
+          .then((resp) => resp.data);
+      },
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: ["specs"] });
+      },
+    });
+
   useEffect(() => {
     document.body.classList.add("account-page");
 
@@ -61,7 +77,18 @@ function Admin() {
     };
   }, []);
 
+  const clearProductMessages = () => {
+    setSuccessMessage("");
+    setErrorMessage("");
+  };
+
+  const clearSpecMessages = () => {
+    setSpecSuccessMessage("");
+    setSpecErrorMessage("");
+  };
+
   const toggleSpec = (id: number) => {
+    clearProductMessages();
     setSelectedSpecIds((prev) =>
       prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id],
     );
@@ -73,7 +100,6 @@ function Admin() {
     setErrorMessage("");
     try {
       await registerAsync();
-      setSuccessMessage("Product added successfully!");
       setName("");
       setImageUrl("");
       setPrice("");
@@ -82,6 +108,7 @@ function Admin() {
       setStorageQuantity("");
       setCategoryId("");
       setSelectedSpecIds([]);
+      setSuccessMessage("Product added successfully!");
     } catch (err: unknown) {
       const axiosErr = err as {
         response?: { status?: number; data?: unknown };
@@ -102,9 +129,38 @@ function Admin() {
     }
   };
 
+  const handleSpecSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSpecSuccessMessage("");
+    setSpecErrorMessage("");
+
+    try {
+      await createSpecAsync();
+      setSpecName("");
+      setSpecSuccessMessage("Spec added successfully!");
+    } catch (err: unknown) {
+      const axiosErr = err as {
+        response?: { status?: number; data?: unknown };
+      };
+      console.error(
+        "POST /Spec failed:",
+        axiosErr?.response?.status,
+        axiosErr?.response?.data,
+      );
+      const data = axiosErr?.response?.data;
+      const message =
+        (typeof data === "object" && data !== null && "message" in data
+          ? (data as { message?: string }).message
+          : typeof data === "string"
+            ? data
+            : undefined) ?? "Adding spec failed. Please try again.";
+      setSpecErrorMessage(message);
+    }
+  };
+
   return (
     <div className="admin-container">
-      <h1 className="admin-title">Admin — Add Product</h1>
+      <h1 className="admin-title">Add Product</h1>
       <form className="admin-form" onSubmit={handleSubmit}>
         <div className="admin-field">
           <label htmlFor="name">Name</label>
@@ -113,7 +169,10 @@ function Admin() {
             name="name"
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              clearProductMessages();
+              setName(e.target.value);
+            }}
             required
             placeholder="Product name"
           />
@@ -126,7 +185,10 @@ function Admin() {
             name="imageUrl"
             type="text"
             value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
+            onChange={(e) => {
+              clearProductMessages();
+              setImageUrl(e.target.value);
+            }}
             required
             placeholder="https://..."
           />
@@ -142,7 +204,10 @@ function Admin() {
               min="0"
               step="0.01"
               value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={(e) => {
+                clearProductMessages();
+                setPrice(e.target.value);
+              }}
               required
               placeholder="0"
             />
@@ -157,7 +222,10 @@ function Admin() {
               min="0"
               max="100"
               value={discount}
-              onChange={(e) => setDiscount(e.target.value)}
+              onChange={(e) => {
+                clearProductMessages();
+                setDiscount(e.target.value);
+              }}
               placeholder="0"
             />
           </div>
@@ -170,7 +238,10 @@ function Admin() {
               type="number"
               min="0"
               value={storageQuantity}
-              onChange={(e) => setStorageQuantity(e.target.value)}
+              onChange={(e) => {
+                clearProductMessages();
+                setStorageQuantity(e.target.value);
+              }}
               required
               placeholder="0"
             />
@@ -183,7 +254,10 @@ function Admin() {
             id="description"
             name="description"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => {
+              clearProductMessages();
+              setDescription(e.target.value);
+            }}
             required
             rows={4}
             placeholder="Product description"
@@ -196,7 +270,10 @@ function Admin() {
             <select
               id="categoryId"
               value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
+              onChange={(e) => {
+                clearProductMessages();
+                setCategoryId(e.target.value);
+              }}
               required
             >
               <option value="">Select category…</option>
@@ -230,6 +307,38 @@ function Admin() {
 
         <button className="admin-submit" type="submit" disabled={isPending}>
           {isPending ? "Submitting..." : "Add Product"}
+        </button>
+      </form>
+
+      <h2 className="admin-subtitle">Add Spec</h2>
+      <form className="admin-form" onSubmit={handleSpecSubmit}>
+        <div className="admin-field">
+          <label htmlFor="specName">Spec Name</label>
+          <input
+            id="specName"
+            name="specName"
+            type="text"
+            value={specName}
+            onChange={(e) => {
+              clearSpecMessages();
+              setSpecName(e.target.value);
+            }}
+            required
+            placeholder="e.g. 1TB, M5, SkyBlue"
+          />
+        </div>
+
+        {specSuccessMessage && (
+          <p className="admin-success">{specSuccessMessage}</p>
+        )}
+        {specErrorMessage && <p className="admin-error">{specErrorMessage}</p>}
+
+        <button
+          className="admin-submit"
+          type="submit"
+          disabled={isCreatingSpec}
+        >
+          {isCreatingSpec ? "Submitting..." : "Add Spec"}
         </button>
       </form>
     </div>
