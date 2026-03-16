@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../../axios";
+import {
+  formatProductSpecs,
+  type ProductSpecs,
+} from "../../utils/productSpecs";
 import "./product.css";
 
 interface Product {
@@ -9,7 +13,7 @@ interface Product {
   imageUrl: string;
   price: number;
   discount?: number;
-  description: string;
+  specs: ProductSpecs;
   storageQuantity: number;
   categoryId: number;
 }
@@ -73,7 +77,7 @@ function Accessories() {
               <div className="product-card__body">
                 <h2 className="product-card__name">{product.name}</h2>
                 <p className="product-card__description">
-                  {product.description}
+                  {formatProductSpecs(product.specs)}
                 </p>
               </div>
             </Link>
