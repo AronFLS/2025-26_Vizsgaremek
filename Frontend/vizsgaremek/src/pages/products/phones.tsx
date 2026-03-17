@@ -5,6 +5,7 @@ import {
   formatProductSpecs,
   type ProductSpecs,
 } from "../../utils/productSpecs";
+import { formatPrice } from "../../utils/price";
 import "./product.css";
 
 interface Product {
@@ -87,19 +88,16 @@ function Phones() {
               {product.discount && product.discount > 0 ? (
                 <div className="product-card__price-block">
                   <span className="product-card__original-price">
-                    {product.price.toLocaleString("hu-HU")} Ft
+                    {formatPrice(product.price)} Ft
                   </span>
                   <span className="product-card__price discounted">
-                    {(
-                      product.price *
-                      (1 - product.discount / 100)
-                    ).toLocaleString("hu-HU")}{" "}
+                    {formatPrice(product.price * (1 - product.discount / 100))}{" "}
                     Ft
                   </span>
                 </div>
               ) : (
                 <span className="product-card__price">
-                  {product.price.toLocaleString("hu-HU")} Ft
+                  {formatPrice(product.price)} Ft
                 </span>
               )}
 

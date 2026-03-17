@@ -8,6 +8,7 @@ import {
   formatProductSpecs,
   type ProductSpecs,
 } from "../../utils/productSpecs";
+import { formatPrice } from "../../utils/price";
 
 interface Product {
   id: number;
@@ -93,15 +94,13 @@ function ProductDetail() {
         <div className="price-cart-row">
           {hasDiscount ? (
             <div className="price-block">
-              <p className="original-price">
-                {product.price.toLocaleString("hu-HU")} Ft
-              </p>
+              <p className="original-price">{formatPrice(product.price)} Ft</p>
               <p className="price discounted">
-                {discountedPrice.toLocaleString("hu-HU")} Ft
+                {formatPrice(discountedPrice)} Ft
               </p>
             </div>
           ) : (
-            <p className="price">{product.price.toLocaleString("hu-HU")} Ft</p>
+            <p className="price">{formatPrice(product.price)} Ft</p>
           )}
           <button className={isMobile ? "cartbtnmobile" : "cartbtn"}>
             Add to Cart

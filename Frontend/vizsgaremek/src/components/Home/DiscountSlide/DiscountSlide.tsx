@@ -14,6 +14,7 @@ import {
   formatProductSpecs,
   type ProductSpecs,
 } from "../../../utils/productSpecs";
+import { formatPrice } from "../../../utils/price";
 
 type UsePrevNextButtonsType = {
   prevBtnDisabled: boolean;
@@ -178,10 +179,10 @@ export function DiscountSlide() {
                     <div className="discount-card__footer">
                       <div className="discount-card__price-block">
                         <span className="discount-card__original-price">
-                          {product.price.toLocaleString("hu-HU")} Ft
+                          {formatPrice(product.price)} Ft
                         </span>
                         <span className="discount-card__price">
-                          {discountedPrice.toLocaleString("hu-HU")} Ft
+                          {formatPrice(discountedPrice)} Ft
                         </span>
                       </div>
 
