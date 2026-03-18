@@ -1,5 +1,5 @@
 .product-cards {
-  width: min(1000px, calc(100% - 2rem));
+  width: min(70%, calc(100% - 2rem));
   margin: 9rem auto;
   margin-bottom: 0;
   display: grid;
@@ -25,6 +25,6 @@
 }
 @media (max-width: 900px) {
   .product-cards {
-    grid-template-columns: 1fr;
+    width: 90%;
   }
 }
