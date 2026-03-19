@@ -4,6 +4,11 @@ import { axiosInstance } from "../../axios";
 import "./ProductDetail.css";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
+import {
+  formatProductSpecs,
+  type ProductSpecs,
+} from "../../utils/productSpecs";
+import { formatPrice } from "../../utils/price";
 
 interface Product {
   id: number;
@@ -11,7 +16,8 @@ interface Product {
   imageUrl: string;
   price: number;
   discount?: number;
-  description: string;
+  specs: ProductSpecs;
+  description?: string;
   storageQuantity: number;
   categoryId: number;
 }
@@ -80,20 +86,21 @@ function ProductDetail() {
       <div className="right-column">
         <div className="details">
           <h1>{product.name}</h1>
-          <p className="description">{product.description}</p>
+          <p className="description">{formatProductSpecs(product.specs)}</p>
+          {product.description && (
+            <p className="description">{product.description}</p>
+          )}
         </div>
         <div className="price-cart-row">
           {hasDiscount ? (
             <div className="price-block">
-              <p className="original-price">
-                {product.price.toLocaleString("hu-HU")} Ft
-              </p>
+              <p className="original-price">{formatPrice(product.price)} Ft</p>
               <p className="price discounted">
-                {discountedPrice.toLocaleString("hu-HU")} Ft
+                {formatPrice(discountedPrice)} Ft
               </p>
             </div>
           ) : (
-            <p className="price">{product.price.toLocaleString("hu-HU")} Ft</p>
+            <p className="price">{formatPrice(product.price)} Ft</p>
           )}
           <button className={isMobile ? "cartbtnmobile" : "cartbtn"}>
             Add to Cart

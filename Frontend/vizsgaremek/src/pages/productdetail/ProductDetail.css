@@ -64,6 +64,10 @@
   margin: 0;
 }
 
+.details .description + .description {
+  margin-top: 0.75rem;
+}
+
 /* ── Price & Cart (bottom) ── */
 
 .price-cart-row {

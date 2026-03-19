@@ -11,6 +11,13 @@
   color: #1d1d1f;
 }
 
+.admin-subtitle {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 36px 0 20px;
+  color: #1d1d1f;
+}
+
 .admin-form {
   display: flex;
   flex-direction: column;
@@ -32,7 +39,7 @@
   gap: 6px;
 }
 
-.admin-field label {
+.admin-field > label {
   font-size: 0.85rem;
   font-weight: 600;
   color: #3a3a3c;
@@ -40,7 +47,8 @@
   letter-spacing: 0.04em;
 }
 
-.admin-field input,
+.admin-field input:not([type="checkbox"]),
+.admin-field select,
 .admin-field textarea {
   padding: 10px 14px;
   border: 1px solid #d1d1d6;
@@ -56,7 +64,8 @@
   resize: vertical;
 }
 
-.admin-field input:focus,
+.admin-field input:not([type="checkbox"]):focus,
+.admin-field select:focus,
 .admin-field textarea:focus {
   border-color: #0071e3;
   background: #fff;
@@ -65,6 +74,30 @@
 .admin-field input[type="number"]::-webkit-inner-spin-button,
 .admin-field input[type="number"]::-webkit-outer-spin-button {
   opacity: 0.5;
+}
+
+.admin-specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+}
+
+.admin-spec-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #1d1d1f;
+  text-transform: none;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+
+.admin-spec-option input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
 }
 
 .admin-success {

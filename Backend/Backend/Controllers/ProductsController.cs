@@ -58,6 +58,7 @@ namespace Backend.Controllers
 
     // PUT: api/Products/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> PutProduct(int id, Product product)
     {
@@ -139,6 +140,7 @@ namespace Backend.Controllers
     }
 
     // DELETE: api/Products/5
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProduct(int id)
     {

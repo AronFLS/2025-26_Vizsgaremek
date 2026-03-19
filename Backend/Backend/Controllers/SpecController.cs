@@ -36,6 +36,59 @@ namespace Backend.Controllers
       return CreatedAtAction(nameof(GetSpecs), new {id = spec.Id}, specCreateDto);
     }
 
+    [Authorize(Roles = "Admin")]
+    [HttpPut("{id}")]
+    public async Task<ActionResult> PutSpec(int id, SpecCreateDto specDto)
+    {
+      var spec = await coreDbContext.Specs.FindAsync(id);
+
+      if (spec == null)
+      {
+        return NotFound();
+      }
+
+      spec.Name = specDto.Name;
+
+      try
+      {
+        await coreDbContext.SaveChangesAsync();
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (!SpecExist(id))
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+      return NoContent();
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteSpec(int id)
+    {
+      var spec = await coreDbContext.Specs.FindAsync(id);
+
+      if (spec == null)
+      {
+        return NotFound();
+      }
+
+      coreDbContext.Specs.Remove(spec);
+      await coreDbContext.SaveChangesAsync();
+
+      return NoContent();
+    }
+
+    private bool SpecExist(int id)
+    {
+      return coreDbContext.Specs.Any(e => e.Id == id);
+    }
+
     private SpecReadDto MaptoDto (Spec spec)
     {
       return new SpecReadDto

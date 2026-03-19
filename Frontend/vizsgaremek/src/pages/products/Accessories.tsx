@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../../axios";
+import {
+  formatProductSpecs,
+  type ProductSpecs,
+} from "../../utils/productSpecs";
+import { formatPrice } from "../../utils/price";
 import "./product.css";
 
 interface Product {
@@ -9,7 +14,7 @@ interface Product {
   imageUrl: string;
   price: number;
   discount?: number;
-  description: string;
+  specs: ProductSpecs;
   storageQuantity: number;
   categoryId: number;
 }
@@ -73,7 +78,7 @@ function Accessories() {
               <div className="product-card__body">
                 <h2 className="product-card__name">{product.name}</h2>
                 <p className="product-card__description">
-                  {product.description}
+                  {formatProductSpecs(product.specs)}
                 </p>
               </div>
             </Link>
@@ -81,19 +86,16 @@ function Accessories() {
               {product.discount && product.discount > 0 ? (
                 <div className="product-card__price-block">
                   <span className="product-card__original-price">
-                    {product.price.toLocaleString("hu-HU")} Ft
+                    {formatPrice(product.price)} Ft
                   </span>
                   <span className="product-card__price discounted">
-                    {(
-                      product.price *
-                      (1 - product.discount / 100)
-                    ).toLocaleString("hu-HU")}{" "}
+                    {formatPrice(product.price * (1 - product.discount / 100))}{" "}
                     Ft
                   </span>
                 </div>
               ) : (
                 <span className="product-card__price">
-                  {product.price.toLocaleString("hu-HU")} Ft
+                  {formatPrice(product.price)} Ft
                 </span>
               )}
 
