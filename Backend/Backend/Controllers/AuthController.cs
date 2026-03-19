@@ -1,4 +1,3 @@
-using Backend.Dtos;
 using Backend.Dtos.Options;
 using Database;
 using Database.Models;

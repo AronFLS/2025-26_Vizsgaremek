@@ -17,7 +17,7 @@ namespace Database.Models
         public bool Active { get; set; }
 
         public int UserId { get; set; }
-        public required User User { get; set; }
+        public User User { get; set; } = null!;
 
         public ICollection<OrderProduct> OrderProducts { get; set; } = [];
     }
