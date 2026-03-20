@@ -23,6 +23,7 @@ function Admin() {
   const [categoryId, setCategoryId] = useState<string>("");
   const [selectedSpecIds, setSelectedSpecIds] = useState<number[]>([]);
   const [specName, setSpecName] = useState<string>("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const queryClient = useQueryClient();
 
   const { data: categories } = useQuery<Category[]>({
@@ -77,6 +78,25 @@ function Admin() {
     };
   }, []);
 
+  const { mutateAsync: uploadImageAsync, isPending: isUploading } = useMutation(
+    {
+      mutationFn: async () => {
+        if (!selectedFile) throw new Error("No file selected!");
+
+        const formData = new FormData();
+        formData.append("image", selectedFile);
+
+        return axiosInstance
+          .post("/Upload", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => res.data);
+      },
+    },
+  );
+
   const clearProductMessages = () => {
     setSuccessMessage("");
     setErrorMessage("");
@@ -98,6 +118,11 @@ function Admin() {
     e.preventDefault();
     setSuccessMessage("");
     setErrorMessage("");
+
+    if (!imageUrl) {
+      setErrorMessage("Please upload an image first");
+      return;
+    }
     try {
       await registerAsync();
       setName("");
@@ -179,19 +204,35 @@ function Admin() {
         </div>
 
         <div className="admin-field">
-          <label htmlFor="imageUrl">Image URL</label>
+          <label htmlFor="imageUrl">Product Image</label>
           <input
             id="imageUrl"
             name="imageUrl"
-            type="text"
-            value={imageUrl}
+            type="file"
+            accept="image/*"
             onChange={(e) => {
               clearProductMessages();
-              setImageUrl(e.target.value);
+              if (e.target.files && e.target.files.length > 0) {
+                setSelectedFile(e.target.files[0]);
+              }
             }}
             required
-            placeholder="https://..."
           />
+
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                const url = await uploadImageAsync();
+                setImageUrl(url);
+              } catch (err) {
+                console.error(err);
+              }
+            }}
+            disabled={!selectedFile || isUploading}
+          >
+            {isUploading ? "Uploading..." : "Upload image"}
+          </button>
         </div>
 
         <div className="admin-row">
