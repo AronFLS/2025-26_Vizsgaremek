@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./admin.css";
 import { axiosInstance } from "../../axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,7 +15,7 @@ interface Spec {
 
 function Admin() {
   const [name, setName] = useState<string>("");
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [, setImageUrl] = useState<string>("");
   const [price, setPrice] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [discount, setDiscount] = useState<string>("");
@@ -41,12 +41,29 @@ function Admin() {
   const [specErrorMessage, setSpecErrorMessage] = useState<string>("");
 
   const { mutateAsync: registerAsync, isPending } = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       const parsedDiscount = parseFloat(discount);
-      return axiosInstance
+
+      if (!selectedFile) throw new Error("No file selected!");
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+
+      const res = await axiosInstance.post("/Upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const url = res.data;
+
+      if (!url) {
+        setErrorMessage("Please upload an image first");
+        return;
+      }
+      return await axiosInstance
         .post("/api/products", {
           name,
-          imageUrl,
+          imageUrl: url,
           price: parseFloat(price),
           description,
           discount: isNaN(parsedDiscount) ? 0 : parsedDiscount,
@@ -78,25 +95,6 @@ function Admin() {
     };
   }, []);
 
-  const { mutateAsync: uploadImageAsync, isPending: isUploading } = useMutation(
-    {
-      mutationFn: async () => {
-        if (!selectedFile) throw new Error("No file selected!");
-
-        const formData = new FormData();
-        formData.append("image", selectedFile);
-
-        return axiosInstance
-          .post("/Upload", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((res) => res.data);
-      },
-    },
-  );
-
   const clearProductMessages = () => {
     setSuccessMessage("");
     setErrorMessage("");
@@ -119,13 +117,10 @@ function Admin() {
     setSuccessMessage("");
     setErrorMessage("");
 
-    if (!imageUrl) {
-      setErrorMessage("Please upload an image first");
-      return;
-    }
     try {
       await registerAsync();
       setName("");
+      setSelectedFile(null);
       setImageUrl("");
       setPrice("");
       setDescription("");
@@ -133,6 +128,11 @@ function Admin() {
       setStorageQuantity("");
       setCategoryId("");
       setSelectedSpecIds([]);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+
       setSuccessMessage("Product added successfully!");
     } catch (err: unknown) {
       const axiosErr = err as {
@@ -153,6 +153,8 @@ function Admin() {
       setErrorMessage(message);
     }
   };
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSpecSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -209,30 +211,16 @@ function Admin() {
             id="imageUrl"
             name="imageUrl"
             type="file"
+            ref={fileInputRef}
             accept="image/*"
-            onChange={(e) => {
+            onChange={async (e) => {
               clearProductMessages();
               if (e.target.files && e.target.files.length > 0) {
-                setSelectedFile(e.target.files[0]);
+                setSelectedFile(e.target.files[0] || null);
               }
             }}
             required
           />
-
-          <button
-            type="button"
-            onClick={async () => {
-              try {
-                const url = await uploadImageAsync();
-                setImageUrl(url);
-              } catch (err) {
-                console.error(err);
-              }
-            }}
-            disabled={!selectedFile || isUploading}
-          >
-            {isUploading ? "Uploading..." : "Upload image"}
-          </button>
         </div>
 
         <div className="admin-row">
