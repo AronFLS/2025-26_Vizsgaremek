@@ -1,0 +1,141 @@
+body.checkout-page {
+  padding-bottom: 80px;
+  background-color: rgb(220, 220, 220);
+}
+
+.checkout-loggedin-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.checkout-main-content {
+  margin-left: 5px;
+  margin-right: 5px;
+  width: calc(100% - 10px);
+
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  border-radius: 10px;
+  max-width: 500px;
+  margin-inline: auto;
+  top: 40px;
+  color: rgb(0, 0, 0);
+  background: rgb(255, 255, 255);
+
+  height: auto;
+  position: relative;
+  transition:
+    height 0.3s ease,
+    background 0.3s ease;
+  margin-bottom: 60px;
+}
+#checkout-title {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 33px;
+  margin-bottom: 0px;
+}
+#checkout-alt-title {
+  text-align: center;
+  font-size: 13px;
+  color: #818181;
+}
+
+.checkout-input {
+  color: black;
+  background-color: transparent;
+  height: 30px;
+  border: 1px solid rgba(14, 14, 14, 0.28);
+  border-radius: 5px;
+  padding: 5px;
+}
+.input-error {
+  border: 1.5px solid red !important;
+  outline: none;
+  background-color: #fff5f5;
+  margin-bottom: -7px;
+}
+
+.checkout-label {
+  margin: 0px;
+  margin-top: 20px;
+  font-family:
+    "SanFrancisco",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+}
+#checkout-location-row {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+
+#checkout-city-field,
+#checkout-zipcode-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#checkout-city-field input,
+#checkout-zipcode-field input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#checkout-submit-button {
+  margin-top: 25px;
+  width: 100%;
+  height: 40px;
+  background-color: #f63049;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#checkout-submit-button:hover {
+  scale: 1;
+}
+
+.error-message {
+  align-self: center;
+  margin-bottom: -10px;
+  margin-top: 5px;
+  font-family:
+    "SanFrancisco",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-weight: bold;
+  color: red;
+}
+.success-message {
+  align-self: center;
+  margin-top: 5px;
+  font-family:
+    "SanFrancisco",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  color: green;
+}
+
+.input-error {
+  border: 1.5px solid red !important;
+  outline: none;
+  background-color: #fff5f5;
+}
+.password-error,
+.email-error {
+  color: red;
+  font-size: 0.75rem;
+  margin-top: 5px;
+  margin-bottom: -10px;
+}

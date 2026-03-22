@@ -1,140 +1,47 @@
-.admin-container {
-  max-width: 720px;
-  margin: 20px auto;
-  padding: 0 20px 0;
+.postproduct-btn,
+.orders-btn {
+  border: 1px solid #f63049;
+  padding: 10px 16px;
+  cursor: pointer;
+  position: static;
+  overflow: visible;
+  transform: none;
+  scale: 1;
 }
 
-.admin-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: 32px;
-  color: #1d1d1f;
+.postproduct-btn::before,
+.orders-btn::before {
+  content: none;
 }
 
-.admin-subtitle {
-  font-size: 1.35rem;
-  font-weight: 700;
-  margin: 36px 0 20px;
-  color: #1d1d1f;
+.postproduct-btn:hover,
+.orders-btn:hover,
+.postproduct-btn:hover::before,
+.orders-btn:hover::before {
+  transform: none;
+  scale: 1;
 }
 
-.admin-form {
+.admin-buttons {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   gap: 20px;
 }
 
-.admin-row {
-  display: flex;
-  gap: 16px;
+.btn-active {
+  background-color: transparent;
+  color: #f63049;
 }
 
-.admin-row .admin-field {
-  flex: 1;
+.btn-active:hover {
+  color: #f63049;
 }
 
-.admin-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.admin-field > label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #3a3a3c;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.admin-field input:not([type="checkbox"]),
-.admin-field select,
-.admin-field textarea {
-  padding: 10px 14px;
-  border: 1px solid #d1d1d6;
-  border-radius: 10px;
-  font-size: 1rem;
-  color: #1d1d1f;
-  background: #f5f5f7;
-  outline: none;
-  transition:
-    border-color 0.2s,
-    background 0.2s;
-  font-family: inherit;
-  resize: vertical;
-}
-
-.admin-field input:not([type="checkbox"]):focus,
-.admin-field select:focus,
-.admin-field textarea:focus {
-  border-color: #0071e3;
-  background: #fff;
-}
-
-.admin-field input[type="number"]::-webkit-inner-spin-button,
-.admin-field input[type="number"]::-webkit-outer-spin-button {
-  opacity: 0.5;
-}
-
-.admin-specs {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-}
-
-.admin-spec-option {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #1d1d1f;
-  text-transform: none;
-  letter-spacing: 0;
-  cursor: pointer;
-}
-
-.admin-spec-option input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  cursor: pointer;
-}
-
-.admin-success {
-  padding: 12px 16px;
-  background: #d1fae5;
-  border: 1px solid #6ee7b7;
-  border-radius: 10px;
-  color: #065f46;
-  font-size: 0.95rem;
-}
-
-.admin-error {
-  padding: 12px 16px;
-  background: #fee2e2;
-  border: 1px solid #fca5a5;
-  border-radius: 10px;
-  color: #991b1b;
-  font-size: 0.95rem;
-}
-
-.admin-submit {
-  align-self: flex-start;
-  padding: 12px 32px;
-  background: #f63049;
+.btn-inactive {
+  background-color: #f63049;
   color: #fff;
-  border: none;
-  border-radius: 980px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background 0.2s,
-    opacity 0.2s;
 }
 
-@media (max-width: 600px) {
-  .admin-row {
-    flex-direction: column;
-  }
+.btn-inactive:hover {
+  color: #fff;
 }

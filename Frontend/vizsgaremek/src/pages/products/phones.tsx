@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../../axios";
 import {
   formatProductSpecs,
@@ -15,7 +15,6 @@ interface Product {
   price: number;
   discount?: number;
   specs: ProductSpecs;
-  storageQuantity: number;
   categoryId: number;
 }
 
@@ -38,6 +37,16 @@ function Phones() {
     queryKey: ["categories"],
     queryFn: () => axiosInstance.get("/api/categories").then((r) => r.data),
   });
+
+  const { mutate: addProductToCart, isPending: addToCartPending } = useMutation(
+    {
+      mutationFn: (productId: number) =>
+        axiosInstance.post("/Carts/AddProduct", {
+          quantity: 1,
+          productId,
+        }),
+    },
+  );
 
   const phoneCategoryId = categories.find(
     (c) =>
@@ -63,12 +72,7 @@ function Phones() {
       <h1>iPhones</h1>
       <div className="products-grid">
         {phones.map((product) => (
-          <div
-            key={product.id}
-            className={`product-card${
-              product.storageQuantity === 0 ? " product-card--out-of-stock" : ""
-            }`}
-          >
+          <div key={product.id} className={`product-card`}>
             <Link
               to={`/product/${product.id}`}
               style={{ textDecoration: "none" }}
@@ -103,9 +107,10 @@ function Phones() {
 
               <button
                 className="product-card__btn"
-                disabled={product.storageQuantity === 0}
+                onClick={() => addProductToCart(product.id)}
+                disabled={addToCartPending}
               >
-                {product.storageQuantity === 0 ? "Out of stock" : "Add to cart"}
+                {addToCartPending ? "Adding..." : "Add to cart"}
               </button>
             </div>
           </div>
