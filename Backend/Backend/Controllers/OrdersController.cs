@@ -137,6 +137,7 @@ namespace Backend.Controllers
         City = order.City,
         ZipCode = order.ZipCode,
         UserId = order.UserId,
+        Active = order.Active,
         Products = order.OrderProducts.Select(op => new OrderProductListItem
         {
           Quantity = op.Quantity,
