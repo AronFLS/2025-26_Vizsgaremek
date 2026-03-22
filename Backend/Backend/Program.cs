@@ -36,7 +36,7 @@ namespace Backend
       app.UseCors(builder =>
       {
         builder.AllowCredentials()
-                     .WithOrigins("http://localhost:5173")
+                     .WithOrigins("http://localhost:3000")
                      .AllowAnyMethod()
                      .AllowAnyHeader();
       });
