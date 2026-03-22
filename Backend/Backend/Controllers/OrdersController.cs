@@ -93,6 +93,7 @@ namespace Backend.Controllers
 
       return Ok(orders);
     }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<OrderReadDto>> GetOrderById(int id)
     {
@@ -124,6 +125,27 @@ namespace Backend.Controllers
 
       if (orders.Count <= 0) return NotFound("There are no orders");
       return Ok(orders);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPut("Status/{id}")]
+
+    public async Task<ActionResult> PutOrder(int id, OrderStatusChangeDto orderDto)
+    {
+      if (id != orderDto.Id) return BadRequest("Given ids do not match");
+
+      var now = DateTime.Now;
+      var order = await coreDbContext.Orders
+        .Where(o => o.Id == id)
+        .SingleOrDefaultAsync();
+
+      if (order == null) return NotFound($"Order with id : {id} not found");
+
+      order.Status = orderDto.Status;
+      order.ModifiedAt = now;
+      await coreDbContext.SaveChangesAsync();
+
+      return NoContent();
     }
 
     private static OrderReadDto MapToDto(Order order)
