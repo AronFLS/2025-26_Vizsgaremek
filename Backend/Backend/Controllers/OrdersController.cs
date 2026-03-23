@@ -130,7 +130,7 @@ namespace Backend.Controllers
     [Authorize(Roles = "Admin")]
     [HttpPut("Status/{id}")]
 
-    public async Task<ActionResult> PutOrder(int id, OrderStatusChangeDto orderDto)
+    public async Task<ActionResult> PutOrderStatus(int id, OrderStatusChangeDto orderDto)
     {
       if (id != orderDto.Id) return BadRequest("Given ids do not match");
 
@@ -147,6 +147,28 @@ namespace Backend.Controllers
 
       return NoContent();
     }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPut("Active/{id}")]
+
+    public async Task<ActionResult> PutOrderActive(int id, OrderActiveChangeDto orderDto)
+    {
+      if (id != orderDto.Id) return BadRequest("Given ids do not match");
+
+      var now = DateTime.Now;
+      var order = await coreDbContext.Orders
+        .Where(o => o.Id == id)
+        .SingleOrDefaultAsync();
+
+      if (order == null) return NotFound($"Order with id : {id} not found");
+
+      order.Active = orderDto.Active;
+      order.ModifiedAt = now;
+      await coreDbContext.SaveChangesAsync();
+
+      return NoContent();
+    }
+
 
     private static OrderReadDto MapToDto(Order order)
     {
@@ -173,6 +195,7 @@ namespace Backend.Controllers
             Discount = op.Product.Discount,
             StorageQuantity = op.Product.StorageQuantity,
             CategoryId = op.Product.CategoryId,
+            Active = op.Product.Active,
             Specs = op.Product.ProductSpecs.Select(ps => new ProductSpecsDto
             {
               Id = ps.SpecId,
