@@ -254,6 +254,28 @@ a {
     height 0.3s ease,
     background 0.3s ease;
   margin: 0px;
+  margin-left: 10px;
   padding: 10px;
   font-weight: 500;
+}
+
+.nav-tabs-mobile nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-menu-tab-row {
+  display: flex;
+  align-items: center;
+  transition: 0.3s ease;
+}
+
+.mobile-menu-tab-icon {
+  flex-shrink: 0;
+  margin-right: -8px;
+  transform: rotate(180deg) translateY(1px);
+}
+
+.mobile-menu-tab-row:hover {
+  transform: translateX(4px);
 }

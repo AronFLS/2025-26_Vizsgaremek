@@ -2,6 +2,7 @@ import type { RefObject } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_ITEMS } from "../nav-constants/navConstants";
 import { NavTab } from "./NavTab";
+import { IoChevronBack } from "react-icons/io5";
 
 type MobileMenuProps = {
   navRef: RefObject<HTMLElement | null>;
@@ -33,9 +34,12 @@ export const MobileMenu = ({
           <nav ref={navRef}>
             {NAV_ITEMS.map((item) => {
               return (
-                <NavTab key={item.to} to={item.to} onClick={onNavClick}>
-                  {item.label}
-                </NavTab>
+                <div className="mobile-menu-tab-row" key={item.to}>
+                  <IoChevronBack className="mobile-menu-tab-icon" />
+                  <NavTab to={item.to} onClick={onNavClick}>
+                    {item.label}
+                  </NavTab>
+                </div>
               );
             })}
           </nav>
