@@ -1,5 +1,6 @@
 .postproduct-btn,
-.orders-btn {
+.orders-btn,
+.past-orders-btn {
   border: 1px solid #f63049;
   padding: 10px 16px;
   cursor: pointer;
@@ -10,14 +11,17 @@
 }
 
 .postproduct-btn::before,
-.orders-btn::before {
+.orders-btn::before,
+.past-orders-btn::before {
   content: none;
 }
 
 .postproduct-btn:hover,
 .orders-btn:hover,
+.past-orders-btn:hover,
 .postproduct-btn:hover::before,
-.orders-btn:hover::before {
+.orders-btn:hover::before,
+.past-orders-btn:hover::before {
   transform: none;
   scale: 1;
 }

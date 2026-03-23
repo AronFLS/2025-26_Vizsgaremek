@@ -1,0 +1,43 @@
+.account-userinfo-section {
+  border: 1px solid #e7ebf2;
+  border-radius: 12px;
+  padding: 1rem;
+  background: #ffffff;
+}
+
+.userinfo-grid {
+  margin-top: 0.85rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.userinfo-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.7rem 0.8rem;
+  background: #f8f9fc;
+  border-radius: 10px;
+}
+
+.userinfo-row span {
+  color: #4b5568;
+}
+
+.userinfo-row strong {
+  color: #1f2937;
+  word-break: break-word;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .userinfo-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .userinfo-row strong {
+    text-align: left;
+  }
+}

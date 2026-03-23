@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../axios";
-import "./orders.css";
+import "./pastorders.css";
 
 interface OrderProduct {
   quantity: number;
@@ -12,7 +12,7 @@ interface OrderProduct {
   };
 }
 
-interface Order {
+interface AllOrder {
   id: number;
   paymentMethod: string;
   status: string;
@@ -39,13 +39,13 @@ const getReadableStatus = (status: string) => {
   return normalized.charAt(0).toUpperCase() + normalized.slice(1);
 };
 
-const getOrderTotal = (order: Order) => {
+const getOrderTotal = (order: AllOrder) => {
   return order.products.reduce((sum, item) => {
     return sum + item.product.price * item.quantity;
   }, 0);
 };
 
-function Orders() {
+function PastOrders() {
   const queryClient = useQueryClient();
   const [selectedStatuses, setSelectedStatuses] = useState<
     Record<number, string>
@@ -60,7 +60,7 @@ function Orders() {
     isLoading,
     isError,
     error,
-  } = useQuery<Order[]>({
+  } = useQuery<AllOrder[]>({
     queryKey: ["admin-orders"],
     queryFn: () => axiosInstance.get("/Orders").then((r) => r.data),
   });
@@ -104,7 +104,7 @@ function Orders() {
     });
 
   const visibleOrders = useMemo(() => {
-    return (orders ?? []).filter((order) => order.active === true);
+    return (orders ?? []).filter((order) => order.active === false);
   }, [orders]);
 
   const handleStatusChange = (orderId: number, value: string) => {
@@ -116,7 +116,7 @@ function Orders() {
     }));
   };
 
-  const submitStatusUpdate = async (order: Order) => {
+  const submitStatusUpdate = async (order: AllOrder) => {
     const selectedStatus =
       selectedStatuses[order.id] ?? normalizeStatus(order.status);
 
@@ -130,7 +130,7 @@ function Orders() {
     return (
       <section className="orders-admin">
         <h2>Orders</h2>
-        <p className="orders-info">Loading active orders...</p>
+        <p className="orders-info">Loading inactive orders...</p>
       </section>
     );
   }
@@ -151,8 +151,8 @@ function Orders() {
   return (
     <section className="orders-admin">
       <div className="orders-header">
-        <h2>Active Orders</h2>
-        <p>{visibleOrders.length} active order(s)</p>
+        <h2>Inactive Orders</h2>
+        <p>{visibleOrders.length} inactive order(s)</p>
       </div>
 
       {feedbackMessage && (
@@ -166,7 +166,7 @@ function Orders() {
       )}
 
       {visibleOrders.length === 0 ? (
-        <p className="orders-info">No active orders at the moment.</p>
+        <p className="orders-info">No inactive orders at the moment.</p>
       ) : (
         <div className="orders-grid">
           {visibleOrders.map((order) => {
@@ -203,14 +203,14 @@ function Orders() {
                         {item.product.name} x {item.quantity}
                       </span>
                       <span>
-                        ${(item.product.price * item.quantity).toFixed(2)}
+                        {(item.product.price * item.quantity).toFixed(0)}Ft
                       </span>
                     </div>
                   ))}
                 </div>
 
                 <p className="order-total">
-                  Total: <strong>${getOrderTotal(order).toFixed(2)}</strong>
+                  Total: <strong>{getOrderTotal(order).toFixed(0)}Ft</strong>
                 </p>
 
                 <div className="order-actions">
@@ -250,4 +250,4 @@ function Orders() {
   );
 }
 
-export default Orders;
+export default PastOrders;

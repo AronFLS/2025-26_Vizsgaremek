@@ -1,0 +1,101 @@
+.account-orders-section {
+  border: 1px solid #e7ebf2;
+  border-radius: 12px;
+  padding: 1rem;
+  background: #ffffff;
+}
+
+.orders-message {
+  margin-top: 0.9rem;
+  color: #4d576a;
+}
+
+.orders-error {
+  color: #c53030;
+}
+
+.orders-list {
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.order-summary-card {
+  border: 1px solid #e9edf5;
+  border-radius: 10px;
+  padding: 0.9rem;
+  background: #fbfcff;
+}
+
+.order-summary-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.order-summary-top h3 {
+  margin: 0;
+  font-size: 1.03rem;
+}
+
+.order-summary-top p {
+  margin: 0.25rem 0 0;
+  color: #70798d;
+}
+
+.order-status-chip {
+  align-self: flex-start;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0f5132;
+  background: #d1f5e1;
+}
+
+.order-summary-meta {
+  margin-top: 0.7rem;
+  color: #30384a;
+}
+
+.toggle-order-btn {
+  margin-top: 0.7rem;
+  border: 1px solid #d6dcec;
+  background: #ffffff;
+  color: #2e3a59;
+  border-radius: 8px;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+}
+
+.toggle-order-btn:hover {
+  background: #f1f4fb;
+}
+
+.order-details-panel {
+  margin-top: 0.75rem;
+  border-top: 1px dashed #dde3f0;
+  padding-top: 0.75rem;
+}
+
+.order-products-grid {
+  margin-top: 0.65rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.order-product-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.order-total-row {
+  margin: 0.65rem 0 0;
+}
+
+@media (max-width: 640px) {
+  .order-summary-top {
+    flex-direction: column;
+  }
+}

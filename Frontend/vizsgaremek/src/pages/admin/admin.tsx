@@ -1,12 +1,13 @@
 import { useState } from "react";
-import Orders from "../../components/Admin/orders";
+import ActiveOrders from "../../components/Admin/activeorders";
 import PostProduct from "../../components/Admin/postproduct";
+import PastOrders from "../../components/Admin/pastorders";
 import "./admin.css";
 
 function Admin() {
-  const [activeSection, setActiveSection] = useState<"postproduct" | "orders">(
-    "postproduct",
-  );
+  const [activeSection, setActiveSection] = useState<
+    "postproduct" | "orders" | "pastorders"
+  >("postproduct");
 
   return (
     <>
@@ -17,7 +18,7 @@ function Admin() {
           }`}
           onClick={() => setActiveSection("postproduct")}
         >
-          PostProduct
+          Post Product/Spec
         </button>
         <button
           className={`orders-btn ${
@@ -25,12 +26,21 @@ function Admin() {
           }`}
           onClick={() => setActiveSection("orders")}
         >
-          orders
+          ActiveOrders
+        </button>
+        <button
+          className={`past-orders-btn ${
+            activeSection === "pastorders" ? "btn-active" : "btn-inactive"
+          }`}
+          onClick={() => setActiveSection("pastorders")}
+        >
+          PastOrders
         </button>
       </div>
 
       {activeSection === "postproduct" && <PostProduct />}
-      {activeSection === "orders" && <Orders />}
+      {activeSection === "orders" && <ActiveOrders />}
+      {activeSection === "pastorders" && <PastOrders />}
     </>
   );
 }

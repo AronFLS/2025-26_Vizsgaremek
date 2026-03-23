@@ -1,0 +1,40 @@
+.account-detail-page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.account-detail-hero {
+  padding: 1.25rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f5f7ff 0%, #f0fff8 100%);
+  border: 1px solid #e8edff;
+}
+
+.account-detail-hero h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+.account-detail-hero p {
+  margin: 0.45rem 0 0;
+  color: #5c6476;
+}
+
+.account-section-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.account-section-header p {
+  margin: 0.35rem 0 0;
+  color: #697084;
+}
+
+@media (max-width: 640px) {
+  .account-detail-page {
+    padding: 1.25rem 0.8rem 2rem;
+  }
+}
