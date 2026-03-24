@@ -77,7 +77,6 @@ namespace Database.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -130,42 +129,6 @@ namespace Database.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("Database.Models.OrderDraft", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("AddressLine")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("OrderDrafts");
                 });
 
             modelBuilder.Entity("Database.Models.OrderProduct", b =>
@@ -393,17 +356,6 @@ namespace Database.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Database.Models.OrderDraft", b =>
-                {
-                    b.HasOne("Database.Models.User", "User")
-                        .WithOne("OrderDraft")
-                        .HasForeignKey("Database.Models.OrderDraft", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Database.Models.OrderProduct", b =>
                 {
                     b.HasOne("Database.Models.Order", "Order")
@@ -501,9 +453,6 @@ namespace Database.Migrations
             modelBuilder.Entity("Database.Models.User", b =>
                 {
                     b.Navigation("Cart")
-                        .IsRequired();
-
-                    b.Navigation("OrderDraft")
                         .IsRequired();
 
                     b.Navigation("Orders");

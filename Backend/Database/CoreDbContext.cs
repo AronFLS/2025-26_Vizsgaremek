@@ -13,10 +13,10 @@ namespace Database
     public DbSet<SpecProduct> ProductSpecs { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderProduct> OrderProducts { get; set; }
+    //public DbSet<Coupon> Coupons { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Cart> Carts { get; set; }
     public DbSet<CartProduct> CartProducts { get; set; }
-    public DbSet<OrderDraft> OrderDrafts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -22,7 +22,5 @@ namespace Database.Models
         public Cart Cart { get; set; } = null!;
 
         public ICollection<Order> Orders { get; set; } = [];
-
-        public OrderDraft OrderDraft { get; set; } = null!;
     }
 }
