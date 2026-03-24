@@ -109,18 +109,21 @@ function Order() {
                 />
                 <FormControlLabel
                   value="Credit card"
+                  disabled
                   control={<Radio sx={radioSx} />}
                   label="Credit card"
                   sx={radioLabelSx}
                 />
                 <FormControlLabel
                   value="PayPal"
+                  disabled
                   control={<Radio sx={radioSx} />}
                   label="PayPal"
                   sx={radioLabelSx}
                 />
                 <FormControlLabel
                   value="Apple Pay"
+                  disabled
                   control={<Radio sx={radioSx} />}
                   label="Apple Pay"
                   sx={radioLabelSx}

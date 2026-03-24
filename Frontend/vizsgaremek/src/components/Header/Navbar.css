@@ -73,6 +73,10 @@
   transform: scale(1.1);
 }
 
+#nav-cart-login {
+  transform: translateY(2px);
+}
+
 /* MENU BURGER ICON */
 .menuburger-icon {
   justify-self: start;
