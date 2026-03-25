@@ -20,7 +20,9 @@ export const Cursor = ({ position }: CursorProps) => {
         pointerEvents: "none",
         backdropFilter: "blur(4px)",
         WebkitBackdropFilter: "blur(4px)",
-        border: "1px solid rgba(255, 255, 255, 0.28)",
+        backgroundColor: "rgba(132, 132, 132, 0.35)",
+        border: "1px solid rgba(255, 255, 255, 0.4)",
+        boxShadow: "0 4px 30px rgba(0, 0, 0, 0.2)",
       }}
     />
   );

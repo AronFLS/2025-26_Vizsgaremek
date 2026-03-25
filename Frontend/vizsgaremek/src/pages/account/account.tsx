@@ -143,6 +143,7 @@ function Account() {
               <div id="firstname">
                 <p className="label">First name:</p>
                 <input
+                  className="signup-input"
                   type="text"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
@@ -154,6 +155,7 @@ function Account() {
                   type="text"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
+                  className="signup-input"
                 />
               </div>
             </div>
@@ -166,7 +168,7 @@ function Account() {
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              className={emailInvalid ? "input-error" : ""}
+              className={emailInvalid ? "input-error" : "signup-input"}
             />
             {emailError && <p className="email-error">{emailError}</p>}
 
@@ -179,7 +181,7 @@ function Account() {
                 setPasswordMatchError("");
                 setConfirmPasswordInvalid(false);
               }}
-              className={passwordInvalid ? "input-error" : ""}
+              className={passwordInvalid ? "input-error" : "signup-input"}
             />
             {passwordError && <p className="password-error">{passwordError}</p>}
 
@@ -192,7 +194,9 @@ function Account() {
                 setPasswordMatchError("");
                 setConfirmPasswordInvalid(false);
               }}
-              className={confirmPasswordInvalid ? "input-error" : ""}
+              className={
+                confirmPasswordInvalid ? "input-error" : "signup-input"
+              }
             />
             {passwordMatchError && (
               <p className="password-error">{passwordMatchError}</p>
@@ -203,7 +207,7 @@ function Account() {
               type="tel"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              className={phoneNumberInvalid ? "input-error" : ""}
+              className={phoneNumberInvalid ? "input-error" : "signup-input"}
             />
 
             {phoneNumberError && (

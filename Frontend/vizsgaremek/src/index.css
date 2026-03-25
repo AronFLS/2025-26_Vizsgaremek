@@ -1,10 +1,23 @@
 @font-face {
-  font-family: 'MyCustomFont';
-  /* The browser tries to load the woff2 first because it's listed first */
-  src: url('./assets/fonts/san_francisco-webfont.woff2') format('woff2'),
-       url('./assets/fonts/san_francisco-webfont.woff') format('woff');
-  font-weight: normal;
+  font-family: "SF Pro Display";
+  src: url("./fonts/sf-pro-font/SFPRODISPLAYREGULAR.OTF") format("opentype");
+  font-weight: 400;
   font-style: normal;
-  font-display: swap; /* This ensures text is visible while the font loads */
+  font-display: swap;
 }
 
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("./fonts/sf-pro-font/SFPRODISPLAYMEDIUM.OTF") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("./fonts/sf-pro-font/SFPRODISPLAYBOLD.OTF") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

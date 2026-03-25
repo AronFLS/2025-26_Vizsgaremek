@@ -10,7 +10,9 @@ import Account from "./pages/account/account";
 import Admin from "./pages/admin/admin";
 import ProductDetail from "./pages/productdetail/ProductDetail";
 import AccountDetail from "./pages/accountdetail/AccountDetail";
+import Shipping from "./pages/shipping/shipping";
 import Checkout from "./pages/checkout/checkout";
+import OrderConfirmed from "./pages/checkout/orderconfirmed";
 
 function App() {
   return (
@@ -23,10 +25,12 @@ function App() {
         <Route path="/accessories" element={<Accessories />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/shipping" element={<Shipping />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/account" element={<Account />} />
         <Route path="/accountdetail" element={<AccountDetail />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/orderconfirmed" element={<OrderConfirmed />} />
       </Routes>
     </BrowserRouter>
   );

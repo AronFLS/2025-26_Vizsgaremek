@@ -1,184 +1,270 @@
-import { useEffect, useState } from "react";
-import "./chekout.css";
+import { useMemo, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../../axios";
-import { useMutation } from "@tanstack/react-query";
 import { useAccount } from "../../hooks/useAccount";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
+import {
+  formatProductSpecs,
+  type ProductSpecs,
+} from "../../utils/productSpecs";
+import { formatPrice } from "../../utils/price";
+import "./checkout.css";
 
-function Order() {
-  const radioSx = {
-    ml: 2,
-    p: 0.5,
-    "&.Mui-checked": {
-      color: "#f63049",
-    },
-  };
+interface ProductSpec {
+  id: number;
+  name: string;
+}
 
-  const radioLabelSx = {
-    "& .MuiFormControlLabel-label": {
-      color: "#292929",
-    },
-  };
+interface CartProduct {
+  id: number;
+  name: string;
+  imageUrl: string;
+  price: number;
+  discount?: number;
+  specs: ProductSpec[];
+}
 
-  const [status, setStatus] = useState<string>("pending");
-  const [addressLine, setAddressLine] = useState<string>("");
-  const [city, setCity] = useState<string>("");
-  const [zipcode, setZipcode] = useState<string>("");
-  const [paymentMethod, setPaymentMethod] =
-    useState<string>("Cash on delivery");
+interface CartProductListItem {
+  quantity: number;
+  product: CartProduct;
+}
+
+interface CartData {
+  products: CartProductListItem[];
+}
+
+interface OrderDraftData {
+  paymentMethod: string;
+  addressLine: string;
+  city: string;
+  zipCode: string;
+}
+
+interface UserSummary {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+}
+
+function Checkout() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string>("");
+  const { data: accountData } = useAccount();
 
-  const { mutateAsync: registerAsync, isPending } = useMutation({
-    mutationFn: () => {
-      return axiosInstance
-        .post("/Orders", {
-          paymentMethod,
-          status,
-          addressLine,
-          city,
-          zipcode,
-        })
+  const rawEmailFromToken = (
+    accountData as Record<string, string | string[] | undefined> | null
+  )?.["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
+
+  const emailFromToken =
+    typeof rawEmailFromToken === "string" ? rawEmailFromToken : "";
+
+  const { data: cart, isLoading: cartLoading } = useQuery<CartData>({
+    queryKey: ["currentCart"],
+    queryFn: () =>
+      axiosInstance.get("/Carts/Current").then((resp) => resp.data),
+  });
+
+  const { data: orderDraft, isLoading: orderDraftLoading } =
+    useQuery<OrderDraftData>({
+      queryKey: ["currentOrderDraft"],
+      queryFn: () =>
+        axiosInstance.get("/OrderDrafts/Current").then((resp) => resp.data),
+    });
+
+  const { data: userDetails } = useQuery<UserSummary | null>({
+    queryKey: ["checkout-user", emailFromToken],
+    enabled: typeof emailFromToken === "string" && emailFromToken.length > 0,
+    queryFn: async () => {
+      const users = await axiosInstance
+        .get<UserSummary[]>("/Auth/users")
         .then((resp) => resp.data);
+
+      const foundUser = users.find(
+        (user) => user.email.toLowerCase() === emailFromToken.toLowerCase(),
+      );
+
+      return foundUser ?? null;
     },
   });
-  const { data } = useAccount();
-  const isLoggedIn = data !== null;
 
-  useEffect(() => {
-    document.body.classList.add("checkout-page");
+  const { mutate: createOrder, isPending: isSubmitting } = useMutation({
+    mutationFn: () => {
+      if (!orderDraft) {
+        throw new Error(
+          "Missing shipping details. Please complete shipping first.",
+        );
+      }
 
-    return () => {
-      document.body.classList.remove("checkout-page");
-    };
-  }, []);
+      return axiosInstance.post("/Orders", {
+        paymentMethod: orderDraft.paymentMethod,
+        status: "pending",
+        addressLine: orderDraft.addressLine,
+        city: orderDraft.city,
+        zipCode: orderDraft.zipCode,
+      });
+    },
+    onSuccess: () => {
+      setErrorMessage("");
+      setSuccessMessage("Order submitted successfully.");
+      queryClient.invalidateQueries({ queryKey: ["currentCart"] });
+      queryClient.invalidateQueries({ queryKey: ["current-orders"] });
+      queryClient.invalidateQueries({ queryKey: ["currentOrderDraft"] });
+      navigate("/orderconfirmed");
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<string>;
+      setSuccessMessage("");
+      setErrorMessage(
+        axiosError.response?.data ??
+          "Order could not be submitted. Please try again.",
+      );
+    },
+  });
 
-  useEffect(() => {
-    setErrorMessage("");
-  }, [addressLine, city, zipcode, paymentMethod]);
+  const orderRows = cart?.products ?? [];
 
-  const handleSignUp = async () => {
-    setErrorMessage("");
-    setSuccessMessage("");
+  const totalPrice = useMemo(() => {
+    return orderRows.reduce((sum, row) => {
+      const discountMultiplier = 1 - (row.product.discount ?? 0) / 100;
+      return sum + row.product.price * discountMultiplier * row.quantity;
+    }, 0);
+  }, [orderRows]);
 
-    if (!addressLine || !city || !zipcode || !paymentMethod) {
-      setErrorMessage("Please fill in all fields.");
-      return;
-    }
+  const firstName = userDetails?.firstName ?? accountData?.firstName ?? "-";
+  const lastName = userDetails?.lastName ?? accountData?.lastName ?? "-";
+  const email =
+    userDetails?.email ??
+    (typeof emailFromToken === "string" ? emailFromToken : "-");
+  const phoneNumber = userDetails?.phoneNumber ?? "-";
 
-    try {
-      await registerAsync();
-      setSuccessMessage("Order placed successfully.");
-      setAddressLine("");
-      setCity("");
-      setZipcode("");
-      setPaymentMethod("Cash on delivery");
-      setStatus("pending");
-    } catch {
-      setErrorMessage("Order failed. Please try again.");
-    }
-  };
+  if (!accountData) {
+    return (
+      <div className="checkout-page">
+        <p className="checkout-message">Please log in to continue checkout.</p>
+      </div>
+    );
+  }
+
+  if (cartLoading || orderDraftLoading) {
+    return (
+      <div className="checkout-page">
+        <p className="checkout-message">Loading checkout details...</p>
+      </div>
+    );
+  }
+
+  if (!cart || orderRows.length === 0) {
+    return (
+      <div className="checkout-page">
+        <h1>Checkout</h1>
+        <p className="checkout-message">Your cart is empty.</p>
+      </div>
+    );
+  }
+
+  if (!orderDraft) {
+    return (
+      <div className="checkout-page">
+        <h1>Checkout</h1>
+        <p className="checkout-message">
+          Shipping details are missing. Please complete shipping first.
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <>
-      {!isLoggedIn ? (
-        <p className="checkout-loggedin-message">You are logged in.</p>
-      ) : (
-        <>
-          <div className="checkout-main-content">
-            <p id="checkout-title">Checkout</p>
-            <p id="checkout-alt-title">
-              Fill in your delivery details to proceed with the checkout.
+    <main className="checkout-page">
+      <p className="checkout-pagetitle">Checkout</p>
+
+      <div className="checkout-top-grid">
+        <section className="checkout-card">
+          <p className="checkout-card-titles">Your Information</p>
+          <div className="checkout-info-grid">
+            <p className="checkout-informationcard-infotitle">
+              <strong>Name:</strong> {firstName} {lastName}
             </p>
-
-            <p className="checkout-label">Payment method</p>
-            <FormControl>
-              <RadioGroup
-                aria-labelledby="radio-buttons-group-label"
-                defaultValue="Cash on delivery"
-                name="radio-buttons-group"
-              >
-                <FormControlLabel
-                  value="Cash on delivery"
-                  control={<Radio sx={radioSx} />}
-                  label="Cash on delivery"
-                  sx={radioLabelSx}
-                />
-                <FormControlLabel
-                  value="Credit card"
-                  disabled
-                  control={<Radio sx={radioSx} />}
-                  label="Credit card"
-                  sx={radioLabelSx}
-                />
-                <FormControlLabel
-                  value="PayPal"
-                  disabled
-                  control={<Radio sx={radioSx} />}
-                  label="PayPal"
-                  sx={radioLabelSx}
-                />
-                <FormControlLabel
-                  value="Apple Pay"
-                  disabled
-                  control={<Radio sx={radioSx} />}
-                  label="Apple Pay"
-                  sx={radioLabelSx}
-                />
-              </RadioGroup>
-            </FormControl>
-
-            <p className="checkout-label">Address line</p>
-            <input
-              type="text"
-              className="checkout-input"
-              value={addressLine}
-              onChange={(e) => {
-                setAddressLine(e.target.value);
-              }}
-            />
-
-            <div id="checkout-location-row">
-              <div id="checkout-city-field">
-                <p className="checkout-label">City</p>
-                <input
-                  type="text"
-                  className="checkout-input"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                />
-              </div>
-              <div id="checkout-zipcode-field">
-                <p className="checkout-label">Zip code</p>
-                <input
-                  type="text"
-                  className="checkout-input"
-                  value={zipcode}
-                  onChange={(e) => setZipcode(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <button
-              id="checkout-submit-button"
-              onClick={handleSignUp}
-              disabled={isPending}
-            >
-              {isPending ? "Processing..." : "Place Order"}
-            </button>
-
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-            {successMessage && (
-              <p className="success-message">{successMessage}</p>
-            )}
+            <p className="checkout-informationcard-infotitle">
+              <strong>Email:</strong> {email}
+            </p>
+            <p className="checkout-informationcard-infotitle">
+              <strong>Phone number:</strong> {phoneNumber}
+            </p>
           </div>
-        </>
-      )}
-    </>
+        </section>
+
+        <section className="checkout-card">
+          <p className="checkout-card-titles">Shipping</p>
+          <div className="checkout-info-grid">
+            <p className="checkout-informationcard-infotitle">
+              <strong>Payment:</strong> {orderDraft.paymentMethod}
+            </p>
+            <p className="checkout-informationcard-infotitle">
+              <strong>Address:</strong> {orderDraft.zipCode}, {orderDraft.city},{" "}
+              {orderDraft.addressLine}
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <section className="checkout-card">
+        <p className="checkout-card-titles">Ordered Products</p>
+        <div className="checkout-products">
+          {orderRows.map((item) => {
+            const hasDiscount = (item.product.discount ?? 0) > 0;
+            const originalLineTotal = item.product.price * item.quantity;
+            const unitPrice =
+              item.product.price * (1 - (item.product.discount ?? 0) / 100);
+            const lineTotal = unitPrice * item.quantity;
+
+            return (
+              <article className="checkout-product-row" key={item.product.id}>
+                <img src={item.product.imageUrl} alt={item.product.name} />
+                <div className="checkout-product-content">
+                  <p className="checkout-product-name">{item.product.name}</p>
+                  <p>
+                    {formatProductSpecs(item.product.specs as ProductSpecs)}
+                  </p>
+                  <p>Quantity: {item.quantity}</p>
+                </div>
+                <div className="checkout-product-price">
+                  {hasDiscount && (
+                    <p className="checkout-original-price">
+                      {formatPrice(originalLineTotal)} Ft
+                    </p>
+                  )}
+                  <p className={hasDiscount ? "checkout-discounted-price" : ""}>
+                    {formatPrice(lineTotal)} Ft
+                  </p>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        <div className="checkout-total-row">
+          <p className="checkout-total-label">Total</p>
+          <p className="checkout-total-price">{formatPrice(totalPrice)} Ft</p>
+        </div>
+
+        <button
+          type="button"
+          className="checkout-order-button"
+          onClick={() => createOrder()}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Placing order..." : "Order"}
+        </button>
+
+        {errorMessage && <p className="checkout-error">{errorMessage}</p>}
+        {successMessage && <p className="checkout-success">{successMessage}</p>}
+      </section>
+    </main>
   );
 }
 
-export default Order;
+export default Checkout;

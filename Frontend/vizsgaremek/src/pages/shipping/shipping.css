@@ -1,16 +1,16 @@
-body.checkout-page {
+body.shipping-page {
   padding-bottom: 80px;
   background-color: rgb(220, 220, 220);
 }
 
-.checkout-loggedin-message {
+.shipping-loggedin-message {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 50px;
 }
 
-.checkout-main-content {
+.shipping-main-content {
   margin-left: 5px;
   margin-right: 5px;
   width: calc(100% - 10px);
@@ -32,19 +32,19 @@ body.checkout-page {
     background 0.3s ease;
   margin-bottom: 60px;
 }
-#checkout-title {
+#shipping-title {
   text-align: center;
   margin-top: 10px;
   font-size: 33px;
   margin-bottom: 0px;
 }
-#checkout-alt-title {
+#shipping-alt-title {
   text-align: center;
   font-size: 13px;
   color: #818181;
 }
 
-.checkout-input {
+.shipping-input {
   color: black;
   background-color: transparent;
   height: 30px;
@@ -59,35 +59,35 @@ body.checkout-page {
   margin-bottom: -7px;
 }
 
-.checkout-label {
+.shipping-label {
   margin: 0px;
   margin-top: 20px;
   font-family:
-    "SanFrancisco",
+    "SF Pro Display",
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
 }
-#checkout-location-row {
+#shipping-location-row {
   display: flex;
   width: 100%;
   gap: 10px;
 }
 
-#checkout-city-field,
-#checkout-zipcode-field {
+#shipping-city-field,
+#shipping-zipcode-field {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-#checkout-city-field input,
-#checkout-zipcode-field input {
+#shipping-city-field input,
+#shipping-zipcode-field input {
   width: 100%;
   box-sizing: border-box;
 }
 
-#checkout-submit-button {
+#shipping-submit-button {
   margin-top: 25px;
   width: 100%;
   height: 40px;
@@ -100,7 +100,7 @@ body.checkout-page {
   transition: background-color 0.2s ease;
 }
 
-#checkout-submit-button:hover {
+#shipping-submit-button:hover {
   scale: 1;
 }
 
@@ -109,7 +109,7 @@ body.checkout-page {
   margin-bottom: -10px;
   margin-top: 5px;
   font-family:
-    "SanFrancisco",
+    "SF Pro Display",
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
@@ -120,7 +120,7 @@ body.checkout-page {
   align-self: center;
   margin-top: 5px;
   font-family:
-    "SanFrancisco",
+    "SF Pro Display",
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;

@@ -31,12 +31,17 @@ export function Login() {
   };
   return (
     <>
+      <div className="login-header">
+        <p id="login-header-title">Welcome back!</p>{" "}
+        <p id="login-header-subtitle">Enter your details to continue</p>
+      </div>
+
       <p className="label">Email address:</p>
       <input
         className={errorMessage ? "input_error" : "login-input"}
         type="text"
         name="email"
-        placeholder="Email"
+        placeholder="name@example.com"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -48,7 +53,7 @@ export function Login() {
         className={errorMessage ? "input_error" : "login-input"}
         type="password"
         name="password"
-        placeholder="Password"
+        placeholder="Enter your password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />

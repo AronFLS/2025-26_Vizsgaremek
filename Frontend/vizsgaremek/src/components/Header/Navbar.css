@@ -1,33 +1,34 @@
 /* NAVBAR */
 .navbar-container {
+  --nav-scale: 1.08;
   width: 100%;
   height: auto;
   left: 50%;
   transform: translateX(-50%);
-  max-width: 900px;
+  max-width: calc(900px * var(--nav-scale));
   position: fixed;
   top: 0;
   z-index: 1000;
 }
 .navbar {
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: calc(10px * var(--nav-scale));
+  margin-right: calc(10px * var(--nav-scale));
   display: flex;
   flex-direction: column;
-  padding: 5px;
-  border-radius: 10px;
-  width: calc(100% - 20px);
-  max-width: 900px;
-  top: 10px;
+  padding: calc(5px * var(--nav-scale));
+  border-radius: calc(10px * var(--nav-scale));
+  width: calc(100% - (20px * var(--nav-scale)));
+  max-width: calc(900px * var(--nav-scale));
+  top: calc(10px * var(--nav-scale));
   color: rgb(0, 0, 0);
   z-index: 1000;
-  background: rgba(125, 125, 125, 0.25);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.28);
   overflow: hidden;
-  height: 50px;
+  height: calc(50px * var(--nav-scale));
   transition:
     height 0.3s ease,
     background 0.3s ease;
@@ -38,7 +39,7 @@
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   width: 100%;
-  min-height: 40px;
+  min-height: calc(40px * var(--nav-scale));
   flex-shrink: 0;
 }
 
@@ -46,9 +47,9 @@
 .nav-logo {
   justify-self: center;
   color: rgb(0, 0, 0);
-  font-size: 26px;
+  font-size: calc(26px * var(--nav-scale));
   text-decoration: none;
-  border-radius: 99px;
+  border-radius: calc(99px * var(--nav-scale));
   font-weight: bold;
 }
 
@@ -58,10 +59,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 8px;
-  gap: 10px;
-  font-size: 24px;
-  transform: translateY(-3px);
+  margin-right: calc(8px * var(--nav-scale));
+  gap: calc(10px * var(--nav-scale));
+  font-size: calc(24px * var(--nav-scale));
+  transform: translateY(calc(-3px * var(--nav-scale)));
 }
 .nav-cart,
 .nav-account {
@@ -74,7 +75,7 @@
 }
 
 #nav-cart-login {
-  transform: translateY(2px);
+  transform: translateY(calc(2px * var(--nav-scale)));
 }
 
 /* MENU BURGER ICON */
@@ -83,19 +84,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 8px;
-  font-size: 18px;
-  transform: translateY(-3px);
+  margin-left: calc(8px * var(--nav-scale));
+  font-size: calc(18px * var(--nav-scale));
+  transform: translateY(calc(-3px * var(--nav-scale)));
   cursor: pointer;
   animation: keyframes-fill 0.2s;
 }
 @keyframes keyframes-fill {
   0% {
-    transform: scale(0) translateY(-3px);
+    transform: scale(0) translateY(calc(-3px * var(--nav-scale)));
   }
 
   50% {
-    transform: scale(0.9) translateY(-3px);
+    transform: scale(0.9) translateY(calc(-3px * var(--nav-scale)));
   }
 }
 
@@ -104,23 +105,25 @@
   justify-self: start;
   display: inline-flex;
   align-items: center;
-  padding: 4px;
-  transform: translateY(-1px);
+  padding: calc(4px * var(--nav-scale));
+  transform: translateY(calc(-1px * var(--nav-scale)));
 }
 
 .nav-link {
-  padding: 6px 10px;
-  font-size: 14px;
+  padding: calc(6px * var(--nav-scale)) calc(10px * var(--nav-scale));
+  font-size: calc(14px * var(--nav-scale));
   text-decoration: none;
-  border-radius: 99px;
-  transition: background 0.2s ease;
+  border-radius: calc(99px * var(--nav-scale));
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
   color: #1e1e1e;
 }
 
 .nav-link.active {
   color: #000000;
   font-family:
-    "SanFrancisco",
+    "SF Pro Display",
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
@@ -137,26 +140,56 @@
   left: auto;
   right: 0px;
   z-index: 500;
-  background: rgba(125, 125, 125, 0.25);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(187, 187, 187, 1);
   overflow: hidden;
   transition:
     height 0.3s ease,
     background 0.3s ease;
   margin: 0px;
-  padding: 10px;
+  padding: 15px;
 }
 .sign-in .label {
   margin: 0;
   padding: 0;
+  margin-left: 5px;
   font-size: 13px;
   line-height: 1.2;
+  color: #3c3c3c;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+#login-header-title {
+  font-size: 18px;
+  margin: 0;
+  font-weight: bold;
+}
+#login-header-subtitle {
+  font-size: 12px;
+  color: #606060;
+  margin: 0;
+  margin-bottom: 18px;
 }
 .login-input {
   color: #000000;
+  background-color: rgb(248, 248, 248);
+  height: 30px;
+  border: 1px solid #515151ac;
+  border-radius: 10px;
+  padding: 15px;
+  padding-left: 10px;
+  width: 100%;
+  margin-bottom: -5px;
+}
+.login-input:focus {
+  outline: none;
+  border-color: #f6304a9a;
 }
 .input_error {
   border: 1.5px solid red !important;
@@ -170,30 +203,31 @@
 }
 
 #signin-button {
-  margin-top: 10px;
+  margin-top: 15px;
   width: 100%;
   height: 30px;
-  background-color: #f63049;
+  background: linear-gradient(to right, #f93e57, #f33f57);
   color: white;
   border: none;
-  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: scale 0.2s ease;
 }
 #signout-button {
   width: 100%;
   height: 30px;
-  background-color: #f63049;
+  background: linear-gradient(to right, #f63049, #f33f57);
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: scale 0.2s ease;
 }
 #signin-button:hover {
-  scale: 1;
+  scale: 1.01;
 }
 
 .account-row {

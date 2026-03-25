@@ -47,7 +47,7 @@ body.account-page {
   color: #818181;
 }
 
-input {
+.signup-input {
   color: black;
   background-color: rgb(248, 248, 248);
   height: 34px;
@@ -69,7 +69,7 @@ input {
   font-weight: medium;
   color: #1c1c1c;
   font-family:
-    "SanFrancisco",
+    "SF Pro Display",
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
@@ -120,7 +120,7 @@ input {
   margin-bottom: -10px;
   margin-top: 5px;
   font-family:
-    "SanFrancisco",
+    "SF Pro Display",
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
@@ -131,7 +131,7 @@ input {
   align-self: center;
   margin-top: 5px;
   font-family:
-    "SanFrancisco",
+    "SF Pro Display",
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
