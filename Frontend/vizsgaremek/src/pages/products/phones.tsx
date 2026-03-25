@@ -7,6 +7,13 @@ import {
 } from "../../utils/productSpecs";
 import { formatPrice } from "../../utils/price";
 import "./product.css";
+import * as React from "react";
+import { useAccount } from "../../hooks/useAccount";
+import { IoCloseOutline } from "react-icons/io5";
+import Snackbar from "@mui/material/Snackbar";
+import type { SnackbarCloseReason } from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import Alert from "@mui/material/Alert";
 
 interface Product {
   id: number;
@@ -24,6 +31,10 @@ interface Category {
 }
 
 function Phones() {
+  const [loginSnackbarOpen, setLoginSnackbarOpen] = React.useState(false);
+  const [cartSuccessSnackbarOpen, setCartSuccessSnackbarOpen] =
+    React.useState(false);
+
   const { data: products = [], isLoading: productsLoading } = useQuery<
     Product[]
   >({
@@ -38,6 +49,9 @@ function Phones() {
     queryFn: () => axiosInstance.get("/api/categories").then((r) => r.data),
   });
 
+  const { data } = useAccount();
+  const isLoggedIn = data !== null;
+
   const { mutate: addProductToCart, isPending: addToCartPending } = useMutation(
     {
       mutationFn: (productId: number) =>
@@ -45,6 +59,9 @@ function Phones() {
           quantity: 1,
           productId,
         }),
+      onSuccess: () => {
+        setCartSuccessSnackbarOpen(true);
+      },
     },
   );
 
@@ -66,6 +83,49 @@ function Phones() {
       </div>
     );
   }
+
+  const handleLoginSnackbarOpen = () => {
+    setLoginSnackbarOpen(true);
+  };
+
+  const handleLoginSnackbarClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason,
+  ) => {
+    void event;
+
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setLoginSnackbarOpen(false);
+  };
+
+  const handleCartSuccessSnackbarClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason,
+  ) => {
+    void event;
+
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setCartSuccessSnackbarOpen(false);
+  };
+
+  const loginSnackbarAction = (
+    <React.Fragment>
+      <IconButton
+        size="medium"
+        aria-label="close"
+        color="inherit"
+        onClick={handleLoginSnackbarClose}
+      >
+        <IoCloseOutline />
+      </IconButton>
+    </React.Fragment>
+  );
 
   return (
     <div className="products-page">
@@ -107,7 +167,11 @@ function Phones() {
 
               <button
                 className="product-card__btn"
-                onClick={() => addProductToCart(product.id)}
+                onClick={
+                  isLoggedIn
+                    ? () => addProductToCart(product.id)
+                    : handleLoginSnackbarOpen
+                }
                 disabled={addToCartPending}
               >
                 {addToCartPending ? "Adding..." : "Add to cart"}
@@ -116,6 +180,27 @@ function Phones() {
           </div>
         ))}
       </div>
+      <Snackbar
+        open={loginSnackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleLoginSnackbarClose}
+        message="Please log in to add products to your cart."
+        action={loginSnackbarAction}
+      />
+      <Snackbar
+        open={cartSuccessSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleCartSuccessSnackbarClose}
+      >
+        <Alert
+          onClose={handleCartSuccessSnackbarClose}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          Product added to cart successfully.
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

@@ -15,7 +15,7 @@ interface Spec {
 
 function PostProduct() {
   const [name, setName] = useState<string>("");
-  const [, setImageUrl] = useState<string>("");
+  const [imageUrlInput, setImageUrlInput] = useState<string>("");
   const [price, setPrice] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [discount, setDiscount] = useState<string>("");
@@ -43,27 +43,30 @@ function PostProduct() {
   const { mutateAsync: registerAsync, isPending } = useMutation({
     mutationFn: async () => {
       const parsedDiscount = parseFloat(discount);
+      let imageUrl = imageUrlInput.trim();
 
-      if (!selectedFile) throw new Error("No file selected!");
-      const formData = new FormData();
-      formData.append("image", selectedFile);
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("image", selectedFile);
 
-      const res = await axiosInstance.post("/Upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+        const res = await axiosInstance.post("/Upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
-      const url = res.data;
+        imageUrl = res.data;
+      }
 
-      if (!url) {
-        setErrorMessage("Please upload an image first");
+      if (!imageUrl) {
+        setErrorMessage("Please upload an image or paste an image URL.");
         return;
       }
+
       return await axiosInstance
         .post("/api/products", {
           name,
-          imageUrl: url,
+          imageUrl,
           price: parseFloat(price),
           description,
           discount: isNaN(parsedDiscount) ? 0 : parsedDiscount,
@@ -120,8 +123,8 @@ function PostProduct() {
     try {
       await registerAsync();
       setName("");
+      setImageUrlInput("");
       setSelectedFile(null);
-      setImageUrl("");
       setPrice("");
       setDescription("");
       setDiscount("");
@@ -205,22 +208,40 @@ function PostProduct() {
           />
         </div>
 
-        <div className="admin-field">
-          <label htmlFor="imageUrl">Product Image</label>
-          <input
-            id="imageUrl"
-            name="imageUrl"
-            type="file"
-            ref={fileInputRef}
-            accept="image/*"
-            onChange={async (e) => {
-              clearProductMessages();
-              if (e.target.files && e.target.files.length > 0) {
-                setSelectedFile(e.target.files[0] || null);
-              }
-            }}
-            required
-          />
+        <div className="admin-row">
+          <div className="admin-field">
+            <label htmlFor="imageUrl">Product Image URL</label>
+            <input
+              id="imageUrl"
+              name="imageUrl"
+              type="url"
+              value={imageUrlInput}
+              onChange={(e) => {
+                clearProductMessages();
+                setImageUrlInput(e.target.value);
+              }}
+              placeholder="https://example.com/image.jpg"
+            />
+          </div>
+
+          <div className="admin-field">
+            <label htmlFor="imageFile">Or Upload Image File</label>
+            <input
+              id="imageFile"
+              name="imageFile"
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              onChange={(e) => {
+                clearProductMessages();
+                if (e.target.files && e.target.files.length > 0) {
+                  setSelectedFile(e.target.files[0] || null);
+                } else {
+                  setSelectedFile(null);
+                }
+              }}
+            />
+          </div>
         </div>
 
         <div className="admin-row">
