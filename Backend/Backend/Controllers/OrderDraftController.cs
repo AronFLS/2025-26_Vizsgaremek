@@ -11,8 +11,9 @@ namespace Backend.Controllers
   [ApiController]
   public class OrderDraftsController(CoreDbContext coreDbContext) : ControllerBase
   {
-    CoreDbContext coreDbContext = coreDbContext;
+    private readonly CoreDbContext coreDbContext = coreDbContext;
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult> CreateOrderDraft(OrderDraftCreateDto orderDraftDto)
     {
@@ -29,22 +30,35 @@ namespace Backend.Controllers
        .Where(od => od.UserId == loggedInUserId)
        .SingleOrDefaultAsync();
 
-      if (orderDraft != null) return BadRequest($"OrderDraft for this userId : {loggedInUserId} already exists!");
-
-      var newOrderDraft = new OrderDraft
+      if (orderDraft != null)
       {
-        PaymentMethod = orderDraftDto.PaymentMethod,
-        AddressLine = orderDraftDto.AddressLine,
-        City = orderDraftDto.City,
-        ZipCode = orderDraftDto.ZipCode,
-        ExpiresAt = now.AddMinutes(30),
-        UserId = loggedInUserId
-      };
+        orderDraft.PaymentMethod = orderDraftDto.PaymentMethod;
+        orderDraft.AddressLine = orderDraftDto.AddressLine;
+        orderDraft.City = orderDraftDto.City;
+        orderDraft.ZipCode = orderDraftDto.ZipCode;
+        orderDraft.ExpiresAt = now.AddMinutes(30);
+        orderDraft.UserId = loggedInUserId;
 
-      await coreDbContext.OrderDrafts.AddAsync(newOrderDraft);
-      await coreDbContext.SaveChangesAsync();
+        await coreDbContext.SaveChangesAsync();
+        return Ok(MapToDto(orderDraft));
+      }
+      else
+      {
+        var newOrderDraft = new OrderDraft
+        {
+          PaymentMethod = orderDraftDto.PaymentMethod,
+          AddressLine = orderDraftDto.AddressLine,
+          City = orderDraftDto.City,
+          ZipCode = orderDraftDto.ZipCode,
+          ExpiresAt = now.AddMinutes(30),
+          UserId = loggedInUserId
+        };
+        await coreDbContext.OrderDrafts.AddAsync(newOrderDraft);
+        await coreDbContext.SaveChangesAsync();
+        return CreatedAtAction(nameof(GetOrderDraftById), new { id = newOrderDraft.Id }, MapToDto(newOrderDraft));
+      }
 
-      return CreatedAtAction(nameof(GetOrderDraftById), new { id = newOrderDraft.Id }, MapToDto(newOrderDraft));
+
     }
 
     [Authorize]
@@ -68,6 +82,7 @@ namespace Backend.Controllers
       return Ok(MapToDto(orderDraft));
     }
 
+
     [HttpGet("{id}")]
     public async Task<ActionResult<OrderDraftReadDto>> GetOrderDraftById(int id)
     {
@@ -89,12 +104,18 @@ namespace Backend.Controllers
     [HttpGet]
     public async Task<ActionResult<List<OrderDraft>>> GetOrderDrafts()
     {
-      var orderDrafts = await coreDbContext.OrderDrafts.Select(od => MapToDto(od)).ToListAsync();
+      var orderDrafts = await coreDbContext.OrderDrafts.Select(od => od).ToListAsync();
 
+      if (orderDrafts.Count <= 0) return NotFound("Did not find any OrderDrafts");
 
-      if (orderDrafts.Count <= 0) return NotFound("Did not found any OrderDrafts");
+      foreach (var od in orderDrafts)
+      {
+        RemoveIfExpired(od);
+      }
 
-      return Ok(orderDrafts);
+      orderDrafts = await coreDbContext.OrderDrafts.Select(od => od).ToListAsync();
+
+      return Ok(orderDrafts.Select(MapToDto));
     }
 
     [HttpDelete("{id}")]
@@ -124,7 +145,6 @@ namespace Backend.Controllers
         }
       }
     }
-
 
     private static OrderDraftReadDto MapToDto(OrderDraft orderDraft)
     {
