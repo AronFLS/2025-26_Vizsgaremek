@@ -35,6 +35,7 @@ interface CartData {
 }
 
 interface OrderDraftData {
+  id: number;
   paymentMethod: string;
   addressLine: string;
   city: string;
@@ -73,6 +74,8 @@ function Checkout() {
       queryKey: ["currentOrderDraft"],
       queryFn: () =>
         axiosInstance.get("/OrderDrafts/Current").then((resp) => resp.data),
+      retry: 5,
+      retryDelay: (attemptIndex) => Math.min(300 * 2 ** attemptIndex, 2000),
     });
 
   const { data: userDetails } = useQuery<UserSummary | null>({
@@ -92,28 +95,36 @@ function Checkout() {
   });
 
   const { mutate: createOrder, isPending: isSubmitting } = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       if (!orderDraft) {
         throw new Error(
           "Missing shipping details. Please complete shipping first.",
         );
       }
 
-      return axiosInstance.post("/Orders", {
+      const orderResponse = await axiosInstance.post("/Orders", {
         paymentMethod: orderDraft.paymentMethod,
         status: "pending",
         addressLine: orderDraft.addressLine,
         city: orderDraft.city,
         zipCode: orderDraft.zipCode,
       });
+
+      try {
+        await axiosInstance.delete(`/OrderDrafts/${orderDraft.id}`);
+      } catch {}
+
+      return orderResponse;
     },
-    onSuccess: () => {
+    onSuccess: (response) => {
+      const orderId = (response.data as { id?: number })?.id;
+
       setErrorMessage("");
       setSuccessMessage("Order submitted successfully.");
       queryClient.invalidateQueries({ queryKey: ["currentCart"] });
       queryClient.invalidateQueries({ queryKey: ["current-orders"] });
       queryClient.invalidateQueries({ queryKey: ["currentOrderDraft"] });
-      navigate("/orderconfirmed");
+      navigate("/orderconfirmed", { state: { orderId } });
     },
     onError: (error) => {
       const axiosError = error as AxiosError<string>;

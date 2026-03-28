@@ -1,0 +1,47 @@
+.order-confirmed-container {
+  position: relative;
+  isolation: isolate;
+  max-width: 780px;
+  margin: 28px auto;
+  padding: 60px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 26px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-content: center;
+  gap: 14px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.order-confirmed-title {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.order-confirmed-message {
+  margin: 0 auto;
+  max-width: 380px;
+  font-size: 20px;
+}
+
+.order-confirmed-order-id {
+  margin: 2px 0 0;
+  font-size: 17px;
+  color: #424242;
+  letter-spacing: 0.02em;
+}
+
+.order-confirmed-order-id strong {
+  font-size: 19px;
+}
+
+@media (max-width: 800px) {
+  .order-confirmed-container {
+    margin: 18px 14px;
+    padding: 44px 20px;
+    border-radius: 18px;
+  }
+}

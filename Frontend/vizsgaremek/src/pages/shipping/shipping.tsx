@@ -62,13 +62,13 @@ function Shipping() {
     setErrorMessage("");
   }, [addressLine, city, zipcode, paymentMethod]);
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (): Promise<boolean> => {
     setErrorMessage("");
     setSuccessMessage("");
 
     if (!addressLine || !city || !zipcode || !paymentMethod) {
       setErrorMessage("Please fill in all fields.");
-      return;
+      return false;
     }
 
     try {
@@ -78,17 +78,22 @@ function Shipping() {
       setCity("");
       setZipcode("");
       setPaymentMethod("Cash on delivery");
+      return true;
     } catch (error) {
       const axiosError = error as AxiosError<string>;
       setErrorMessage(
         axiosError.response?.data ?? "Order failed. Please try again.",
       );
+      return false;
     }
   };
 
-  const handleShippingClick = () => {
-    void handleSignUp();
-    navigate("/checkout");
+  const handleShippingClick = async () => {
+    const wasCreated = await handleSignUp();
+
+    if (wasCreated) {
+      navigate("/checkout");
+    }
   };
 
   return (

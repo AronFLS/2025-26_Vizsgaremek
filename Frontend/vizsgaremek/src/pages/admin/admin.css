@@ -1,6 +1,7 @@
 .postproduct-btn,
 .orders-btn,
 .past-orders-btn {
+  margin-top: 15px;
   border: 1px solid #f63049;
   padding: 10px 16px;
   cursor: pointer;
@@ -8,6 +9,7 @@
   overflow: visible;
   transform: none;
   scale: 1;
+  border-radius: 10px;
 }
 
 .postproduct-btn::before,

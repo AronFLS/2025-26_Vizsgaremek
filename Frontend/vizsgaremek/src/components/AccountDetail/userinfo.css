@@ -1,13 +1,14 @@
 .account-userinfo-section {
-  border: 1px solid #e7ebf2;
-  border-radius: 12px;
-  padding: 1rem;
-  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  border-radius: 26px;
+  padding: 25px;
 }
 
 .userinfo-grid {
   margin-top: 0.85rem;
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.7rem;
 }
 
@@ -17,21 +18,32 @@
   gap: 1rem;
   align-items: center;
   padding: 0.7rem 0.8rem;
-  background: #f8f9fc;
+  background: #ffffff;
   border-radius: 10px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #f1f1f1;
 }
 
-.userinfo-row span {
-  color: #4b5568;
+.account-userinfo-section .account-section-header .account-section-title {
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 25px;
+  color: #000000;
+  margin-bottom: -5px;
 }
 
-.userinfo-row strong {
-  color: #1f2937;
-  word-break: break-word;
-  text-align: right;
+.account-userinfo-section .account-section-header .account-section-subtitle {
+  margin-left: 10px;
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 20px;
 }
 
 @media (max-width: 640px) {
+  .userinfo-grid {
+    grid-template-columns: 1fr;
+  }
+
   .userinfo-row {
     flex-direction: column;
     align-items: flex-start;

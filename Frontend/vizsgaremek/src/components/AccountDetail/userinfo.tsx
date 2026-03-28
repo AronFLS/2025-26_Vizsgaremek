@@ -13,8 +13,10 @@ function UserInfo() {
   return (
     <section className="account-userinfo-section">
       <div className="account-section-header">
-        <h2>Account Information</h2>
-        <p>Basic personal details linked to your account.</p>
+        <p className="account-section-title">Account Information</p>
+        <p className="account-section-subtitle">
+          Basic personal details linked to your account.
+        </p>
       </div>
 
       <div className="userinfo-grid">

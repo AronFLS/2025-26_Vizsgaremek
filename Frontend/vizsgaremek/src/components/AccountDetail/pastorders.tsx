@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { AccountOrder } from "./activeorders";
-import "./pastorders.css";
+import "./activeorders.css";
 
 interface PastOrdersProps {
   orders: AccountOrder[];
