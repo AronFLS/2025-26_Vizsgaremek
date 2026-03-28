@@ -17,6 +17,8 @@ import { MobileMenu } from "./nav-components/MobileMenu";
 import { IoClose } from "react-icons/io5";
 import { useAccount } from "../../hooks/useAccount";
 
+import logo from "../../assets/logo.png";
+
 function Navbar() {
   // Media query and refs
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -80,7 +82,7 @@ function Navbar() {
           )}
 
           <NavLink to="/" className="nav-logo">
-            <span>Logo</span>
+            <img src={logo} alt="Logo" />
           </NavLink>
 
           {isAdmin && (

@@ -46,13 +46,14 @@
 /* LOGO */
 .nav-logo {
   justify-self: center;
-  color: rgb(0, 0, 0);
-  font-size: calc(26px * var(--nav-scale));
-  text-decoration: none;
-  border-radius: calc(99px * var(--nav-scale));
-  font-weight: bold;
+  height: 40px;
 }
-
+.nav-logo img {
+  
+  height: 47px;
+  width: auto;
+  transform: translateY(-5px);
+}
 /* ICONS */
 .nav-icons {
   justify-self: end;
