@@ -149,7 +149,7 @@ export function DiscountSlide() {
 
   return (
     <section className="discount-slide-container">
-      <h2 className="discount-slide-title">Discounted Products</h2>
+      <p className="discount-slide-title">Discounted Products</p>
 
       <div className="discount-carousel">
         <div className="discount-carousel__viewport" ref={emblaRef}>
@@ -170,7 +170,7 @@ export function DiscountSlide() {
                     </div>
 
                     <div className="discount-card__body">
-                      <h3 className="discount-card__name">{product.name}</h3>
+                      <p className="discount-card__name">{product.name}</p>
                       <p className="discount-card__description">
                         {formatProductSpecs(product.specs)}
                       </p>

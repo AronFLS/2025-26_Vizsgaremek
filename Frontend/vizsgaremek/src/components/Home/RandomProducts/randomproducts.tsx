@@ -35,7 +35,7 @@ function RandomProducts() {
           <>
             <p className="random-product-leftcolumn-name">{leftProduct.name}</p>
             <button className="random-product-leftcolumn-button" type="button">
-              Szeeeex
+              Buy Now
             </button>
             <img
               className="random-product-leftcolumn-image"
@@ -62,7 +62,7 @@ function RandomProducts() {
                   className="random-product-rightcolumn-button"
                   type="button"
                 >
-                  Button
+                  Buy Now
                 </button>
               </div>
             </>
@@ -84,7 +84,7 @@ function RandomProducts() {
                   className="random-product-rightcolumn-button"
                   type="button"
                 >
-                  Button
+                  Buy Now
                 </button>
               </div>
             </>

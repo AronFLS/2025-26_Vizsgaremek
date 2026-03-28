@@ -1,12 +1,13 @@
 .discount-slide-container {
   width: min(1200px, 100% - 2rem);
-  margin: 6rem auto 1.5rem;
+  margin: 2.25rem auto 1.5rem;
   padding: 1rem 0 3rem;
+  margin-top: 80px;
 }
 
 .discount-slide-title {
   margin: 0 0 1rem;
-  font-size: 1.6rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #1d1d1f;
 }
@@ -26,6 +27,7 @@
   display: flex;
   touch-action: pan-y pinch-zoom;
   margin-left: calc(var(--slide-spacing) * -1);
+  padding: 20px;
 }
 
 .discount-carousel__slide {
@@ -44,8 +46,15 @@
   text-decoration: none;
   color: inherit;
   overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
-
+.discount-card-link:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+}
 .discount-card__image-wrapper {
   width: 100%;
   height: 180px;
@@ -68,7 +77,7 @@
 
 .discount-card__name {
   margin: 0;
-  font-size: 0.98rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #1d1d1f;
 }
@@ -104,7 +113,7 @@
 }
 
 .discount-card__price {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #cf1f33;
 }
@@ -114,7 +123,7 @@
   color: #cf1f33;
   border-radius: 999px;
   padding: 0.18rem 0.5rem;
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -187,7 +196,7 @@
 @media (max-width: 620px) {
   .discount-slide-container {
     width: min(1200px, 100% - 1rem);
-    margin-top: 5rem;
+    margin-top: 1.75rem;
   }
 
   .discount-slide-title {

@@ -3,11 +3,10 @@ import "./Slide.css";
 import Autoplay from "embla-carousel-autoplay";
 import { useEffect, useState } from "react";
 import type { EmblaCarouselType } from "embla-carousel";
-import SlideTest1 from "../../../assets/SlideTest1.jpg";
-import SlideTest2 from "../../../assets/SlideTest2.jpg";
-// import SlideTest3 from "../../../assets/SlideTest3.jpg";
-import SlideTest4 from "../../../assets/SlideTest4.jpg";
-import SlideTest5 from "../../../assets/SlideTest5.jpg";
+import MacBookNeo from "../../../assets/MacBookNeoHomeSLide.jpg";
+import iPhoneAir from "../../../assets/iPhoneAirHomeSlide.png";
+import iPhone17Pro from "../../../assets/iPhone17ProHomeSlide.png";
+import MacbookAir from "../../../assets/MacBookAirHomeSlide.png";
 
 export function EmblaCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
@@ -35,16 +34,16 @@ export function EmblaCarousel() {
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
             <div className="embla__slide">
-              <img src={SlideTest1} alt="" />
+              <img src={MacBookNeo} alt="" />
             </div>
             <div className="embla__slide">
-              <img src={SlideTest2} alt="" />
+              <img src={iPhone17Pro} alt="" />
             </div>
             <div className="embla__slide">
-              <img src={SlideTest5} alt="" />
+              <img src={iPhoneAir} alt="" />
             </div>
             <div className="embla__slide">
-              <img src={SlideTest4} alt="" />
+              <img src={MacbookAir} alt="" />
             </div>
           </div>
         </div>
