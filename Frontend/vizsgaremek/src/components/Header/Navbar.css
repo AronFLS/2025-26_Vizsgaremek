@@ -49,10 +49,9 @@
   height: 40px;
 }
 .nav-logo img {
-  
-  height: 47px;
+  height: 42px;
   width: auto;
-  transform: translateY(-5px);
+  transform: translateY(-2px);
 }
 /* ICONS */
 .nav-icons {
@@ -195,12 +194,20 @@
 .input_error {
   border: 1.5px solid red !important;
   outline: none;
+  background-color: rgb(248, 248, 248);
+  height: 30px;
+  border-radius: 10px;
+  padding: 15px;
+  padding-left: 10px;
+  width: 100%;
+  margin-bottom: -5px;
 }
 .login-error {
   color: red;
   font-size: 0.65rem;
   margin-top: 5px;
   margin-bottom: -10px;
+  margin-left: 5px;
 }
 
 #signin-button {
@@ -220,6 +227,7 @@
   width: 100%;
   height: 30px;
   background: #f63049;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
   border-radius: 10px;
@@ -227,7 +235,8 @@
   cursor: pointer;
   transition: scale 0.3s ease;
 }
-#signin-button:hover {
+#signin-button:hover,
+#signout-button:hover {
   scale: 1.02;
 }
 
@@ -267,9 +276,10 @@ a {
   position: absolute;
   right: 22%;
   display: flex;
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: bold;
   text-decoration: none;
-  color: #000000;
+  color: #f63049;
 }
 
 /* Mobile menu  */

@@ -119,7 +119,6 @@ function Phones() {
       <IconButton
         size="medium"
         aria-label="close"
-        color="inherit"
         onClick={handleLoginSnackbarClose}
       >
         <IoCloseOutline />

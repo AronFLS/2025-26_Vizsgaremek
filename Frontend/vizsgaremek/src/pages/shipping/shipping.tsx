@@ -10,6 +10,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import { useNavigate } from "react-router-dom";
 
+const ZIPCODE_REGEX = /^\d+$/;
+
 function Shipping() {
   const navigate = useNavigate();
 
@@ -33,7 +35,7 @@ function Shipping() {
   const [paymentMethod, setPaymentMethod] =
     useState<string>("Cash on delivery");
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [zipcodeError, setZipcodeError] = useState<string>("");
 
   const { mutateAsync: registerAsync, isPending } = useMutation({
     mutationFn: () => {
@@ -64,16 +66,19 @@ function Shipping() {
 
   const handleSignUp = async (): Promise<boolean> => {
     setErrorMessage("");
-    setSuccessMessage("");
 
     if (!addressLine || !city || !zipcode || !paymentMethod) {
       setErrorMessage("Please fill in all fields.");
       return false;
     }
 
+    if (!ZIPCODE_REGEX.test(zipcode)) {
+      setZipcodeError("Zip code must contain only numbers.");
+      return false;
+    }
+
     try {
       await registerAsync();
-      setSuccessMessage("Order placed successfully.");
       setAddressLine("");
       setCity("");
       setZipcode("");
@@ -111,44 +116,45 @@ function Shipping() {
             </p>
 
             <p className="shipping-label">Payment method</p>
-            <FormControl>
-              <RadioGroup
-                aria-labelledby="radio-buttons-group-label"
-                defaultValue="Cash on delivery"
-                name="radio-buttons-group"
-                value={paymentMethod}
-                onChange={(event) => setPaymentMethod(event.target.value)}
-              >
-                <FormControlLabel
-                  value="Cash on delivery"
-                  control={<Radio sx={radioSx} />}
-                  label="Cash on delivery"
-                  sx={radioLabelSx}
-                />
-                <FormControlLabel
-                  value="Credit card"
-                  disabled
-                  control={<Radio sx={radioSx} />}
-                  label="Credit card"
-                  sx={radioLabelSx}
-                />
-                <FormControlLabel
-                  value="PayPal"
-                  disabled
-                  control={<Radio sx={radioSx} />}
-                  label="PayPal"
-                  sx={radioLabelSx}
-                />
-                <FormControlLabel
-                  value="Apple Pay"
-                  disabled
-                  control={<Radio sx={radioSx} />}
-                  label="Apple Pay"
-                  sx={radioLabelSx}
-                />
-              </RadioGroup>
-            </FormControl>
-
+            <div className="shipping-paymentmethod-radio-group">
+              <FormControl>
+                <RadioGroup
+                  aria-labelledby="radio-buttons-group-label"
+                  defaultValue="Cash on delivery"
+                  name="radio-buttons-group"
+                  value={paymentMethod}
+                  onChange={(event) => setPaymentMethod(event.target.value)}
+                >
+                  <FormControlLabel
+                    value="Cash on delivery"
+                    control={<Radio sx={radioSx} />}
+                    label="Cash on delivery"
+                    sx={radioLabelSx}
+                  />
+                  <FormControlLabel
+                    value="Credit card"
+                    disabled
+                    control={<Radio sx={radioSx} />}
+                    label="Credit card"
+                    sx={radioLabelSx}
+                  />
+                  <FormControlLabel
+                    value="PayPal"
+                    disabled
+                    control={<Radio sx={radioSx} />}
+                    label="PayPal"
+                    sx={radioLabelSx}
+                  />
+                  <FormControlLabel
+                    value="Apple Pay"
+                    disabled
+                    control={<Radio sx={radioSx} />}
+                    label="Apple Pay"
+                    sx={radioLabelSx}
+                  />
+                </RadioGroup>
+              </FormControl>
+            </div>
             <p className="shipping-label">Address line</p>
             <input
               type="text"
@@ -173,10 +179,16 @@ function Shipping() {
                 <p className="shipping-label">Zip code</p>
                 <input
                   type="text"
-                  className="shipping-input"
+                  className={`shipping-input ${zipcodeError ? "input-error" : ""}`}
                   value={zipcode}
-                  onChange={(e) => setZipcode(e.target.value)}
+                  onChange={(e) => {
+                    setZipcode(e.target.value);
+                    setZipcodeError("");
+                  }}
                 />
+                {zipcodeError && (
+                  <p className="zipcode-error-message">{zipcodeError}</p>
+                )}
               </div>
             </div>
 
@@ -189,9 +201,6 @@ function Shipping() {
             </button>
 
             {errorMessage && <p className="error-message">{errorMessage}</p>}
-            {successMessage && (
-              <p className="success-message">{successMessage}</p>
-            )}
           </div>
         </>
       )}

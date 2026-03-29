@@ -23,9 +23,11 @@
   gap: 20px;
   padding: 20px;
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border-radius: 16px;
   background-color: #ffffff;
   align-items: flex-start;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.28);
 }
 
 .cart-product-image {
@@ -214,9 +216,14 @@
   font-weight: 600;
   color: white;
   background-color: #f63049;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: scale 0.3s ease;
+}
+.checkout-btn:hover {
+  scale: 1.02;
 }
 
 @media (max-width: 768px) {

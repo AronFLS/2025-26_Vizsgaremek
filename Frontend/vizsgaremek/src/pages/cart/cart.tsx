@@ -127,78 +127,84 @@ function Cart() {
     <div className="cart-page">
       <h1>Shopping Cart</h1>
       <div className="cart-products">
-        {cart.products.map((item) => (
-          <div key={item.product.id} className="cart-product-item">
-            <div className="cart-product-image">
-              <img src={item.product.imageUrl} alt={item.product.name} />
-            </div>
-            <div className="cart-product-details">
-              <h2>{item.product.name}</h2>
-              <p className="cart-product-specs">
-                {formatProductSpecs(item.product.specs as ProductSpecs)}
-              </p>
-            </div>
-            <div className="quantity-actions">
-              <div className="quantity-control">
+        {cart.products.map((item) => {
+          const currentQuantity = quantities[item.product.id] || item.quantity;
+          const originalTotalPrice = item.product.price * currentQuantity;
+          const discountedTotalPrice =
+            item.product.price *
+            (1 - (item.product.discount || 0) / 100) *
+            currentQuantity;
+
+          return (
+            <div key={item.product.id} className="cart-product-item">
+              <div className="cart-product-image">
+                <img src={item.product.imageUrl} alt={item.product.name} />
+              </div>
+              <div className="cart-product-details">
+                <h2>{item.product.name}</h2>
+                <p className="cart-product-specs">
+                  {formatProductSpecs(item.product.specs as ProductSpecs)}
+                </p>
+              </div>
+              <div className="quantity-actions">
+                <div className="quantity-control">
+                  <button
+                    className="quantity-btn quantity-btn-minus"
+                    onClick={() => handleDecrement(item.product.id)}
+                  >
+                    −
+                  </button>
+                  <input
+                    type="number"
+                    className="quantity-input"
+                    value={currentQuantity}
+                    onChange={(e) =>
+                      handleQuantityChange(
+                        item.product.id,
+                        parseInt(e.target.value) || 1,
+                      )
+                    }
+                    min="1"
+                  />
+                  <button
+                    className="quantity-btn quantity-btn-plus"
+                    onClick={() => handleIncrement(item.product.id)}
+                  >
+                    +
+                  </button>
+                </div>
                 <button
-                  className="quantity-btn quantity-btn-minus"
-                  onClick={() => handleDecrement(item.product.id)}
+                  type="button"
+                  className="remove-from-cart-btn"
+                  onClick={() => handleRemoveFromCart(item.product.id)}
                 >
-                  −
-                </button>
-                <input
-                  type="number"
-                  className="quantity-input"
-                  value={quantities[item.product.id] || item.quantity}
-                  onChange={(e) =>
-                    handleQuantityChange(
-                      item.product.id,
-                      parseInt(e.target.value) || 1,
-                    )
-                  }
-                  min="1"
-                />
-                <button
-                  className="quantity-btn quantity-btn-plus"
-                  onClick={() => handleIncrement(item.product.id)}
-                >
-                  +
+                  Remove from cart
                 </button>
               </div>
-              <button
-                type="button"
-                className="remove-from-cart-btn"
-                onClick={() => handleRemoveFromCart(item.product.id)}
-              >
-                Remove from cart
-              </button>
-            </div>
-            <div className="cart-product-right">
-              {item.product.discount && item.product.discount > 0 ? (
-                <div className="cart-product-price-block">
-                  <p className="cart-product-original-price">
-                    {formatPrice(item.product.price)} Ft
+              <div className="cart-product-right">
+                {item.product.discount && item.product.discount > 0 ? (
+                  <div className="cart-product-price-block">
+                    <p className="cart-product-original-price">
+                      {formatPrice(originalTotalPrice)} Ft
+                    </p>
+                    <p className="cart-product-discounted-price">
+                      {formatPrice(discountedTotalPrice)} Ft
+                    </p>
+                  </div>
+                ) : (
+                  <p className="cart-product-price">
+                    {formatPrice(originalTotalPrice)} Ft
                   </p>
-                  <p className="cart-product-discounted-price">
-                    {formatPrice(
-                      item.product.price * (1 - item.product.discount / 100),
-                    )}{" "}
-                    Ft
+                )}
+                {item.product.discount && item.product.discount > 0 && (
+                  <p className="cart-product-discount">
+                    Saved {item.product.discount}%
                   </p>
-                </div>
-              ) : (
-                <p className="cart-product-price">
-                  {formatPrice(item.product.price)} Ft
-                </p>
-              )}
-              {item.product.discount && item.product.discount > 0 && (
-                <p className="cart-product-discount">
-                  Saved {item.product.discount}%
-                </p>
-              )}
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       <button className="checkout-btn" onClick={() => navigate("/shipping")}>
         Proceed to Checkout

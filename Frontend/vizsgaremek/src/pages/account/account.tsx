@@ -3,6 +3,7 @@ import "./account.css";
 import { axiosInstance } from "../../axios";
 import { useMutation } from "@tanstack/react-query";
 import { useAccount } from "../../hooks/useAccount";
+import { useNavigate } from "react-router-dom";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%_]).{12,24}$/;
@@ -21,10 +22,10 @@ function Account() {
   const [passwordInvalid, setPasswordInvalid] = useState(false);
   const [confirmPasswordInvalid, setConfirmPasswordInvalid] = useState(false);
   const [passwordError, setPasswordError] = useState<string>("");
-  const [successMessage, setSuccessMessage] = useState<string>("");
   const [passwordMatchError, setPasswordMatchError] = useState<string>("");
   const [phoneNumberError, setPhoneNumberError] = useState<string>("");
   const [phoneNumberInvalid, setPhoneNumberInvalid] = useState(false);
+  const navigate = useNavigate();
 
   const { mutateAsync: registerAsync, isPending } = useMutation({
     mutationFn: () => {
@@ -73,7 +74,6 @@ function Account() {
 
   const handleSignUp = async () => {
     setErrorMessage("");
-    setSuccessMessage("");
 
     if (
       !firstName ||
@@ -115,13 +115,8 @@ function Account() {
 
     try {
       await registerAsync();
-      setSuccessMessage("Account created successfully.");
-      setFirstName("");
-      setLastName("");
-      setPhoneNumber("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
+      navigate("/", { state: { signupSuccess: true } });
+      return;
     } catch {
       setErrorMessage("Registration failed. Please try again.");
     }
@@ -216,16 +211,15 @@ function Account() {
 
             <button
               id="signup-button"
-              onClick={handleSignUp}
+              onClick={() => {
+                void handleSignUp();
+              }}
               disabled={isPending}
             >
               {isPending ? "Signing up..." : "Sign up"}
             </button>
 
             {errorMessage && <p className="error-message">{errorMessage}</p>}
-            {successMessage && (
-              <p className="success-message">{successMessage}</p>
-            )}
           </div>
         </>
       )}

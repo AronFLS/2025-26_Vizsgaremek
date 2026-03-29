@@ -20,8 +20,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/phones" element={<Phones />} />
-        <Route path="/notebooks" element={<Notebooks />} />
+        <Route path="/iphones" element={<Phones />} />
+        <Route path="/macbooks" element={<Notebooks />} />
         <Route path="/accessories" element={<Accessories />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
