@@ -4,10 +4,14 @@
   position: relative;
   display: flex;
   gap: 3rem;
+  width: min(1000px, calc(100% - 2rem));
   max-width: 1000px;
   margin: 20px auto 60px;
   padding: 2.5rem;
   background: #ffffff;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 40px;
 }
 
 .return-icon {
@@ -126,11 +130,16 @@
   --color: #f63049;
   background: #ffffff00;
   border: 1px solid var(--color);
+  color: var(--color);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
   border-radius: 10px;
   cursor: pointer;
+  position: relative;
   transition:
     background 0.2s ease,
     transform 0.15s ease;
+  z-index: 1;
 }
 
 .cartbtn::before {
@@ -141,18 +150,15 @@
   height: 120px;
   z-index: -1;
   border-radius: 80%;
+  top: 100%;
+  left: 100%;
+  transition: 0.5s all;
 }
 
 .cartbtn:hover {
   color: white;
   scale: calc(1.05);
   transition: 0.5s;
-}
-
-.cartbtn:before {
-  top: 100%;
-  left: 100%;
-  transition: 0.5s all;
 }
 
 .cartbtn:hover::before {

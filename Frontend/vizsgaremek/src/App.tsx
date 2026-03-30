@@ -2,10 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Header/Navbar";
 import Home from "./pages/home/Home";
-import Accessories from "./pages/products/Accessories";
+import Products from "./pages/products/products";
 import Cart from "./pages/cart/cart";
-import Phones from "./pages/products/phones";
-import Notebooks from "./pages/products/Notebooks";
 import Account from "./pages/account/account";
 import Admin from "./pages/admin/admin";
 import ProductDetail from "./pages/productdetail/ProductDetail";
@@ -20,9 +18,10 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/iphones" element={<Phones />} />
-        <Route path="/macbooks" element={<Notebooks />} />
-        <Route path="/accessories" element={<Accessories />} />
+        <Route path="/iphones" element={<Products />} />
+        <Route path="/macbooks" element={<Products />} />
+        <Route path="/accessories" element={<Products />} />
+        <Route path="/products/:category" element={<Products />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/shipping" element={<Shipping />} />

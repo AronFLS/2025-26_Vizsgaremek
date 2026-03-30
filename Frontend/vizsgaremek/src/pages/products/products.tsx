@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../../axios";
 import {
@@ -23,6 +23,7 @@ interface Product {
   discount?: number;
   specs: ProductSpecs;
   categoryId: number;
+  storageQuantity?: number;
 }
 
 interface Category {
@@ -30,7 +31,56 @@ interface Category {
   name: string;
 }
 
-function Phones() {
+// Configuration for each product category
+const categoryConfig: Record<
+  string,
+  {
+    title: string;
+    searchKeywords: string[];
+    showLoginFeature: boolean;
+    checkStockQuantity: boolean;
+  }
+> = {
+  phones: {
+    title: "iPhones",
+    searchKeywords: ["phone", "iphone"],
+    showLoginFeature: true,
+    checkStockQuantity: false,
+  },
+  accessories: {
+    title: "Accessories",
+    searchKeywords: ["accessories"],
+    showLoginFeature: false,
+    checkStockQuantity: true,
+  },
+  macbooks: {
+    title: "MacBooks",
+    searchKeywords: ["macbook"],
+    showLoginFeature: false,
+    checkStockQuantity: true,
+  },
+};
+
+function Products() {
+  const { category: paramCategory } = useParams<{ category?: string }>();
+  const location = useLocation();
+
+  // Determine category from route parameter or pathname
+  let category = paramCategory?.toLowerCase() || "phones";
+
+  if (!paramCategory) {
+    const pathname = location.pathname.toLowerCase();
+    if (pathname.includes("iphone")) {
+      category = "phones";
+    } else if (pathname.includes("macbook")) {
+      category = "macbooks";
+    } else if (pathname.includes("accessories")) {
+      category = "accessories";
+    }
+  }
+
+  const config = categoryConfig[category] || categoryConfig.phones;
+
   const [loginSnackbarOpen, setLoginSnackbarOpen] = React.useState(false);
   const [cartSuccessSnackbarOpen, setCartSuccessSnackbarOpen] =
     React.useState(false);
@@ -65,15 +115,15 @@ function Phones() {
     },
   );
 
-  const phoneCategoryId = categories.find(
-    (c) =>
-      c.name.toLowerCase().includes("phone") ||
-      c.name.toLowerCase().includes("iphone"),
+  const categoryId = categories.find((c) =>
+    config.searchKeywords.some((keyword) =>
+      c.name.toLowerCase().includes(keyword),
+    ),
   )?.id;
 
-  const phones =
-    phoneCategoryId != null
-      ? products.filter((p) => p.categoryId === phoneCategoryId)
+  const filteredProducts =
+    categoryId != null
+      ? products.filter((p) => p.categoryId === categoryId)
       : [];
 
   if (productsLoading || categoriesLoading) {
@@ -126,12 +176,36 @@ function Phones() {
     </React.Fragment>
   );
 
+  const isOutOfStock = (product: Product): boolean => {
+    if (config.checkStockQuantity && product.storageQuantity !== undefined) {
+      return product.storageQuantity === 0;
+    }
+    return false;
+  };
+
+  const handleAddToCart = (productId: number) => {
+    if (config.showLoginFeature) {
+      if (isLoggedIn) {
+        addProductToCart(productId);
+      } else {
+        handleLoginSnackbarOpen();
+      }
+    }
+  };
+
   return (
     <div className="products-page">
-      <h1>iPhones</h1>
+      <h1>{config.title}</h1>
       <div className="products-grid">
-        {phones.map((product) => (
-          <div key={product.id} className={`product-card`}>
+        {filteredProducts.map((product) => (
+          <div
+            key={product.id}
+            className={`product-card${
+              config.checkStockQuantity && isOutOfStock(product)
+                ? " product-card--out-of-stock"
+                : ""
+            }`}
+          >
             <Link
               to={`/product/${product.id}`}
               style={{ textDecoration: "none" }}
@@ -166,42 +240,52 @@ function Phones() {
 
               <button
                 className="product-card__btn"
-                onClick={
-                  isLoggedIn
-                    ? () => addProductToCart(product.id)
-                    : handleLoginSnackbarOpen
+                onClick={() => handleAddToCart(product.id)}
+                disabled={
+                  config.checkStockQuantity
+                    ? isOutOfStock(product)
+                    : addToCartPending
                 }
-                disabled={addToCartPending}
               >
-                {addToCartPending ? "Adding..." : "Add to cart"}
+                {config.checkStockQuantity
+                  ? isOutOfStock(product)
+                    ? "Out of stock"
+                    : "Add to cart"
+                  : addToCartPending
+                    ? "Adding..."
+                    : "Add to cart"}
               </button>
             </div>
           </div>
         ))}
       </div>
-      <Snackbar
-        open={loginSnackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleLoginSnackbarClose}
-        message="Please log in to add products to your cart."
-        action={loginSnackbarAction}
-      />
-      <Snackbar
-        open={cartSuccessSnackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleCartSuccessSnackbarClose}
-      >
-        <Alert
-          onClose={handleCartSuccessSnackbarClose}
-          severity="success"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          Product added to cart successfully.
-        </Alert>
-      </Snackbar>
+      {config.showLoginFeature && (
+        <>
+          <Snackbar
+            open={loginSnackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleLoginSnackbarClose}
+            message="Please log in to add products to your cart."
+            action={loginSnackbarAction}
+          />
+          <Snackbar
+            open={cartSuccessSnackbarOpen}
+            autoHideDuration={3000}
+            onClose={handleCartSuccessSnackbarClose}
+          >
+            <Alert
+              onClose={handleCartSuccessSnackbarClose}
+              severity="success"
+              variant="filled"
+              sx={{ width: "100%" }}
+            >
+              Product added to cart successfully.
+            </Alert>
+          </Snackbar>
+        </>
+      )}
     </div>
   );
 }
 
-export default Phones;
+export default Products;

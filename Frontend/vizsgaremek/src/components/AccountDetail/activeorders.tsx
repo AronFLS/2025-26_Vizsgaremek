@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./activeorders.css";
+import "./orders.css";
 
 interface OrderProduct {
   quantity: number;
@@ -41,10 +41,12 @@ function ActiveOrders({ orders, isLoading, errorMessage }: ActiveOrdersProps) {
   };
 
   return (
-    <section className="account-orders-section">
-      <div className="account-section-header">
-        <h2>Active Orders</h2>
-        <p>Track your ongoing orders and check their status.</p>
+    <section className="accountdetails-orders-section">
+      <div className="accountdetails-section-header">
+        <p className="accountdetails-header-title">Active Orders</p>
+        <p className="accountdetails-header-subtitle">
+          Track your ongoing orders and check their status.
+        </p>
       </div>
 
       {isLoading && <p className="orders-message">Loading active orders...</p>}

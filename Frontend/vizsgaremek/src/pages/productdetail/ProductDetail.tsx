@@ -28,8 +28,8 @@ interface Category {
 }
 
 const categoryRouteMap: Record<string, string> = {
-  iphone: "/phones",
-  macbook: "/notebooks",
+  iphone: "/iphones",
+  macbook: "/macbooks",
   accessories: "/accessories",
 };
 

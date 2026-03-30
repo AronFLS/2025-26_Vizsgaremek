@@ -1,0 +1,131 @@
+.accountdetails-orders-section {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  border-radius: 26px;
+  padding: 25px;
+}
+.accountdetails-orders-section
+  .accountdetails-section-header
+  .accountdetails-header-title {
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 25px;
+  color: #000000;
+  margin-bottom: -5px;
+}
+.accountdetails-orders-section
+  .accountdetails-section-header
+  .accountdetails-header-subtitle {
+  margin-left: 10px;
+  font-size: 16px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+.accountdetails-orders-section .orders-message {
+  margin-top: 0.9rem;
+  color: #4d576a;
+}
+
+.accountdetails-orders-section .orders-error {
+  color: #c53030;
+}
+
+.accountdetails-orders-section .orders-list {
+  margin-top: 0.9rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 0.85rem;
+}
+
+.accountdetails-orders-section .order-summary-card {
+  border: 1px solid #f1f1f1;
+  border-radius: 10px;
+  padding: 20px;
+  background: #ffffff;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.accountdetails-orders-section .order-summary-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.accountdetails-orders-section .order-summary-top h3 {
+  margin: 0;
+  font-size: 1.03rem;
+}
+
+.accountdetails-orders-section .order-summary-top p {
+  margin: 0.25rem 0 0;
+  color: #70798d;
+}
+
+.accountdetails-orders-section .order-status-chip {
+  align-self: flex-start;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0f5132;
+  background: #d1f5e1;
+}
+
+.accountdetails-orders-section .order-status-chip-muted {
+  color: #475569;
+  background: #e2e8f0;
+}
+
+.accountdetails-orders-section .order-summary-meta {
+  margin-top: 0.7rem;
+  color: #30384a;
+}
+
+.accountdetails-orders-section .toggle-order-btn {
+  margin-top: 0.7rem;
+  border: 1px solid #d6dcec;
+  background: #ffffff;
+  color: #2e3a59;
+  border-radius: 8px;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+}
+
+.accountdetails-orders-section .toggle-order-btn:hover {
+  background: #f1f4fb;
+}
+
+.accountdetails-orders-section .order-details-panel {
+  margin-top: 0.75rem;
+  border-top: 1px dashed #dde3f0;
+  padding-top: 0.75rem;
+}
+
+.accountdetails-orders-section .order-products-grid {
+  margin-top: 0.65rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.accountdetails-orders-section .order-product-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.accountdetails-orders-section .order-total-row {
+  margin: 0.65rem 0 0;
+}
+
+@media (max-width: 900px) {
+  .accountdetails-orders-section .orders-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .accountdetails-orders-section .order-summary-top {
+    flex-direction: column;
+  }
+}

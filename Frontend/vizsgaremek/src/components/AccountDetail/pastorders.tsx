@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { AccountOrder } from "./activeorders";
-import "./activeorders.css";
+import "./orders.css";
 
 interface PastOrdersProps {
   orders: AccountOrder[];
@@ -22,10 +22,12 @@ function PastOrders({ orders, isLoading, errorMessage }: PastOrdersProps) {
   };
 
   return (
-    <section className="account-past-orders-section">
-      <div className="account-section-header">
-        <h2>Past Orders</h2>
-        <p>See completed or archived orders from your history.</p>
+    <section className="accountdetails-orders-section">
+      <div className="accountdetails-section-header">
+        <p className="accountdetails-header-title">Past Orders</p>
+        <p className="accountdetails-header-subtitle">
+          See completed or archived orders from your history.
+        </p>
       </div>
 
       {isLoading && <p className="orders-message">Loading past orders...</p>}
