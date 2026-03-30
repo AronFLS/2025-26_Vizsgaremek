@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../../../axios";
 import { useAccount } from "../../../../hooks/useAccount";
+import { Link } from "react-router-dom";
 
 export function Logout() {
   const { data } = useAccount();
@@ -18,9 +19,9 @@ export function Logout() {
     <>
       <div className="account-row">
         <p className="HiName">Hi, {firstName}!</p>
-        <a href="/accountdetail" className="AccountDetailsLink">
+        <Link to="/accountdetail" className="AccountDetailsLink">
           Account details
-        </a>
+        </Link>
       </div>
       <input
         id="signout-button"

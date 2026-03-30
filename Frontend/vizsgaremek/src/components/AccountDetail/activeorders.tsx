@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { formatPrice } from "../../utils/price";
 import "./orders.css";
 
 interface OrderProduct {
@@ -105,7 +106,7 @@ function ActiveOrders({ orders, isLoading, errorMessage }: ActiveOrdersProps) {
                             {item.product.name} x {item.quantity}
                           </span>
                           <span>
-                            {(item.product.price * item.quantity).toFixed(0)}Ft
+                            {formatPrice(item.product.price * item.quantity)} Ft
                           </span>
                         </div>
                       ))}
@@ -113,7 +114,7 @@ function ActiveOrders({ orders, isLoading, errorMessage }: ActiveOrdersProps) {
 
                     <p className="order-total-row">
                       Total:{" "}
-                      <strong>{getOrderTotal(order).toFixed(0)}Ft</strong>
+                      <strong>{formatPrice(getOrderTotal(order))} Ft</strong>
                     </p>
                   </div>
                 )}

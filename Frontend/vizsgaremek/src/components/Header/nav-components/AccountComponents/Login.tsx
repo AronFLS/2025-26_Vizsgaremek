@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../../../axios";
+import { Link } from "react-router-dom";
 
 export function Login() {
   const [email, setEmail] = useState<string>("");
@@ -69,7 +70,7 @@ export function Login() {
         Sign in
       </button>
       <p className="p-noaccount">
-        Don't have an account? <a href="/account">Sign up</a>
+        Don't have an account? <Link to="/account">Sign up</Link>
       </p>
     </>
   );

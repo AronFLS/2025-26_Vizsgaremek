@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { AccountOrder } from "./activeorders";
+import { formatPrice } from "../../utils/price";
 import "./orders.css";
 
 interface PastOrdersProps {
@@ -88,7 +89,7 @@ function PastOrders({ orders, isLoading, errorMessage }: PastOrdersProps) {
                             {item.product.name} x {item.quantity}
                           </span>
                           <span>
-                            {(item.product.price * item.quantity).toFixed(0)}Ft
+                            {formatPrice(item.product.price * item.quantity)} Ft
                           </span>
                         </div>
                       ))}
@@ -96,7 +97,7 @@ function PastOrders({ orders, isLoading, errorMessage }: PastOrdersProps) {
 
                     <p className="order-total-row">
                       Total:{" "}
-                      <strong>{getOrderTotal(order).toFixed(0)}Ft</strong>
+                      <strong>{formatPrice(getOrderTotal(order))} Ft</strong>
                     </p>
                   </div>
                 )}
