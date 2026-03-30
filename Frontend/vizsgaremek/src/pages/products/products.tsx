@@ -33,7 +33,6 @@ interface Category {
   name: string;
 }
 
-// Configuration for each product category
 const categoryConfig: Record<
   string,
   {
@@ -67,7 +66,6 @@ function Products() {
   const { category: paramCategory } = useParams<{ category?: string }>();
   const location = useLocation();
 
-  // Determine category from route parameter or pathname
   let category = paramCategory?.toLowerCase() || "phones";
 
   if (!paramCategory) {
@@ -195,13 +193,12 @@ function Products() {
   };
 
   const handleAddToCart = (productId: number) => {
-    if (config.showLoginFeature) {
-      if (isLoggedIn) {
-        addProductToCart(productId);
-      } else {
-        handleLoginSnackbarOpen();
-      }
+    if (!isLoggedIn) {
+      handleLoginSnackbarOpen();
+      return;
     }
+
+    addProductToCart(productId);
   };
 
   return (
@@ -282,31 +279,27 @@ function Products() {
           </div>
         ))}
       </div>
-      {config.showLoginFeature && (
-        <>
-          <Snackbar
-            open={loginSnackbarOpen}
-            autoHideDuration={6000}
-            onClose={handleLoginSnackbarClose}
-            message="Please log in to add products to your cart."
-            action={loginSnackbarAction}
-          />
-          <Snackbar
-            open={cartSuccessSnackbarOpen}
-            autoHideDuration={3000}
-            onClose={handleCartSuccessSnackbarClose}
-          >
-            <Alert
-              onClose={handleCartSuccessSnackbarClose}
-              severity="success"
-              variant="filled"
-              sx={{ width: "100%" }}
-            >
-              Product added to cart successfully.
-            </Alert>
-          </Snackbar>
-        </>
-      )}
+      <Snackbar
+        open={loginSnackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleLoginSnackbarClose}
+        message="Please log in to add products to your cart."
+        action={loginSnackbarAction}
+      />
+      <Snackbar
+        open={cartSuccessSnackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleCartSuccessSnackbarClose}
+      >
+        <Alert
+          onClose={handleCartSuccessSnackbarClose}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          Product added to cart successfully.
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
