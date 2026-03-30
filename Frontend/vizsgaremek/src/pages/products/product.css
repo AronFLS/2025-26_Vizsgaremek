@@ -19,7 +19,52 @@
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 24px;
 }
+/* ── Header ───────────────────────────────────────────── */
+.products-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
 
+.products-page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.products-search-bar-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 250px;
+  display: flex;
+  align-items: center;
+}
+
+.products-search-bar {
+  width: 100%;
+  padding: 10px 16px 10px 40px;
+  margin: 0;
+  border-radius: 40px;
+  font-size: 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+.products-search-bar:focus {
+  outline: none;
+  border-color: rgba(246, 48, 73, 0.5);
+  box-shadow: 0 4px 10px rgba(246, 48, 73, 0.5);
+}
+
+.products-search-bar-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 1.3rem;
+  color: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
 /* ── Card ─────────────────────────────────────────────────── */
 .products-page .product-card {
   display: flex;

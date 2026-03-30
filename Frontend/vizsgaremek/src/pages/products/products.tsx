@@ -8,12 +8,14 @@ import {
 import { formatPrice } from "../../utils/price";
 import "./product.css";
 import * as React from "react";
+import { useState } from "react";
 import { useAccount } from "../../hooks/useAccount";
 import { IoCloseOutline } from "react-icons/io5";
 import Snackbar from "@mui/material/Snackbar";
 import type { SnackbarCloseReason } from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import Alert from "@mui/material/Alert";
+import { IoSearchOutline } from "react-icons/io5";
 
 interface Product {
   id: number;
@@ -84,6 +86,7 @@ function Products() {
   const [loginSnackbarOpen, setLoginSnackbarOpen] = React.useState(false);
   const [cartSuccessSnackbarOpen, setCartSuccessSnackbarOpen] =
     React.useState(false);
+  const [query, setQuery] = useState("");
 
   const { data: products = [], isLoading: productsLoading } = useQuery<
     Product[]
@@ -123,7 +126,15 @@ function Products() {
 
   const filteredProducts =
     categoryId != null
-      ? products.filter((p) => p.categoryId === categoryId)
+      ? products
+          .filter((p) => p.categoryId === categoryId)
+          .filter((p) => {
+            const lowerQuery = query.toLowerCase();
+            const matchesName = p.name.toLowerCase().includes(lowerQuery);
+            const specsString = formatProductSpecs(p.specs).toLowerCase();
+            const matchesSpecs = specsString.includes(lowerQuery);
+            return matchesName || matchesSpecs;
+          })
       : [];
 
   if (productsLoading || categoriesLoading) {
@@ -195,7 +206,19 @@ function Products() {
 
   return (
     <div className="products-page">
-      <h1>{config.title}</h1>
+      <div className="products-page-header">
+        <p className="products-page-title">{config.title}</p>
+        <div className="products-search-bar-wrapper">
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="products-search-bar"
+          />
+          <IoSearchOutline className="products-search-bar-icon" />
+        </div>
+      </div>
       <div className="products-grid">
         {filteredProducts.map((product) => (
           <div
