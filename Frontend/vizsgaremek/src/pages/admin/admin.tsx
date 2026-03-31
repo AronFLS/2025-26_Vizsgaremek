@@ -3,45 +3,53 @@ import ActiveOrders from "../../components/Admin/activeorders";
 import PostProduct from "../../components/Admin/postproduct";
 import PastOrders from "../../components/Admin/pastorders";
 import "./admin.css";
+import { useAccount } from "../../hooks/useAccount";
 
 function Admin() {
   const [activeSection, setActiveSection] = useState<
     "postproduct" | "orders" | "pastorders"
   >("postproduct");
+  const { isAdmin } = useAccount();
 
   return (
-    <>
-      <div className="admin-buttons">
-        <button
-          className={`postproduct-btn ${
-            activeSection === "postproduct" ? "btn-active" : "btn-inactive"
-          }`}
-          onClick={() => setActiveSection("postproduct")}
-        >
-          Post Product/Spec
-        </button>
-        <button
-          className={`orders-btn ${
-            activeSection === "orders" ? "btn-active" : "btn-inactive"
-          }`}
-          onClick={() => setActiveSection("orders")}
-        >
-          ActiveOrders
-        </button>
-        <button
-          className={`past-orders-btn ${
-            activeSection === "pastorders" ? "btn-active" : "btn-inactive"
-          }`}
-          onClick={() => setActiveSection("pastorders")}
-        >
-          PastOrders
-        </button>
-      </div>
+    <div>
+      {!isAdmin ? (
+        <p style={{ textAlign: "center" }}>you aren't an admin</p>
+      ) : (
+        <>
+          <div className="admin-buttons">
+            <button
+              className={`postproduct-btn ${
+                activeSection === "postproduct" ? "btn-active" : "btn-inactive"
+              }`}
+              onClick={() => setActiveSection("postproduct")}
+            >
+              Post Product/Spec
+            </button>
+            <button
+              className={`orders-btn ${
+                activeSection === "orders" ? "btn-active" : "btn-inactive"
+              }`}
+              onClick={() => setActiveSection("orders")}
+            >
+              ActiveOrders
+            </button>
+            <button
+              className={`past-orders-btn ${
+                activeSection === "pastorders" ? "btn-active" : "btn-inactive"
+              }`}
+              onClick={() => setActiveSection("pastorders")}
+            >
+              PastOrders
+            </button>
+          </div>
 
-      {activeSection === "postproduct" && <PostProduct />}
-      {activeSection === "orders" && <ActiveOrders />}
-      {activeSection === "pastorders" && <PastOrders />}
-    </>
+          {activeSection === "postproduct" && <PostProduct />}
+          {activeSection === "orders" && <ActiveOrders />}
+          {activeSection === "pastorders" && <PastOrders />}
+        </>
+      )}
+    </div>
   );
 }
 

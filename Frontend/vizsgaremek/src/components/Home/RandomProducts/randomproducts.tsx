@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../../../axios";
 import "./randomproducts.css";
+import { Link } from "react-router-dom";
 
 interface Product {
   id: number;
@@ -34,9 +35,14 @@ function RandomProducts() {
         {leftProduct && (
           <>
             <p className="random-product-leftcolumn-name">{leftProduct.name}</p>
-            <button className="random-product-leftcolumn-button" type="button">
-              Buy Now
-            </button>
+            <Link to={`/product/${leftProduct.id}`}>
+              <button
+                className="random-product-leftcolumn-button"
+                type="button"
+              >
+                Buy Now
+              </button>
+            </Link>
             <img
               className="random-product-leftcolumn-image"
               src={leftProduct.imageUrl}
@@ -58,12 +64,14 @@ function RandomProducts() {
                 <p className="random-product-rightcolumn-name">
                   {topRightProduct.name}
                 </p>
-                <button
-                  className="random-product-rightcolumn-button"
-                  type="button"
-                >
-                  Buy Now
-                </button>
+                <Link to={`/product/${topRightProduct.id}`}>
+                  <button
+                    className="random-product-rightcolumn-button"
+                    type="button"
+                  >
+                    Buy Now
+                  </button>
+                </Link>
               </div>
             </>
           )}
@@ -80,12 +88,14 @@ function RandomProducts() {
                 <p className="random-product-rightcolumn-name">
                   {bottomRightProduct.name}
                 </p>
-                <button
-                  className="random-product-rightcolumn-button"
-                  type="button"
-                >
-                  Buy Now
-                </button>
+                <Link to={`/product/${bottomRightProduct.id}`}>
+                  <button
+                    className="random-product-rightcolumn-button"
+                    type="button"
+                  >
+                    Buy Now
+                  </button>
+                </Link>
               </div>
             </>
           )}
