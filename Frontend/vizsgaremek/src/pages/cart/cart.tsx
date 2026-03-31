@@ -128,12 +128,11 @@ function Cart() {
       <h1>Shopping Cart</h1>
       <div className="cart-products">
         {cart.products.map((item) => {
+          const discount = item.product.discount ?? 0;
           const currentQuantity = quantities[item.product.id] || item.quantity;
           const originalTotalPrice = item.product.price * currentQuantity;
           const discountedTotalPrice =
-            item.product.price *
-            (1 - (item.product.discount || 0) / 100) *
-            currentQuantity;
+            item.product.price * (1 - discount / 100) * currentQuantity;
 
           return (
             <div key={item.product.id} className="cart-product-item">
@@ -165,6 +164,7 @@ function Cart() {
                       )
                     }
                     min="1"
+                    //place max here on storagequantity
                   />
                   <button
                     className="quantity-btn quantity-btn-plus"
@@ -182,7 +182,7 @@ function Cart() {
                 </button>
               </div>
               <div className="cart-product-right">
-                {item.product.discount && item.product.discount > 0 ? (
+                {discount > 0 ? (
                   <div className="cart-product-price-block">
                     <p className="cart-product-original-price">
                       {formatPrice(originalTotalPrice)} Ft
@@ -196,7 +196,7 @@ function Cart() {
                     {formatPrice(originalTotalPrice)} Ft
                   </p>
                 )}
-                {item.product.discount && item.product.discount > 0 && (
+                {discount > 0 && (
                   <p className="cart-product-discount">
                     Saved {item.product.discount}%
                   </p>
