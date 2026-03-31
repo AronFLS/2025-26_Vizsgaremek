@@ -1,5 +1,5 @@
-import { useAccount } from "../../hooks/useAccount";
-import "./userinfo.css";
+import { useAccount } from "../../../hooks/useAccount";
+import "./UserInfo.css";
 
 function UserInfo() {
   const { data } = useAccount();

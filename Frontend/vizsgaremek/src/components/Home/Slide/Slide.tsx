@@ -8,7 +8,7 @@ import iPhoneAir from "../../../assets/iPhoneAirHomeSlide.png";
 import iPhone17Pro from "../../../assets/iPhone17ProHomeSlide.png";
 import MacbookAir from "../../../assets/MacBookAirHomeSlide.png";
 
-export function EmblaCarousel() {
+export function Slide() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
   const [selectedSnap, setSelectedSnap] = useState(0);
@@ -65,4 +65,4 @@ export function EmblaCarousel() {
     </div>
   );
 }
-export default EmblaCarousel;
+export default Slide;

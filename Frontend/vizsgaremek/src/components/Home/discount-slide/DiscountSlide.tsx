@@ -14,7 +14,7 @@ import {
   formatProductSpecs,
   type ProductSpecs,
 } from "../../../utils/productSpecs";
-import { formatPrice } from "../../../utils/price";
+import { formatPrice } from "../../../utils/formatPrice";
 
 type UsePrevNextButtonsType = {
   prevBtnDisabled: boolean;

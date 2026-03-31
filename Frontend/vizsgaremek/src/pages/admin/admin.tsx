@@ -1,8 +1,8 @@
 import { useState } from "react";
-import ActiveOrders from "../../components/Admin/activeorders";
-import PostProduct from "../../components/Admin/postproduct";
-import PastOrders from "../../components/Admin/pastorders";
-import "./admin.css";
+import ActiveOrders from "../../components/admin/active-orders/ActiveOrders";
+import PostProduct from "../../components/admin/post-products/PostProduct";
+import PastOrders from "../../components/admin/past-orders/PastOrders";
+import "./Admin.css";
 import { useAccount } from "../../hooks/useAccount";
 
 function Admin() {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./account.css";
+import "./Signup.css";
 import { axiosInstance } from "../../axios";
 import { useMutation } from "@tanstack/react-query";
 import { useAccount } from "../../hooks/useAccount";
@@ -9,7 +9,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%_]).{12,24}$/;
 const PHONE_REGEX = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
 
-function Account() {
+function Signup() {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
@@ -227,4 +227,4 @@ function Account() {
   );
 }
 
-export default Account;
+export default Signup;

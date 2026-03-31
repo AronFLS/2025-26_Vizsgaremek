@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { axiosInstance } from "../../axios";
-import "./activeorders.css";
+import { axiosInstance } from "../../../axios";
+import "./ActiveOrders.css";
 
 interface OrderProduct {
   quantity: number;

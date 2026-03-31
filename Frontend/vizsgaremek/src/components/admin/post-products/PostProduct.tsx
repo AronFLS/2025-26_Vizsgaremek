@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import "./postproduct.css";
-import { axiosInstance } from "../../axios";
+import "./PostProduct.css";
+import { axiosInstance } from "../../../axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface Category {

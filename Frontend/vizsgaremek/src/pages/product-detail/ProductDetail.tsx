@@ -9,7 +9,7 @@ import {
   formatProductSpecs,
   type ProductSpecs,
 } from "../../utils/productSpecs";
-import { formatPrice } from "../../utils/price";
+import { formatPrice } from "../../utils/formatPrice";
 import * as React from "react";
 import { useState } from "react";
 import Snackbar from "@mui/material/Snackbar";

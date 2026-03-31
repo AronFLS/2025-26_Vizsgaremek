@@ -6,8 +6,8 @@ import {
   formatProductSpecs,
   type ProductSpecs,
 } from "../../utils/productSpecs";
-import { formatPrice } from "../../utils/price";
-import "./cart.css";
+import { formatPrice } from "../../utils/formatPrice";
+import "./Cart.css";
 
 interface ProductSpec {
   id: number;

@@ -1,6 +1,6 @@
 import type { RefObject } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { NAV_ITEMS } from "../nav-constants/navConstants";
+import { NAV_ITEMS } from "../nav-constants/navItems";
 import { NavTab } from "./NavTab";
 import { IoChevronBack } from "react-icons/io5";
 

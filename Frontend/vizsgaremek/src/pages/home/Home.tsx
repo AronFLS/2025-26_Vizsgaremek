@@ -1,8 +1,8 @@
-import Slide from "../../components/Home/Slide/Slide";
-import DiscountSlide from "../../components/Home/DiscountSlide/DiscountSlide";
-import ProductCard from "../../components/Home/ProductCards/productcard";
+import Slide from "../../components/home/slide/Slide";
+import DiscountSlide from "../../components/home/discount-slide/DiscountSlide";
+import ProductCard from "../../components/home/product-cards/ProductCard";
 import "./Home.css";
-import RandomProducts from "../../components/Home/RandomProducts/randomproducts";
+import RandomProducts from "../../components/home/random-products/RandomProducts";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar";

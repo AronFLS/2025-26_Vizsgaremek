@@ -1,9 +1,28 @@
 import { useState } from "react";
-import type { AccountOrder } from "./activeorders";
-import { formatPrice } from "../../utils/price";
-import "./orders.css";
+import { formatPrice } from "../../../utils/formatPrice";
+import "./UsersOrders.css";
 
-interface PastOrdersProps {
+interface OrderProduct {
+  quantity: number;
+  product: {
+    id: number;
+    name: string;
+    price: number;
+  };
+}
+
+export interface AccountOrder {
+  id: number;
+  paymentMethod: string;
+  status: string;
+  addressLine: string;
+  city: string;
+  zipCode: string;
+  active: boolean;
+  products: OrderProduct[];
+}
+
+interface ActiveOrdersProps {
   orders: AccountOrder[];
   isLoading: boolean;
   errorMessage: string;
@@ -15,7 +34,11 @@ const getOrderTotal = (order: AccountOrder) => {
   }, 0);
 };
 
-function PastOrders({ orders, isLoading, errorMessage }: PastOrdersProps) {
+function UserActiveOrders({
+  orders,
+  isLoading,
+  errorMessage,
+}: ActiveOrdersProps) {
   const [expandedOrderId, setExpandedOrderId] = useState<number | null>(null);
 
   const toggleOrder = (id: number) => {
@@ -25,20 +48,20 @@ function PastOrders({ orders, isLoading, errorMessage }: PastOrdersProps) {
   return (
     <section className="accountdetails-orders-section">
       <div className="accountdetails-section-header">
-        <p className="accountdetails-header-title">Past Orders</p>
+        <p className="accountdetails-header-title">Active Orders</p>
         <p className="accountdetails-header-subtitle">
-          See completed or archived orders from your history.
+          Track your ongoing orders and check their status.
         </p>
       </div>
 
-      {isLoading && <p className="orders-message">Loading past orders...</p>}
+      {isLoading && <p className="orders-message">Loading active orders...</p>}
 
       {!isLoading && errorMessage && (
         <p className="orders-message orders-error">{errorMessage}</p>
       )}
 
       {!isLoading && !errorMessage && orders.length === 0 && (
-        <p className="orders-message">No past orders.</p>
+        <p className="orders-message">No active orders.</p>
       )}
 
       {!isLoading && !errorMessage && orders.length > 0 && (
@@ -53,9 +76,7 @@ function PastOrders({ orders, isLoading, errorMessage }: PastOrdersProps) {
                     <h3>Order #{order.id}</h3>
                     <p>{order.products.length} product(s)</p>
                   </div>
-                  <span className="order-status-chip order-status-chip-muted">
-                    {order.status}
-                  </span>
+                  <span className="order-status-chip">{order.status}</span>
                 </div>
 
                 <div className="order-summary-meta">
@@ -110,4 +131,4 @@ function PastOrders({ orders, isLoading, errorMessage }: PastOrdersProps) {
   );
 }
 
-export default PastOrders;
+export default UserActiveOrders;

@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import "./orderconfirmed.css";
+import "./OrderConfirmed.css";
 
 interface OrderConfirmedState {
   orderId?: number;

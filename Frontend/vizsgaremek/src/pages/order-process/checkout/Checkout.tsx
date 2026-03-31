@@ -2,14 +2,14 @@ import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
-import { axiosInstance } from "../../axios";
-import { useAccount } from "../../hooks/useAccount";
+import { axiosInstance } from "../../../axios";
+import { useAccount } from "../../../hooks/useAccount";
 import {
   formatProductSpecs,
   type ProductSpecs,
-} from "../../utils/productSpecs";
-import { formatPrice } from "../../utils/price";
-import "./checkout.css";
+} from "../../../utils/productSpecs";
+import { formatPrice } from "../../../utils/formatPrice";
+import "./Checkout.css";
 
 interface ProductSpec {
   id: number;

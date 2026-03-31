@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import accessoriesFinal from "../../../assets/accessoriesfinal.png";
 import iphonesFinal from "../../../assets/iphonesfinal.png";
 import macbooksFinal from "../../../assets/macbooksfinal.png";
-import "./productcard.css";
+import "./ProductCard.css";
 
 const productImages = [
   { src: iphonesFinal, alt: "iPhones" },

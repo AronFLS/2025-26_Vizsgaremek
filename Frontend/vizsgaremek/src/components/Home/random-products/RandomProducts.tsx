@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../../../axios";
-import "./randomproducts.css";
+import "./RandomProducts.css";
 import { Link } from "react-router-dom";
 
 interface Product {

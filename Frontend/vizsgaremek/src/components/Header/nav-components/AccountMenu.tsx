@@ -1,7 +1,7 @@
 import type { RefObject } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Login } from "./AccountComponents/Login";
-import { Logout } from "./AccountComponents/Logout";
+import { Login } from "./account-components/Login";
+import { Logout } from "./account-components/Logout";
 import { useAccount } from "../../../hooks/useAccount";
 
 type AccountMenuProps = {
@@ -31,3 +31,4 @@ export const AccountMenu = ({ isOpen, menuRef }: AccountMenuProps) => {
     </AnimatePresence>
   );
 };
+

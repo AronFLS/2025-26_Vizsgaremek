@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import "./shipping.css";
-import { axiosInstance } from "../../axios";
+import "./Shipping.css";
+import { axiosInstance } from "../../../axios";
 import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { useAccount } from "../../hooks/useAccount";
+import { useAccount } from "../../../hooks/useAccount";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -135,21 +135,21 @@ function Shipping() {
                     value="Credit card"
                     disabled
                     control={<Radio sx={radioSx} />}
-                    label="Credit card"
+                    label="Credit card (temporary unavailable)"
                     sx={radioLabelSx}
                   />
                   <FormControlLabel
                     value="PayPal"
                     disabled
                     control={<Radio sx={radioSx} />}
-                    label="PayPal"
+                    label="PayPal (temporary unavailable)"
                     sx={radioLabelSx}
                   />
                   <FormControlLabel
                     value="Apple Pay"
                     disabled
                     control={<Radio sx={radioSx} />}
-                    label="Apple Pay"
+                    label="Apple Pay (temporary unavailable)"
                     sx={radioLabelSx}
                   />
                 </RadioGroup>

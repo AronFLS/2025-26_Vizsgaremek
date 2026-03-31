@@ -5,8 +5,8 @@ import {
   formatProductSpecs,
   type ProductSpecs,
 } from "../../utils/productSpecs";
-import { formatPrice } from "../../utils/price";
-import "./product.css";
+import { formatPrice } from "../../utils/formatPrice";
+import "./Products.css";
 import * as React from "react";
 import { useState } from "react";
 import { useAccount } from "../../hooks/useAccount";

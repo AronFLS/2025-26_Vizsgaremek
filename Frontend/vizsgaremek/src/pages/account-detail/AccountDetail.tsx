@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../../axios";
-import UserInfo from "../../components/AccountDetail/userinfo";
+import UserInfo from "../../components/account-detail/user-info/UserInfo";
 import ActiveOrders, {
   type AccountOrder,
-} from "../../components/AccountDetail/activeorders";
-import PastOrders from "../../components/AccountDetail/pastorders";
+} from "../../components/account-detail/user-orders/UsersActiveOrders";
+import PastOrders from "../../components/account-detail/user-orders/UsersPastOrders";
 import "./AccountDetail.css";
 
 function AccountDetail() {
@@ -59,3 +59,4 @@ function AccountDetail() {
 }
 
 export default AccountDetail;
+

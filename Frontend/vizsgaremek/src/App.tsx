@@ -1,16 +1,16 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Navbar from "./components/Header/Navbar";
+import Navbar from "./components/header/Navbar";
 import Home from "./pages/home/Home";
-import Products from "./pages/products/products";
-import Cart from "./pages/cart/cart";
-import Account from "./pages/account/account";
-import Admin from "./pages/admin/admin";
-import ProductDetail from "./pages/productdetail/ProductDetail";
-import AccountDetail from "./pages/accountdetail/AccountDetail";
-import Shipping from "./pages/shipping/shipping";
-import Checkout from "./pages/checkout/checkout";
-import OrderConfirmed from "./pages/checkout/orderconfirmed";
+import Products from "./pages/products/Products";
+import Cart from "./pages/cart/Cart";
+import Signup from "./pages/signup/Signup";
+import Admin from "./pages/admin/Admin";
+import ProductDetail from "./pages/product-detail/ProductDetail";
+import AccountDetail from "./pages/account-detail/AccountDetail";
+import Shipping from "./pages/order-process/shipping/Shipping";
+import Checkout from "./pages/order-process/checkout/Checkout";
+import OrderConfirmed from "./pages/order-process/order-confirmation/OrderConfirmed";
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/shipping" element={<Shipping />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/account" element={<Account />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/accountdetail" element={<AccountDetail />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/orderconfirmed" element={<OrderConfirmed />} />

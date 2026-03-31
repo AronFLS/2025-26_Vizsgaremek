@@ -1,8 +1,8 @@
 import type { RefObject } from "react";
 import { NavTab } from "./NavTab";
-import { Cursor } from "./Cursor";
+import { Cursor } from "./NavCursor";
 import type { Position } from "../nav-hooks/useNavigation";
-import { NAV_ITEMS } from "../nav-constants/navConstants";
+import { NAV_ITEMS } from "../nav-constants/navItems";
 
 type DesktopNavProps = {
   navRef: RefObject<HTMLElement | null>;
@@ -26,3 +26,4 @@ export const DesktopNav = ({
     </nav>
   );
 };
+
