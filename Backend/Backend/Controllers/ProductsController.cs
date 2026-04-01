@@ -43,7 +43,6 @@ namespace Backend.Controllers
     {
       var product = await _context.Products
         .Include(p => p.Category)
-        //.Include(p => p.Coupon)
         .Include(p => p.ProductSpecs)
           .ThenInclude(ps => ps.Spec)
         .FirstOrDefaultAsync(p => p.Id == id);
@@ -60,20 +59,34 @@ namespace Backend.Controllers
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutProduct(int id, Product product)
+    public async Task<IActionResult> PutProduct(int id, ProductUpdateDto productDto)
     {
-      if (id != product.Id)
+      if (id != productDto.Id)
       {
         return BadRequest();
       }
 
-      _context.Entry(product).State = EntityState.Modified;
+      var product = await _context.Products
+        .Include(p => p.ProductSpecs)
+          .ThenInclude(ps => ps.Spec)
+        .FirstOrDefaultAsync(p => p.Id == id);
+
+      if (product == null)
+      {
+        return NotFound(); 
+      }
+
+      product.Price = productDto.Price;
+      product.Discount = productDto.Discount ?? product.Discount;
+      product.StorageQuantity = productDto.StorageQuantity;
+      product.Active = productDto.Active;
+      product.ModifiedAt = DateTime.Now;
 
       try
       {
         await _context.SaveChangesAsync();
       }
-      catch (DbUpdateConcurrencyException)
+      catch (DbUpdateException ex)
       {
         if (!ProductExists(id))
         {
@@ -81,7 +94,7 @@ namespace Backend.Controllers
         }
         else
         {
-          throw;
+          StatusCode(500, new { message = "Database failure", Error = ex.Message});
         }
       }
 
