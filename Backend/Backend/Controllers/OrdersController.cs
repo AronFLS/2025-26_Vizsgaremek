@@ -22,6 +22,7 @@ namespace Backend.Controllers
       var now = DateTime.Now;
       var cart = await coreDbContext.Carts
         .Include(c => c.CartProducts)
+        .ThenInclude(cp => cp.Product)
         .Include(c => c.User)
         .Where(c => c.UserId == loggedInUserId)
         .SingleOrDefaultAsync();
@@ -51,6 +52,8 @@ namespace Backend.Controllers
         var orderProduct = new OrderProduct
         {
           Quantity = cp.Quantity,
+          Price = cp.Product.Price,
+          Discount = cp.Product.Discount,
           Active = true,
           ProductId = cp.ProductId,
           OrderId = newOrder.Id,
@@ -190,9 +193,9 @@ namespace Backend.Controllers
             Id = op.Product.Id,
             Name = op.Product.Name,
             ImageUrl = op.Product.ImageUrl,
-            Price = op.Product.Price,
+            Price = op.Price,
             Description = op.Product.Description,
-            Discount = op.Product.Discount,
+            Discount = op.Discount,
             StorageQuantity = op.Product.StorageQuantity,
             CategoryId = op.Product.CategoryId,
             Active = op.Product.Active,
