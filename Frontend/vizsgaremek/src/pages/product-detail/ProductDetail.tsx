@@ -44,16 +44,20 @@ const categoryConfig: Record<
   string,
   {
     showLoginFeature: boolean;
+    checkStockQuantity: boolean;
   }
 > = {
   iphone: {
     showLoginFeature: true,
+    checkStockQuantity: false,
   },
   macbook: {
     showLoginFeature: false,
+    checkStockQuantity: true,
   },
   accessories: {
     showLoginFeature: false,
+    checkStockQuantity: true,
   },
 };
 
@@ -67,6 +71,7 @@ function getCategoryRoute(categoryName: string): string {
 
 function getCategoryConfig(categoryName: string): {
   showLoginFeature: boolean;
+  checkStockQuantity: boolean;
 } {
   const key = categoryName.toLowerCase();
   for (const [keyword, config] of Object.entries(categoryConfig)) {
@@ -122,7 +127,7 @@ function ProductDetail() {
     ? getCategoryConfig(
         categories.find((c) => c.id === product.categoryId)?.name ?? "",
       )
-    : { showLoginFeature: true };
+    : { showLoginFeature: true, checkStockQuantity: false };
 
   if (isLoading) return <p>Loading...</p>;
   if (isError || !product) return <p>Product not found</p>;
@@ -168,21 +173,25 @@ function ProductDetail() {
         aria-label="close"
         onClick={handleLoginSnackbarClose}
       >
-        <IoCloseOutline />
+        <IoCloseOutline style={{ color: "white" }} />
       </IconButton>
     </React.Fragment>
   );
 
-  const handleAddToCart = () => {
-    if (config.showLoginFeature) {
-      if (isLoggedIn) {
-        addProductToCart(product.id);
-      } else {
-        handleLoginSnackbarOpen();
-      }
-    } else {
-      addProductToCart(product.id);
+  const isOutOfStock = (): boolean => {
+    if (config.checkStockQuantity && product.storageQuantity !== undefined) {
+      return product.storageQuantity === 0;
     }
+    return false;
+  };
+
+  const handleAddToCart = () => {
+    if (!isLoggedIn) {
+      handleLoginSnackbarOpen();
+      return;
+    }
+
+    addProductToCart(product.id);
   };
 
   return (
@@ -217,9 +226,17 @@ function ProductDetail() {
           <button
             className={isMobile ? "cartbtnmobile" : "cartbtn"}
             onClick={handleAddToCart}
-            disabled={addToCartPending}
+            disabled={
+              config.checkStockQuantity ? isOutOfStock() : addToCartPending
+            }
           >
-            {addToCartPending ? "Adding..." : "Add to Cart"}
+            {config.checkStockQuantity
+              ? isOutOfStock()
+                ? "Out of stock"
+                : "Add to cart"
+              : addToCartPending
+                ? "Adding..."
+                : "Add to cart"}
           </button>
         </div>
       </div>

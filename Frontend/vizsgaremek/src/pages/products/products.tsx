@@ -182,7 +182,7 @@ function Products() {
         aria-label="close"
         onClick={handleLoginSnackbarClose}
       >
-        <IoCloseOutline />
+        <IoCloseOutline style={{ color: "white" }} />
       </IconButton>
     </React.Fragment>
   );

@@ -1,6 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type SyntheticEvent } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { IoCloseOutline } from "react-icons/io5";
+import Snackbar from "@mui/material/Snackbar";
+import type { SnackbarCloseReason } from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
 import { axiosInstance } from "../../axios";
 import {
   formatProductSpecs,
@@ -20,6 +24,7 @@ interface CartProduct {
   imageUrl: string;
   price: number;
   discount?: number;
+  storageQuantity?: number;
   specs: ProductSpec[];
 }
 
@@ -36,6 +41,7 @@ interface CartData {
 
 function Cart() {
   const [quantities, setQuantities] = useState<Record<number, number>>({});
+  const [maxLimitSnackbarOpen, setMaxLimitSnackbarOpen] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -71,26 +77,47 @@ function Cart() {
     }
   }, [cart]);
 
-  const handleQuantityChange = (productId: number, newQuantity: number) => {
-    if (newQuantity > 0) {
+  const handleQuantityChange = (
+    productId: number,
+    newQuantity: number,
+    maxQuantity?: number,
+  ) => {
+    if (maxQuantity !== undefined && newQuantity > maxQuantity) {
+      setMaxLimitSnackbarOpen(true);
+    }
+
+    const clampedQuantity =
+      maxQuantity !== undefined
+        ? Math.min(newQuantity, Math.max(1, maxQuantity))
+        : newQuantity;
+
+    if (clampedQuantity > 0) {
       setQuantities((prev) => ({
         ...prev,
-        [productId]: newQuantity,
+        [productId]: clampedQuantity,
       }));
 
       updateCartProductQuantity({
         productId,
-        quantity: newQuantity,
+        quantity: clampedQuantity,
       });
     }
   };
 
-  const handleDecrement = (productId: number) => {
-    handleQuantityChange(productId, (quantities[productId] || 1) - 1);
+  const handleDecrement = (productId: number, maxQuantity?: number) => {
+    handleQuantityChange(
+      productId,
+      (quantities[productId] || 1) - 1,
+      maxQuantity,
+    );
   };
 
-  const handleIncrement = (productId: number) => {
-    handleQuantityChange(productId, (quantities[productId] || 1) + 1);
+  const handleIncrement = (productId: number, maxQuantity?: number) => {
+    handleQuantityChange(
+      productId,
+      (quantities[productId] || 1) + 1,
+      maxQuantity,
+    );
   };
 
   const handleRemoveFromCart = (productId: number) => {
@@ -105,6 +132,31 @@ function Cart() {
       quantity: 0,
     });
   };
+
+  const handleMaxLimitSnackbarClose = (
+    event: SyntheticEvent | Event,
+    reason?: SnackbarCloseReason,
+  ) => {
+    void event;
+
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setMaxLimitSnackbarOpen(false);
+  };
+
+  const maxLimitSnackbarAction = (
+    <>
+      <IconButton
+        size="medium"
+        aria-label="close"
+        onClick={handleMaxLimitSnackbarClose}
+      >
+        <IoCloseOutline style={{ color: "white" }} />
+      </IconButton>
+    </>
+  );
 
   if (cartLoading) {
     return (
@@ -130,6 +182,7 @@ function Cart() {
         {cart.products.map((item) => {
           const discount = item.product.discount ?? 0;
           const currentQuantity = quantities[item.product.id] || item.quantity;
+          const maxQuantity = item.product.storageQuantity;
           const originalTotalPrice = item.product.price * currentQuantity;
           const discountedTotalPrice =
             item.product.price * (1 - discount / 100) * currentQuantity;
@@ -149,7 +202,9 @@ function Cart() {
                 <div className="quantity-control">
                   <button
                     className="quantity-btn quantity-btn-minus"
-                    onClick={() => handleDecrement(item.product.id)}
+                    onClick={() =>
+                      handleDecrement(item.product.id, maxQuantity)
+                    }
                   >
                     −
                   </button>
@@ -161,14 +216,17 @@ function Cart() {
                       handleQuantityChange(
                         item.product.id,
                         parseInt(e.target.value) || 1,
+                        maxQuantity,
                       )
                     }
                     min="1"
-                    //place max here on storagequantity
+                    max={maxQuantity}
                   />
                   <button
                     className="quantity-btn quantity-btn-plus"
-                    onClick={() => handleIncrement(item.product.id)}
+                    onClick={() =>
+                      handleIncrement(item.product.id, maxQuantity)
+                    }
                   >
                     +
                   </button>
@@ -209,6 +267,13 @@ function Cart() {
       <button className="checkout-btn" onClick={() => navigate("/shipping")}>
         Proceed to Checkout
       </button>
+      <Snackbar
+        open={maxLimitSnackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleMaxLimitSnackbarClose}
+        message="You reached the maximum available stock for this product."
+        action={maxLimitSnackbarAction}
+      />
     </div>
   );
 }

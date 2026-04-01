@@ -200,6 +200,19 @@
   left: -30px;
 }
 
+.products-page .product-card__btn:disabled,
+.products-page .product-card__btn:disabled:hover {
+  color: var(--color);
+  scale: 1;
+  cursor: not-allowed;
+}
+
+.products-page .product-card__btn:disabled::before,
+.products-page .product-card__btn:disabled:hover::before {
+  top: 100%;
+  left: 100%;
+}
+
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 600px) {
   .products-grid {
