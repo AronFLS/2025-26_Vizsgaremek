@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../../axios";
+import { IoSearchOutline } from "react-icons/io5";
+import "../active-orders/ActiveOrders.css";
 import "./UpdateProducts.css";
 
 interface ProductSpec {
@@ -51,6 +53,7 @@ function UpdateProducts() {
   const [feedbackType, setFeedbackType] = useState<"success" | "error" | "">(
     "",
   );
+  const [query, setQuery] = useState("");
 
   const {
     data: products,
@@ -123,7 +126,24 @@ function UpdateProducts() {
       },
     });
 
-  const visibleProducts = useMemo(() => products ?? [], [products]);
+  const visibleProducts = useMemo(() => {
+    const lowerQuery = query.trim().toLowerCase();
+
+    return (products ?? []).filter((product) => {
+      if (!lowerQuery) {
+        return true;
+      }
+
+      const matchesProductName = product.name
+        .toLowerCase()
+        .includes(lowerQuery);
+      const matchesProductId = String(product.id).includes(lowerQuery);
+      const statusText = product.active ? "active" : "inactive";
+      const matchesStatus = statusText.includes(lowerQuery);
+
+      return matchesProductName || matchesProductId || matchesStatus;
+    });
+  }, [products, query]);
 
   const getDraft = (product: Product) => {
     return editedProducts[product.id] ?? getInitialDraft(product);
@@ -196,6 +216,16 @@ function UpdateProducts() {
     <section className="orders-admin">
       <div className="orders-header">
         <h2>Update Products</h2>
+        <div className="orders-search-bar-wrapper">
+          <input
+            type="text"
+            placeholder="Search by product name, id, status..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="orders-search-bar"
+          />
+          <IoSearchOutline className="orders-search-bar-icon" />
+        </div>
         <p>{visibleProducts.length} product(s)</p>
       </div>
 

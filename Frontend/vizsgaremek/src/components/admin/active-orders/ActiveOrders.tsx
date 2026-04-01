@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../../axios";
+import { IoSearchOutline } from "react-icons/io5";
 import "./ActiveOrders.css";
 
 interface OrderProduct {
@@ -59,6 +60,7 @@ function ActiveOrders() {
   const [feedbackType, setFeedbackType] = useState<"success" | "error" | "">(
     "",
   );
+  const [query, setQuery] = useState("");
 
   const {
     data: orders,
@@ -116,8 +118,24 @@ function ActiveOrders() {
     });
 
   const visibleOrders = useMemo(() => {
-    return (orders ?? []).filter((order) => order.active === true);
-  }, [orders]);
+    const lowerQuery = query.trim().toLowerCase();
+
+    return (orders ?? [])
+      .filter((order) => order.active === true)
+      .filter((order) => {
+        if (!lowerQuery) {
+          return true;
+        }
+
+        const matchesOrderId = String(order.id).includes(lowerQuery);
+        const matchesUserId = String(order.userId).includes(lowerQuery);
+        const matchesStatus = normalizeStatus(order.status).includes(
+          lowerQuery,
+        );
+
+        return matchesOrderId || matchesUserId || matchesStatus;
+      });
+  }, [orders, query]);
 
   const handleStatusChange = (orderId: number, value: string) => {
     setFeedbackMessage("");
@@ -164,6 +182,16 @@ function ActiveOrders() {
     <section className="orders-admin">
       <div className="orders-header">
         <h2>Active Orders</h2>
+        <div className="orders-search-bar-wrapper">
+          <input
+            type="text"
+            placeholder="Search by order id, user id, status..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="orders-search-bar"
+          />
+          <IoSearchOutline className="orders-search-bar-icon" />
+        </div>
         <p>{visibleOrders.length} active order(s)</p>
       </div>
 

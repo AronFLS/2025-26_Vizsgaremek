@@ -6,10 +6,58 @@
 
 .orders-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1rem;
+}
+
+.orders-header h2,
+.orders-header p {
+  flex: 1;
+}
+
+.orders-header h2 {
+  text-align: left;
+}
+
+.orders-header p {
+  text-align: right;
+}
+
+.orders-search-bar-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.orders-search-bar {
+  width: 100%;
+  padding: 10px 16px 10px 40px;
+  margin: 0;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  border: 1px solid #b2b2b2;
+  background: #fff;
+  color: #000;
+}
+
+.orders-search-bar:focus {
+  outline: none;
+  border-color: rgba(246, 48, 73, 0.6);
+  box-shadow: 0 0 0 3px rgba(246, 48, 73, 0.15);
+}
+
+.orders-search-bar-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 1.2rem;
+  color: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
 }
 
 .orders-header h2 {
@@ -168,6 +216,20 @@
 
   .orders-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+  }
+
+  .orders-header h2,
+  .orders-header p {
+    flex: initial;
+    width: 100%;
+  }
+
+  .orders-header p {
+    text-align: left;
+  }
+
+  .orders-search-bar-wrapper {
+    max-width: 100%;
   }
 }
