@@ -26,6 +26,7 @@ interface Product {
   specs: ProductSpecs;
   categoryId: number;
   storageQuantity?: number;
+  active: boolean;
 }
 
 interface Category {
@@ -126,6 +127,7 @@ function Products() {
     categoryId != null
       ? products
           .filter((p) => p.categoryId === categoryId)
+          .filter((p) => p.active === true)
           .filter((p) => {
             const lowerQuery = query.toLowerCase();
             const matchesName = p.name.toLowerCase().includes(lowerQuery);

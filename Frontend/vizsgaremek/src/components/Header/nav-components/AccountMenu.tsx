@@ -7,9 +7,10 @@ import { useAccount } from "../../../hooks/useAccount";
 type AccountMenuProps = {
   isOpen: boolean;
   menuRef: RefObject<HTMLDivElement | null>;
+  onClose: () => void;
 };
 
-export const AccountMenu = ({ isOpen, menuRef }: AccountMenuProps) => {
+export const AccountMenu = ({ isOpen, menuRef, onClose }: AccountMenuProps) => {
   const { data } = useAccount();
   const isLoggedIn = data !== null;
 
@@ -25,10 +26,13 @@ export const AccountMenu = ({ isOpen, menuRef }: AccountMenuProps) => {
           exit={{ opacity: 0, y: -10, x: 0 }}
           transition={{ duration: 0.2 }}
         >
-          {isLoggedIn ? <Logout /> : <Login />}
+          {isLoggedIn ? (
+            <Logout onClose={onClose} />
+          ) : (
+            <Login onClose={onClose} />
+          )}
         </motion.div>
       )}
     </AnimatePresence>
   );
 };
-

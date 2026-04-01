@@ -135,21 +135,42 @@ function Shipping() {
                     value="Credit card"
                     disabled
                     control={<Radio sx={radioSx} />}
-                    label="Credit card (temporary unavailable)"
+                    label={
+                      <>
+                        Credit card{" "}
+                        <span style={{ fontSize: "0.75em" }}>
+                          (temporary unavailable)
+                        </span>
+                      </>
+                    }
                     sx={radioLabelSx}
                   />
                   <FormControlLabel
                     value="PayPal"
                     disabled
                     control={<Radio sx={radioSx} />}
-                    label="PayPal (temporary unavailable)"
+                    label={
+                      <>
+                        PayPal{" "}
+                        <span style={{ fontSize: "0.75em" }}>
+                          (temporary unavailable)
+                        </span>
+                      </>
+                    }
                     sx={radioLabelSx}
                   />
                   <FormControlLabel
                     value="Apple Pay"
                     disabled
                     control={<Radio sx={radioSx} />}
-                    label="Apple Pay (temporary unavailable)"
+                    label={
+                      <>
+                        Apple Pay{" "}
+                        <span style={{ fontSize: "0.75em" }}>
+                          (temporary unavailable)
+                        </span>
+                      </>
+                    }
                     sx={radioLabelSx}
                   />
                 </RadioGroup>

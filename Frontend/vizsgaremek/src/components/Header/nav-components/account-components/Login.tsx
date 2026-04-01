@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import { axiosInstance } from "../../../../axios";
 import { Link } from "react-router-dom";
 
-export function Login() {
+type LoginProps = {
+  onClose: () => void;
+};
+
+export function Login({ onClose }: LoginProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -70,7 +74,10 @@ export function Login() {
         Sign in
       </button>
       <p className="p-noaccount">
-        Don't have an account? <Link to="/account">Sign up</Link>
+        Don't have an account?{" "}
+        <Link to="/signup" onClick={onClose}>
+          Sign up
+        </Link>
       </p>
     </>
   );

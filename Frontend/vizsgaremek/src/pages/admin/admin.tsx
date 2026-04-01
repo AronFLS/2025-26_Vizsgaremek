@@ -2,12 +2,13 @@ import { useState } from "react";
 import ActiveOrders from "../../components/admin/active-orders/ActiveOrders";
 import PostProduct from "../../components/admin/post-products/PostProduct";
 import PastOrders from "../../components/admin/past-orders/PastOrders";
+import UpdateProducts from "../../components/admin/update-products/UpdateProducts";
 import "./Admin.css";
 import { useAccount } from "../../hooks/useAccount";
 
 function Admin() {
   const [activeSection, setActiveSection] = useState<
-    "postproduct" | "orders" | "pastorders"
+    "postproduct" | "orders" | "pastorders" | "updateproducts"
   >("postproduct");
   const { isAdmin } = useAccount();
 
@@ -42,11 +43,22 @@ function Admin() {
             >
               PastOrders
             </button>
+            <button
+              className={`update-products-btn ${
+                activeSection === "updateproducts"
+                  ? "btn-active"
+                  : "btn-inactive"
+              }`}
+              onClick={() => setActiveSection("updateproducts")}
+            >
+              UpdateProducts
+            </button>
           </div>
 
           {activeSection === "postproduct" && <PostProduct />}
           {activeSection === "orders" && <ActiveOrders />}
           {activeSection === "pastorders" && <PastOrders />}
+          {activeSection === "updateproducts" && <UpdateProducts />}
         </>
       )}
     </div>

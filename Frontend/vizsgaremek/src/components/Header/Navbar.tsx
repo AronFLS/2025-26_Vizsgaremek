@@ -109,7 +109,11 @@ function Navbar() {
       />
 
       {/* Account menu */}
-      <AccountMenu isOpen={isAccountOpen} menuRef={accountMenuRef} />
+      <AccountMenu
+        isOpen={isAccountOpen}
+        menuRef={accountMenuRef}
+        onClose={() => setIsAccountOpen(false)}
+      />
     </div>
   );
 }

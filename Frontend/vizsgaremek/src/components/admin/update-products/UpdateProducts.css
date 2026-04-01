@@ -1,0 +1,63 @@
+.update-product-stock {
+  margin: 0;
+  color: #000000;
+  font-size: 0.92rem;
+}
+
+.update-product-fields {
+  display: grid;
+  gap: 0.45rem;
+  border: 1px solid #b2b2b2;
+  border-radius: 10px;
+  padding: 0.75rem;
+  background: #ffffff;
+}
+
+.order-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+.update-product-fields label {
+  font-size: 0.86rem;
+  color: #000000;
+  font-weight: 700;
+}
+
+.update-product-fields input {
+  height: 38px;
+  border-radius: 9px;
+  border: 1px solid #b2b2b2;
+  padding: 0 0.65rem;
+  font: inherit;
+  background: #fff;
+  color: #000000;
+}
+
+.update-product-status {
+  display: grid;
+  gap: 0.45rem;
+  border: 1px solid #b2b2b2;
+  border-radius: 10px;
+  padding: 0.75rem;
+  background: #ffffff;
+  margin-top: 0.8rem;
+}
+
+.update-product-status label {
+  font-size: 0.86rem;
+  color: #000000;
+  font-weight: 700;
+}
+
+.update-product-status select {
+  height: 38px;
+  border-radius: 9px;
+  border: 1px solid #b2b2b2;
+  padding: 0 0.65rem;
+  font: inherit;
+  background: #fff;
+  color: #000000;
+}

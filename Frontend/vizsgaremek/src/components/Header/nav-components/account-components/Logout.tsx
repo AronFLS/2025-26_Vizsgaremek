@@ -3,7 +3,11 @@ import { axiosInstance } from "../../../../axios";
 import { useAccount } from "../../../../hooks/useAccount";
 import { Link } from "react-router-dom";
 
-export function Logout() {
+type LogoutProps = {
+  onClose: () => void;
+};
+
+export function Logout({ onClose }: LogoutProps) {
   const { data } = useAccount();
   const firstName = data?.firstName ?? "";
 
@@ -19,7 +23,11 @@ export function Logout() {
     <>
       <div className="account-row">
         <p className="HiName">Hi, {firstName}!</p>
-        <Link to="/accountdetail" className="AccountDetailsLink">
+        <Link
+          to="/accountdetail"
+          className="AccountDetailsLink"
+          onClick={onClose}
+        >
           Account details
         </Link>
       </div>
