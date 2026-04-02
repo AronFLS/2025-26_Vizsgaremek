@@ -36,6 +36,11 @@ const STATUS_OPTIONS = [
 
 const normalizeStatus = (status: string) => status.trim().toLowerCase();
 
+const shouldDeactivateOrder = (status: string) => {
+  const normalized = normalizeStatus(status);
+  return normalized === "delivered" || normalized === "cancelled";
+};
+
 const getReadableStatus = (status: string) => {
   const normalized = normalizeStatus(status);
   return normalized.charAt(0).toUpperCase() + normalized.slice(1);
@@ -77,9 +82,14 @@ function PastOrders() {
         orderId: number;
         status: string;
       }) => {
-        return axiosInstance.put(`/Orders/Status/${orderId}`, {
+        await axiosInstance.put(`/Orders/Status/${orderId}`, {
           id: orderId,
           status,
+        });
+
+        await axiosInstance.put(`/Orders/Active/${orderId}`, {
+          id: orderId,
+          active: !shouldDeactivateOrder(status),
         });
       },
       onSuccess: async (_, variables) => {

@@ -8,6 +8,7 @@ interface OrderProduct {
     id: number;
     name: string;
     price: number;
+    discount?: number;
   };
 }
 
@@ -30,7 +31,8 @@ interface ActiveOrdersProps {
 
 const getOrderTotal = (order: AccountOrder) => {
   return order.products.reduce((sum, item) => {
-    return sum + item.product.price * item.quantity;
+    const discountMultiplier = 1 - (item.product.discount ?? 0) / 100;
+    return sum + item.product.price * discountMultiplier * item.quantity;
   }, 0);
 };
 
@@ -110,7 +112,12 @@ function UserActiveOrders({
                             {item.product.name} x {item.quantity}
                           </span>
                           <span>
-                            {formatPrice(item.product.price * item.quantity)} Ft
+                            {formatPrice(
+                              item.product.price *
+                                (1 - (item.product.discount ?? 0) / 100) *
+                                item.quantity,
+                            )}{" "}
+                            Ft
                           </span>
                         </div>
                       ))}
