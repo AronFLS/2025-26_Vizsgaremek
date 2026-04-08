@@ -28,7 +28,6 @@ namespace Backend.Controllers
     {
       var products = await _context.Products
         .Include(p => p.Category)
-        //.Include(p => p.Coupon)
         .Include(p => p.ProductSpecs)
           .ThenInclude(ps => ps.Spec)
         .ToListAsync();
@@ -73,7 +72,7 @@ namespace Backend.Controllers
 
       if (product == null)
       {
-        return NotFound(); 
+        return NotFound();
       }
 
       product.Price = productDto.Price;
@@ -94,7 +93,7 @@ namespace Backend.Controllers
         }
         else
         {
-          StatusCode(500, new { message = "Database failure", Error = ex.Message});
+          StatusCode(500, new { message = "Database failure", Error = ex.Message });
         }
       }
 
@@ -117,7 +116,6 @@ namespace Backend.Controllers
         Discount = productDto.Discount ?? 0,
         StorageQuantity = productDto.StorageQuantity,
         CategoryId = productDto.CategoryId,
-        //CouponId = productDto.CouponId ?? 1,
         Active = true,
         CreatedAt = now,
         ModifiedAt = now
@@ -129,7 +127,7 @@ namespace Backend.Controllers
           .Where(s => productDto.SpecIds.Contains(s.Id))
           .ToListAsync();
 
-        if (specs == null && specs.Count == 0)
+        if (specs == null && specs!.Count == 0)
         {
           return BadRequest("Invalid specification entered");
         }
@@ -174,7 +172,7 @@ namespace Backend.Controllers
       return _context.Products.Any(e => e.Id == id);
     }
 
-    private ProductReadDto MapToDto (Product product)
+    private ProductReadDto MapToDto(Product product)
     {
       return new ProductReadDto
       {
@@ -186,7 +184,6 @@ namespace Backend.Controllers
         Discount = product.Discount,
         StorageQuantity = product.StorageQuantity,
         CategoryId = product.CategoryId,
-        //CouponId = product.CouponId,
         Specs = product.ProductSpecs.Select(ps => new ProductSpecsDto
         {
           Id = ps.Spec.Id,

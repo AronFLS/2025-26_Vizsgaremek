@@ -61,6 +61,13 @@ namespace Backend.Controllers
           ModifiedAt = now
         };
 
+        if (cp.Product.StorageQuantity <= 0)
+        {
+          return BadRequest("Ordered number of products exceeds storage quantity");
+        }
+
+        cp.Product.StorageQuantity -= cp.Quantity;
+
         coreDbContext.OrderProducts.Add(orderProduct);
         coreDbContext.CartProducts.Remove(cp);
       }
