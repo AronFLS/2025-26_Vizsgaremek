@@ -3,7 +3,7 @@ import ActiveOrders from "../../components/admin/active-orders/ActiveOrders";
 import PostProduct from "../../components/admin/post-products/PostProduct";
 import PastOrders from "../../components/admin/past-orders/PastOrders";
 import UpdateProducts from "../../components/admin/update-products/UpdateProducts";
-import "./Admin.css";
+import "./admin.css";
 import { useAccount } from "../../hooks/useAccount";
 
 function Admin() {

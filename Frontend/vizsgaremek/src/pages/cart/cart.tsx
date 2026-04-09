@@ -11,7 +11,7 @@ import {
   type ProductSpecs,
 } from "../../utils/productSpecs";
 import { formatPrice } from "../../utils/formatPrice";
-import "./Cart.css";
+import "./cart.css";
 
 interface ProductSpec {
   id: number;
