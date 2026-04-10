@@ -49,6 +49,11 @@ namespace Backend
 
       app.MapControllers();
 
+      using (var scope = app.Services.CreateScope())
+      {
+        var db = scope.ServiceProvider.GetRequiredService<CoreDbContext>();
+        SeedData.Initialize(db);
+      }
       app.Run();
     }
   }
