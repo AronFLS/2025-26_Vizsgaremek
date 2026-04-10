@@ -123,6 +123,7 @@ interface Product {
   discount?: number;
   specs: ProductSpecs;
   storageQuantity: number;
+  active: boolean;
 }
 
 export function DiscountSlide() {
@@ -139,9 +140,9 @@ export function DiscountSlide() {
     queryFn: () => axiosInstance.get("/api/products").then((r) => r.data),
   });
 
-  const discountedProducts = products.filter(
-    (product) => (product.discount ?? 0) > 0,
-  );
+  const discountedProducts = products
+    .filter((product) => product.active === true)
+    .filter((product) => (product.discount ?? 0) > 0);
 
   if (isLoading || discountedProducts.length === 0) {
     return null;

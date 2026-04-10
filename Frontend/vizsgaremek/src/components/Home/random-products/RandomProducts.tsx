@@ -8,6 +8,7 @@ interface Product {
   id: number;
   name: string;
   imageUrl: string;
+  active: boolean;
 }
 
 function RandomProducts() {
@@ -17,11 +18,15 @@ function RandomProducts() {
   });
 
   const randomProducts = useMemo(() => {
-    if (products.length === 0) {
+    const activeProducts = products.filter(
+      (product) => product.active === true,
+    );
+
+    if (activeProducts.length === 0) {
       return [];
     }
 
-    const shuffled = [...products].sort(() => Math.random() - 0.5);
+    const shuffled = [...activeProducts].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, Math.min(3, shuffled.length));
   }, [products]);
 
