@@ -11,10 +11,11 @@ import {
 } from "../../utils/productSpecs";
 import { formatPrice } from "../../utils/formatPrice";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import type { SnackbarCloseReason } from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
+import { IoIosArrowBack } from "react-icons/io";
 import Alert from "@mui/material/Alert";
 
 interface Product {
@@ -81,10 +82,18 @@ function getCategoryConfig(categoryName: string): {
 }
 
 function ProductDetail() {
+  const COLLAPSED_DESCRIPTION_MAX_HEIGHT = 170;
+
   const { id } = useParams<{ id: string }>();
   const isMobile = useMediaQuery("(max-width: 770px)");
   const [loginSnackbarOpen, setLoginSnackbarOpen] = useState(false);
   const [cartSuccessSnackbarOpen, setCartSuccessSnackbarOpen] = useState(false);
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [showDescriptionToggle, setShowDescriptionToggle] = useState(false);
+  const [descriptionMaxHeight, setDescriptionMaxHeight] = useState(
+    COLLAPSED_DESCRIPTION_MAX_HEIGHT,
+  );
+  const descriptionRef = useRef<HTMLDivElement | null>(null);
 
   const {
     data: product,
@@ -129,12 +138,47 @@ function ProductDetail() {
       )
     : { showLoginFeature: true, checkStockQuantity: false };
 
+  useEffect(() => {
+    if (!product || !descriptionRef.current) {
+      return;
+    }
+
+    const checkOverflow = () => {
+      if (!descriptionRef.current) {
+        return;
+      }
+
+      const isOverflowing =
+        descriptionRef.current.scrollHeight >
+        COLLAPSED_DESCRIPTION_MAX_HEIGHT + 1;
+
+      setShowDescriptionToggle(isOverflowing);
+
+      if (isDescriptionExpanded) {
+        setDescriptionMaxHeight(descriptionRef.current.scrollHeight);
+      }
+
+      if (!isOverflowing) {
+        setIsDescriptionExpanded(false);
+        setDescriptionMaxHeight(COLLAPSED_DESCRIPTION_MAX_HEIGHT);
+      }
+    };
+
+    checkOverflow();
+    window.addEventListener("resize", checkOverflow);
+
+    return () => {
+      window.removeEventListener("resize", checkOverflow);
+    };
+  }, [product, isDescriptionExpanded, COLLAPSED_DESCRIPTION_MAX_HEIGHT]);
+
   if (isLoading) return <p>Loading...</p>;
   if (isError || !product) return <p>Product not found</p>;
 
   const discount = product.discount ?? 0;
   const hasDiscount = discount > 0;
   const discountedPrice = product.price * (1 - discount / 100);
+  const normalizedDescription = product.description?.replace(/\\n/g, "\n");
 
   const handleLoginSnackbarOpen = () => {
     setLoginSnackbarOpen(true);
@@ -194,6 +238,21 @@ function ProductDetail() {
     addProductToCart(product.id);
   };
 
+  const handleDescriptionToggle = () => {
+    if (!descriptionRef.current) {
+      return;
+    }
+
+    if (isDescriptionExpanded) {
+      setDescriptionMaxHeight(COLLAPSED_DESCRIPTION_MAX_HEIGHT);
+      setIsDescriptionExpanded(false);
+      return;
+    }
+
+    setDescriptionMaxHeight(descriptionRef.current.scrollHeight);
+    setIsDescriptionExpanded(true);
+  };
+
   return (
     <div className="product-detail">
       {!isMobile && (
@@ -207,10 +266,43 @@ function ProductDetail() {
       <div className="right-column">
         <div className="details">
           <h1>{product.name}</h1>
-          <p className="description">{formatProductSpecs(product.specs)}</p>
-          {product.description && (
-            <p className="description">{product.description}</p>
-          )}
+          <div className="description-section">
+            <div
+              ref={descriptionRef}
+              className={`description-content ${
+                isDescriptionExpanded ? "expanded" : "collapsed"
+              } ${showDescriptionToggle ? "is-overflowing" : ""}`}
+              style={{
+                maxHeight: `${descriptionMaxHeight}px`,
+              }}
+            >
+              <p className="description specs-description">
+                {formatProductSpecs(product.specs)}
+              </p>
+              {normalizedDescription && (
+                <p className="description">{normalizedDescription}</p>
+              )}
+            </div>
+            {showDescriptionToggle && (
+              <button
+                type="button"
+                className="description-toggle"
+                onClick={handleDescriptionToggle}
+                aria-expanded={isDescriptionExpanded}
+                aria-label={
+                  isDescriptionExpanded
+                    ? "Collapse description"
+                    : "Expand description"
+                }
+              >
+                <IoIosArrowBack
+                  className={`description-toggle-icon ${
+                    isDescriptionExpanded ? "expanded" : ""
+                  }`}
+                />
+              </button>
+            )}
+          </div>
         </div>
         <div className="price-cart-row">
           {hasDiscount ? (
