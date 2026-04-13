@@ -139,7 +139,7 @@ namespace Backend.Controllers
 
       if (!roles.Contains(roleChangeDto.RoleId))
       {
-        return NotFound("Nincs ilyen role cigany");
+        return NotFound("Role not found."); 
       }
 
       user.RoleId = roleChangeDto.RoleId;
