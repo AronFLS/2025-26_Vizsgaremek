@@ -7,6 +7,7 @@ import MacBookNeo from "../../../assets/MacBookNeoHomeSLide.jpg";
 import iPhoneAir from "../../../assets/iPhoneAirHomeSlide.png";
 import iPhone17Pro from "../../../assets/iPhone17ProHomeSlide.png";
 import MacbookAir from "../../../assets/MacBookAirHomeSlide.png";
+import { Link } from "react-router-dom";
 
 export function Slide() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay()]);
@@ -34,16 +35,27 @@ export function Slide() {
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
             <div className="embla__slide">
-              <img src={MacBookNeo} alt="" />
+              <Link to="/macbooks">
+                <img src={MacBookNeo} alt="" />
+              </Link>
             </div>
+
             <div className="embla__slide">
-              <img src={iPhone17Pro} alt="" />
+              <Link to="/iphones">
+                <img src={iPhone17Pro} alt="" />
+              </Link>
             </div>
+
             <div className="embla__slide">
-              <img src={iPhoneAir} alt="" />
+              <Link to="/iphones">
+                <img src={iPhoneAir} alt="" />
+              </Link>
             </div>
+
             <div className="embla__slide">
-              <img src={MacbookAir} alt="" />
+              <Link to="/macbooks">
+                <img src={MacbookAir} alt="" />
+              </Link>
             </div>
           </div>
         </div>
