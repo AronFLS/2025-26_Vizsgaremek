@@ -44,13 +44,13 @@ namespace Backend.Controllers
       };
 
       coreDbContext.Add(user);
-      coreDbContext.SaveChanges();
+      await coreDbContext.SaveChangesAsync();
 
       var createdUser = coreDbContext.Users.SingleOrDefault(u => u.Email == user.Email);
       var cart = new Cart
       {
         Active = true,
-        UserId = createdUser.Id,
+        UserId = createdUser!.Id,
         CreatedAt = now,
         ModifiedAt = now
       };
@@ -139,7 +139,7 @@ namespace Backend.Controllers
 
       if (!roles.Contains(roleChangeDto.RoleId))
       {
-        return NotFound("Role not found."); 
+        return NotFound("Role not found.");
       }
 
       user.RoleId = roleChangeDto.RoleId;
