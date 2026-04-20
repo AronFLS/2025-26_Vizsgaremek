@@ -130,9 +130,7 @@ function Signup() {
         <>
           <div className="main-content">
             <p id="title">Create Account</p>
-            <p id="alt-title">
-              Fill in your information to register Xxxxxxxxxx@0 x@x.xx
-            </p>
+            <p id="alt-title">Fill in your information to register</p>
 
             <div id="name">
               <div id="firstname">
