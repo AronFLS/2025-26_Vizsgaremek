@@ -4,6 +4,18 @@ import svgr from "vite-plugin-svgr";
 
 // https://vite.dev/config/
 export default defineConfig({
-  server: { port: 3000 },
+  build: {
+    outDir: ".../wwwroot",
+    emptyOutDir: true,
+  },
   plugins: [react(), svgr()],
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:5000",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });

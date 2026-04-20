@@ -438,6 +438,7 @@ namespace Backend
                 }
                 context.SaveChanges();
             }
+            context.SaveChanges(true);
         }
     }
 }
