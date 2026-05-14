@@ -59,8 +59,7 @@ function PostProduct() {
       }
 
       if (!imageUrl) {
-        setErrorMessage("Please upload an image or paste an image URL.");
-        return;
+        throw new Error("Please upload an image or paste an image URL.");
       }
 
       return await axiosInstance
@@ -121,7 +120,10 @@ function PostProduct() {
     setErrorMessage("");
 
     try {
-      await registerAsync();
+      const created = await registerAsync();
+      if (!created) {
+        return;
+      }
       setName("");
       setImageUrlInput("");
       setSelectedFile(null);
@@ -140,6 +142,7 @@ function PostProduct() {
     } catch (err: unknown) {
       const axiosErr = err as {
         response?: { status?: number; data?: unknown };
+        message?: string;
       };
       console.error(
         "POST /api/products failed:",
@@ -152,7 +155,7 @@ function PostProduct() {
           ? (data as { message?: string }).message
           : typeof data === "string"
             ? data
-            : undefined) ?? "Registration failed. Please try again.";
+            : axiosErr?.message) ?? "Registration failed. Please try again.";
       setErrorMessage(message);
     }
   };
