@@ -93,7 +93,7 @@ namespace Backend.Controllers
         }
         else
         {
-          StatusCode(500, new { message = "Database failure", Error = ex.Message });
+          return StatusCode(500, new { message = "Database failure", Error = ex.Message });
         }
       }
 
@@ -105,7 +105,7 @@ namespace Backend.Controllers
     [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<ProductReadDto>> PostProduct(ProductCreateDto productDto)
-    {
+    {   
       var now = DateTime.Now;
       var product = new Product
       {

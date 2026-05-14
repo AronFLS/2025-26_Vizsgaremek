@@ -25,10 +25,11 @@ namespace Backend.Controllers
     [HttpPost("register")]
     [AllowAnonymous]
     public async Task<ActionResult> Register(UserRegister userDto)
-    {
+    { 
       var hasher = new PasswordHasher<object>();
       var passwordHash = hasher.HashPassword(null!, userDto.Password);
       var now = DateTime.Now;
+
 
       var user = new User
       {
@@ -56,7 +57,7 @@ namespace Backend.Controllers
       };
 
       coreDbContext.Add(cart);
-      coreDbContext.SaveChanges();
+      await coreDbContext.SaveChangesAsync();
 
       return NoContent();
     }
